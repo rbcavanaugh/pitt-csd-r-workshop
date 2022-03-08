@@ -1,0 +1,24 @@
+---
+title: "Pitt CSD R Workshop - Meeting notes"
+output: word_document
+---
+
+# Pitt CSD R Workshop - Meeting notes
+
+## Friday Feb 25, 2022
+
+### Next meeting
+
+Alex, Emily and I will focus on slowly putting together the course for orientation week and we will separate the potential survey from the workshop content and return to it in the summer.
+ 
+Tentative deadlines:
+ 
+Late May/early June: Draft syllabus ready for team feedback including clear content overview and learning objectives
+Late May/early June: Begin putting together IRB for tracking outcomes/survey
+Early June: begin reaching out to other programs for potential participants
+Early August: content is near ready to go. Perhaps a dry run with pittsburgh research slps/ interested faculty or other PhD students at Pitt.
+
+# Next meeting:
+
+begin to discuss content areas. 
+

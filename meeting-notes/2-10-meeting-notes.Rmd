@@ -1,0 +1,61 @@
+---
+title: "Pitt CSD R Workshop - Meeting notes"
+output: word_document
+---
+
+# Pitt CSD R Workshop - Meeting notes
+
+## Friday Feb 11, 2022
+
+Additional thoughts for last time
+- workshop could also fill another need, which is networking and building
+relationships among other PhD students in the CSD field. 
+
+### Meeting w/ Elaine Mormer 2/9/22
+
+- Ok to just survey PhD students 
+- Think about the goal of the current workshop - align survey stakeholders to goal
+- why not rehab sci PhD students?
+- Test out survey several times before distributing
+
+### Q1: should we include rehab sci phd students instead? lower lift?
+
+Mike: idea has legs. makes sense. lets tease is out.
+
+Will: CSD PhD students might be higher impact in the field. 
+
+Emily: Community aspect within CSD PhD students is important
+
+Rob: Would likely be interest from rehab sci folks; also a need to network there too. 
+
+**Consensus: No - stick to plan. CSD PhD Students nationalls**
+
+### Whats the best size?
+
+Rob: upper bound is 20; sweet spot is probably less
+
+Will: as long as its free, its not a service and keep it small
+
+**Consensus: aim for ~15**
+
+### Other perks of the program
+
+- Collect pilot data, survey data to inform a pub on teaching stats
+- Collect outcomes data for the workshop
+- Support future years, institutional training grants, publicity for program
+
+### Funding
+
+- We have some support from CSD admin to cover some survey incentives and potentially some support personnel costs
+
+### Action items
+
+1. IRB applications - look into man on the street process for small gift cards (Rob)
+2. Finish draft of survey (Rob)
+
+### Next meeting
+
+1. Take a look at candidate skills - next time to discuss potential content areas
+
+
+
