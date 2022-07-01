@@ -1,5 +1,5 @@
 ---
-title: "ggplotlecture"
+title: "Plot Superstar"
 author: "AMS"
 date: '2022-07-01'
 output: html_document
@@ -31,8 +31,9 @@ Good practice when working in rmarkdowns is to `#comment` out any installation l
 
 ```{r}
 #install ggplot2 below.
-
+replace_me_with_code
 #load the library ggplot2 below
+replace_me_with_code
 ```
 
 ```{r}
@@ -51,7 +52,7 @@ To provide some new code, today we will load data directly from github. Instead 
 meir_osf = knitr::include_url('https://osf.io/3eg4x/wiki/home/')
 ```
 
-#### About the data 
+#### About the data
 
 The data to be loaded below comes from 34 individuals with aphasia.
 
@@ -59,8 +60,22 @@ The data to be loaded below comes from 34 individuals with aphasia.
 df = read.csv("https://raw.githubusercontent.com/rbcavanaugh/pitt-csd-r-workshop/master/DataViz/osf_meir%20and%20Bangash.csv")
 ```
 
-### Take a peak at the data
+### Take a peak at the data 
+
+There are a couple ways to look at your data structure once it has been loaded. we will use the summary function below. This dataset includes information from 34 people with aphasia and includes 33 different variables. As you will see when you run the summary function, the output is not always easy to parse when there are a large number of variables.
+
+#### Run the summary function by inserting the dataframe name into the the summary function
 
 ```{r}
-glimpse(df)
+summary()
 ```
+
+Solution
+
+```{r}
+summary(df)
+```
+
+#### Here is a screen grab from [osf](https://osf.io/3eg4x/wiki/home/)
+
+![](images/meir%20osf%20report.JPG)
