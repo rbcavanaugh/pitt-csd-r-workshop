@@ -1,0 +1,66 @@
+---
+title: "ggplotlecture"
+author: "AMS"
+date: '2022-07-01'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Data visualization:
+
+-   The practice of translating information into a visual context
+
+-   Helps make complex data easier to understand
+
+### Goals:
+
+-   Teach you how to produce useful and meaningful graphics in R
+
+-   Understand when and when not to use a graphic.
+
+-   Lots of coding on the participant end.
+
+### Libraries
+
+The required libraries for this tutorial include `ggplot2` . As learned in previous lectures, please install and load the library below.
+
+Good practice when working in rmarkdowns is to `#comment` out any installation lines of code, because some installs can be lengthy.
+
+```{r}
+#install ggplot2 below.
+
+#load the library ggplot2 below
+```
+
+```{r}
+#install ggplot2 below.
+#install.packages('ggplot2')
+#load the library ggplot2 below
+library(ggplot2)
+library(tidyverse)
+```
+
+### Load data
+
+To provide some new code, today we will load data directly from github. Instead of providing a path on your local machine, we will just provide the website and the type of datafile.
+
+```{r}
+meir_osf = knitr::include_url('https://osf.io/3eg4x/wiki/home/')
+```
+
+#### About the data 
+
+The data to be loaded below comes from 34 individuals with aphasia.
+
+```{r}
+df = read.csv("https://raw.githubusercontent.com/rbcavanaugh/pitt-csd-r-workshop/master/DataViz/osf_meir%20and%20Bangash.csv")
+```
+
+### Take a peak at the data
+
+```{r}
+glimpse(df)
+```
