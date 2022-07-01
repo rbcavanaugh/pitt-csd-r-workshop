@@ -8,6 +8,14 @@ output:
     toc_depth: 2
 ---
 
+# Learning Objectives:
+
+- Install R, Rstudio, and some R packages
+- Understand basic terminology around R
+- Describe difference between RMarkdown, R scripts, and the console
+- Follow a project-based workflow for working in R
+- Identify 2 ways to get help
+
 # What is R, and why use it?
 
 R is a *free* programming environment for data processing and statistical analysis. R allows you to write scripts that combine data files, clean data, and run analyses. R is really useful for conducting reproducible research (research that documents all of the steps between raw data and results in a way that can be verified), automating analytical steps, creating custom high-quality visualizations, and conducting a wide range of statistical analyses from basic t-tests to multivariate multilevel Bayesian regression.
@@ -90,7 +98,14 @@ install.packages("package")
 
 # Basic R use
 
-This section will be hands on. If you want to review some of the things reviewed in this section, there are some youtube videos posted below:
+This section will be hands on. It will cover
+
+- Basic things you can do in the R console (calculator, strings)
+- Basic definition of a function
+- How to save R code in a script
+- How to comment R code
+
+If you want to review some of the things reviewed in this section, there are some youtube videos posted below:
 
 Using the R Console: <https://www.youtube.com/watch?v=wbI4c_7y0kE>
 
