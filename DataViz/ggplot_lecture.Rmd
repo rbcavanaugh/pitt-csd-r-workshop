@@ -17,11 +17,28 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Goals:
 
--   Teach you how to produce useful and meaningful graphics in R
+-   Understand the different types of variables
+
+-   To plot or not?
+
+-   Produce useful and meaningful graphics in R
 
 -   Understand when and when not to use a graphic.
 
--   Lots of coding on the participant end.
+-   Lots of coding
+
+Bonus:
+
+-   Plotting neuroimaging data in R
+
+-   Natural language processing in R
+
+-   
+
+    -   
+
+        ```{}
+        ```
 
 ### Libraries
 
@@ -46,18 +63,31 @@ library(tidyverse)
 
 ### Load data
 
-To provide some new code, today we will load data directly from github. Instead of providing a path on your local machine, we will just provide the website and the type of datafile.
-
 ```{r}
-meir_osf = knitr::include_url('https://osf.io/3eg4x/wiki/home/')
+df = read.csv("https://raw.githubusercontent.com/rbcavanaugh/pitt-csd-r-workshop/master/DataViz/osf_meir%20and%20Bangash.csv")
 ```
+
+### Variables:       
+
+-   Categorical: A characteristic of someone of something that can be called by name (e.g., handedness)
+
+    -   Types of plots for categorical variables:
+
+        Pie plot:
+
+        ```{}
+        ```
+
+```{}
+```
+
+To provide some new code, today we will load data directly from github. Instead of providing a path on your local machine, we will just provide the website and the type of datafile.
 
 #### About the data
 
 The data to be loaded below comes from 34 individuals with aphasia.
 
-```{r}
-df = read.csv("https://raw.githubusercontent.com/rbcavanaugh/pitt-csd-r-workshop/master/DataViz/osf_meir%20and%20Bangash.csv")
+```{}
 ```
 
 ### Take a peak at the data 
@@ -78,4 +108,17 @@ summary(df)
 
 #### Here is a screen grab from [osf](https://osf.io/3eg4x/wiki/home/)
 
-![](images/meir%20osf%20report.JPG)
+#### Now that we have a loaded the dataset let's jump into plotting. Whenever a plot is generated, it should convey a message that is not easily done so by words. 
+
+### Visualize 
+
+```{}
+```
+
+### What did you learn? Did we need it?
+
+### 
+
+#### The first question you should think about when starting the data visualization processing is "why." Why do you want to look at your data. 
+
+### Consider the third variable in the data set, `handedness`. 
