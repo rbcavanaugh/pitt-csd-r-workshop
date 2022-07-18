@@ -1,0 +1,153 @@
+---
+title: "Rmarkdown-intro"
+author: "Rob Cavanaugh"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Purpose
+
+The goal of this exercise is to combine skills in data wrangling (part 1) and visualization (part 2) to put together a fully reproducible document that can be shared with collaborators.
+
+This exercise will just include the basics, but there is a lot more to Rmarkdown.
+
+See here: <https://bookdown.org/yihui/rmarkdown-cookbook/> and here: <http://rmarkdown.rstudio.com>
+
+## About of R Markdown
+
+### Basic features
+
+There are a couple of features of R-markdown that are important to know
+
+-   objects are encapsulated to the document - it won't use any objects or functions already loaded into your workspace.
+-   content inside the R "chunks" will be run as scriped R.
+-   content outside the R "chunks" will be compiled as markdown.
+-   R code can be run "inline" using ESCAPED INLINE CODE GOES HERE
+
+### Code chunk options
+
+Each code chunk has a number of options related to how to display the code, results, warnings, and messages - WARNING, MESSAGE, ECHO, EVAL, INCLUDE etc. and fig.width out.width etc.
+
+### YAML
+
+The --- section above is called the "YAML" header, and contains information about the document and information that helps to compile the document. This is where you can include the title, author list, and date. It's also where you should specify the type of document you'd like to create: an html_document, word_document, or pdf_document. Note that for PDF documents, you need to have latex installed (<https://yihui.org/tinytex/>).
+
+### Markdown basics
+
+-   #, ##, ###, & \#### are headers. so "# Purpose" will place "Purpose" as a level 1 header in the document
+-   \* \*\*, and \*\*\* are bold, italic, and bold-italic
+-   \> will create an indented block quote
+-   stuff for superscript, subscript etc.
+
+### More advanced markdown
+
+-   markdown can also incorporate citations, math notation/formulas, and raw latex code
+
+### Other stuff
+
+-   You can run chunks without running the entire document
+
+-   Hit knit to run the entire document.
+
+-   Rmarkdown has a visual editor that is slightly more like word
+
+## Goals of this exercise
+
+-   Create an Rmarkdown document that can be reproducibly shared with collaborators
+-   Read in and clean a dataset
+-   Recreate a plot (Figure 1, panel A).
+-   create a table summarizing your dataset using Kable or paged_table
+-   Use inline r code to write an automated summary of the demographics
+-   document aspects of your software at the end of the document'
+-   annotating data - commenting/describing steps
+
+## Do individual differences in lexical reliance reflect states or traits? Giovannone & Theodore, 2022 (pre-print)
+
+-   <https://osf.io/dhybk/>
+
+Research suggests that individuals differ in their reliance on lexical information for speech perception. However, the locus of these differences is not yet known; nor is it known whether these individual differences reflect a context-dependent "state" or a stable listener "trait." Here we test the hypothesis that individual differences in lexical reliance are a stable trait that is linked to individuals' relative weighting of lexical and acoustic-phonetic information for speech perception. Listeners (n = 73) completed three measures of lexical processing at each of two sessions. Robust lexical effects on speech perception were observed for each task in the aggregate. For all three measures, individual differences in lexical reliance were stable across sessions, suggesting that performance in these tasks may reflect stable traits. However, relationships among the three tasks in each session were weak, indicative of low convergent validity across tasks. For two of the three tasks, increased reliance on lexical information was associated with weaker reliance on acoustic-phonetic information. Collectively, these results (1) suggest that individual differences in lexical reliance are stable traits that reflect relative weighting of acoustic-phonetic and lexical cues for speech perception, and (2) highlight the need for a better understanding of the psychometric characteristics of tasks used in the psycholinguistic domain to build theories that can accommodate individual differences in mapping speech to meaning.
+
+## Loading packages
+
+```{r load packages, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(here)
+```
+
+## Loading data
+
+```{r}
+demographics = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Demographics.csv"), stringsAsFactors = TRUE)
+ganong = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Ganong.csv"), stringsAsFactors = TRUE)
+```
+
+```{r}
+# Demographic report.
+demographics %>%
+  filter(N.Sessions == 2) %>% 
+  group_by(Sex) %>% 
+  summarise(Count = length(ID)) # 50 women, 21 men, 2 prefer not to say.
+
+demographics %>%
+  filter(N.Sessions == 2) %>% 
+  summarise(Age.Mean = round(mean(Age), digits=0), # 26 years.
+            Age.SD = round(sd(Age), digits=0), # 5 years.
+            Age.Min = min(Age), # 18 - 35 years.
+            Age.Max = max(Age))
+
+demographics %>% 
+  group_by(N.Sessions) %>% 
+  summarise(Count = length(ID)) # 73 complete both sessions.
+
+demographics %>% 
+  group_by(Headphone) %>% 
+  summarise(Count = length(ID)) # All pass headphone screen.
+
+demographics %>% 
+  filter(N.Sessions == 2) %>% 
+  summarise(Mean = round(mean(Days), digits=0), # 17
+            SD = round(sd(Days), digits=0), # 4
+            Min = min(Days), # 14
+            Max = max(Days)) 
+```
+
+
+
+```{r}
+ganong$Continuum <- factor(ganong$Continuum, levels=c("giss", "gift"))
+
+# Summary by ID.
+ganong.summary.ID <- ganong %>%
+  filter(N.Sessions == 2) %>% 
+  group_by(ID, Session, Continuum, VOT) %>%
+  summarise(Mean.K = mean(Response)) 
+ganong.summary.ID <- droplevels(ganong.summary.ID) # Confirm n = 73.
+
+# Summary over ID.
+ganong.summary <- ganong.summary.ID %>%
+  group_by(Session, Continuum, VOT) %>%
+  summarise(K.Mean = mean(Mean.K),
+            K.SE = sd(Mean.K)/(sqrt(length(Mean.K))))
+
+# Plot.
+labels.Session <- c(`1` = "Session 1", `2` = "Session 2")
+ganong.plot <- ggplot(ganong.summary, aes(x=VOT, y=K.Mean, group=Continuum, color=Continuum)) +
+  #theme_cowplot(font_size=20) +
+  geom_point() +
+  geom_line(aes(linetype=Continuum), size=0.5, show.legend = FALSE) +
+  geom_errorbar(aes(y = K.Mean, ymin = K.Mean-K.SE, ymax = K.Mean+K.SE), width = 1) +
+  ylim(0, 1) +
+  labs(x="VOT (ms)", y = "p(k)") +
+  scale_color_manual(values=c("#00846b", "#6a0084"),
+                     labels = c(expression(italic("giss - kiss")),
+                                expression(italic("gift - kift")))) +
+  theme(legend.text.align = 0) +
+  theme(panel.grid.major.y = element_line(colour="grey")) +
+  facet_wrap(. ~ Session, labeller=labeller(Session = labels.Session))
+ganong.plot
+
+```

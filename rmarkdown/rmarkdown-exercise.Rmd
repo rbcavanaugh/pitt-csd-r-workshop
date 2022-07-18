@@ -85,12 +85,14 @@ library(here)
 ## Loading data
 
 ```{r}
-df = read_csv(here("data", "talkbank_long_typical.csv"))
+demographics = read.csv(here("rmarkdown", "drouin-2021", "TIMETIME-Demographics.csv"), stringsAsFactors = TRUE)
+ganong = read.csv(here("rmarkdown", "drouin-2021", "TIMETIME-Ganong.csv"), stringsAsFactors = TRUE)
+pr = read.csv(here("rmarkdown", "drouin-2021", "TIMETIME-PR.csv"), stringsAsFactors = TRUE)
+ltrs = read.csv(here("rmarkdown", "drouin-2021", "TIMETIME-LTRS.csv"), stringsAsFactors = TRUE)
+
 ```
 
-```{r}
-glimpse(df)
-```
+
 
 # Do stuff with Data
 
