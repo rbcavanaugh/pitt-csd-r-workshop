@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
 ```
 
 ### Where we were?
@@ -45,13 +45,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 -   Lots of coding
 
-Bonus:
-
--   Plotting neuroimaging data in R
-
--   Natural language processing in R
-
-### Let's get it started. 
+### Let's get it started.
 
 ### What is an object?
 
@@ -63,48 +57,48 @@ Bonus:
 
         -   The most simple type of data structure in R.
 
-        -   "A sequence of data elements"
+-   "A sequence of data elements"
 
-            ```{r}
-            #numberical vector
-            #create an r object named vec1 that consists of the the numbers 1,2,3,4
-            vec1 = c(1, 2, 3, 4) 
-            #print vec1
-            vec1
-            ```
+    ```{r}
+    #numberical vector
+    #create an r object named vec1 that consists of the the numbers 1,2,3,4
+    vec1 = c(1, 2, 3, 4) 
+    #print vec1
+    vec1
+    ```
 
-        -   Create a vector named vec2, containing four numerical elements.
+Create a vector named vec2, containing four numerical elements.
 
-            ```{r}
-            #answer here:
+```{r}
+#answer here:
 
-            ```
+```
 
-        -   Example solution:
+Example solution:
 
-            ```{r}
-            vec2 = c(-1, -2, -3, -4)
-            ```
+```{r}
+vec2 = c(-1, -2, -3, -4)
+```
 
-        -   Statistical and mathematical operations can be conducted between vectors. Create a new vector, vec3, by adding vec1 and vec2 together. Add vec1 and vec2 together. Print vec3.
+Statistical and mathematical operations can be conducted between vectors. Create a new vector, vec3, by adding vec1 and vec2 together. Add vec1 and vec2 together. Print vec3.
 
-            ```{r}
-            #answer here:
+```{r}
+#answer here:
 
-            ```
+```
 
-        -   Example solution:
+Example solution:
 
-            ```{vec3 = vec1 + vec2}
-            vec3
-            ```
+```{vec3 = vec1 + vec2}
+vec3
+```
 
-        -   Vectors can also include data structures such as characters such as unique letter, word, or letter/word/number combinations.
+-   Vectors can also include data structures such as characters such as unique letter, word, or letter/word/number combinations.
 
-            -   Example
+Example
 
-                ```{vec4 = c("a", "b", "c")}
-                ```
+```{vec4 = c("a", "b", "c")}
+```
 
 -   Lists
 
@@ -147,6 +141,7 @@ Bonus:
     -   a 2-dimensional object where each column consists of the value of one variable and each row and each row is the value of each column.
 
 ```{r}
+starwars = dplyr::starwars
 df = starwars[,1:6]
 head(df)
 ```
@@ -207,13 +202,15 @@ head(df)
 
 The required libraries for this tutorial include `ggplot2` . As learned in previous lectures, please install and load the library below.
 
-Good pxractice when working in rmarkdowns is to install packages from the console or `#comment` out any installation lines of code, because some installs can be lengthy.
+Good practice when working in rmarkdowns is to install packages from the console or `#comment` out any installation lines of code, because some installs can be lengthy. In the below code, install the following libraries `dplyr` and `ggplot2`. Load both of the packages along with `readr`.
 
 ```{r}
 #install ggplot2 below.
-replace_me_with_code
-#load the library ggplot2 below
-replace_me_with_code
+
+#install dplyr below.
+
+#load the library ggplot2, dplyr, and readr
+
 ```
 
 ## Solution
@@ -221,31 +218,183 @@ replace_me_with_code
 ```{r}
 #install ggplot2 below.
 #install.packages('ggplot2')
-#load the library ggplot2 below
+#install dplyr below.
+#install.packages(`dplyr`)
+#load the library ggplot2, dplyr, and readr
 library(ggplot2)
-library(tidyverse)
+library(dplyr)
+library(readr)
 ```
 
-### Load data
+### Let's load some data. Briefly these data describe variables from 
 
 ```{r}
-df = read.csv("https://raw.githubusercontent.com/rbcavanaugh/pitt-csd-r-workshop/master/DataViz/osf_meir%20and%20Bangash.csv")
+df = read.csv("pnt.csv")
 ```
 
-#### About the data
+-   About the data
 
-The data to be loaded below comes from 34 individuals with aphasia.
+    -   \- These data are from the 175 items from a commonly utilized picture naming test in aphasiology.
 
-### Take a peak at the data
+    -   Data set includes six variables
+
+        -   word: Target word name
+
+        -   frequency: The frequency the word it utilized in publically available data
+
+        -   aoa: The estimated the age of acquisition of the word
+
+        -   length: The number of phonemes of the word
+
+        -   difficulty: The estimated naming difficulty of the item.
+
+            -   Lower numbers are easier than higher numbers
+
+            -   0 is the mean difficulty of the item
+
+### After loading your data there are a couple ways to take a quick look at the type of variables included in the dataset and some of their descriptive statistics.
+
+![](variable%20names.png)
+
+### Take a peak at the data. 
+
+There are multiple functions that can help you quickly learn about your data. Each command requires you to input the dataframe name into the parentheses following the function name.
+
+-   `summary()` provides descriptive statistics such as the minimum, maximum, median and mean variables. It will also provide the number of character values in a given variable along with the number of missing values of a given variable.
+
+-   `str()` prints the name of each column, followed by the type of data within each variable.
+
+-   `head()` prints the first 6 rows of your data.
+
+#### Previewing data, exercise 1: Print a summary of the six variables from the dataset `pnt`
+
+##### Response 1:
 
 ```{r}
-summary()
+#PROVIDE ANSWER HERE
 ```
 
-Solution
+##### Solution 1:
 
 ```{r}
-summary(df)
+summary(pnt)
+```
+
+#### Previewing data, exercise 2: Print a summary of the `length` variable only from the  `pnt`  dataset 
+
+##### Response 2:
+
+```{r}
+#Hint: Use the $ operator
+#TYPE SOLUTION HERE
+```
+
+##### Solution 2:
+
+```{r}
+#use the $ operator to tell R which variable you would like it to process
+summary(pnt$length)
+```
+
+#### Previewing data, exercise 3: Print the structure of every variable of the `pnt` dataset with a single command.
+
+##### Response 3:
+
+```{r}
+#INSERT ANSWER HERE
+```
+
+##### Solution 3:
+
+```{r}
+str(pnt)
+```
+
+#### Previewing data, exercise 4: Print the structure of the variable `difficulty` within the `pnt` dataframe.
+
+##### Response 4:
+
+```{r}
+#INSERT ANSWER HERE
+```
+
+##### Solution 4:
+
+```{r}
+str(pnt$difficulty)
+```
+
+#### Previewing data, exercise 5: Print the first six rows of `pnt` for all of the variables
+
+##### Response 5:
+
+```{r}
+#INSERT ANSWER HERE
+
+```
+
+##### Solution 5:
+
+```{r}
+head(pnt)
+```
+
+#### Previewing data, exercise 6: Print the first six rows of the variable `word` from the `pnt` dataset.
+
+##### Response 5:
+
+```{r}
+#INSERT RESPONSE HERE
+```
+
+##### Solution 6:
+
+```{r}
+head(pnt$word)
+```
+
+#### Previewing data, exercise 7: The `tail` function is the opposite of head. Print the last 6 items of all variables with pnt below.
+
+##### Response 7:
+
+```{r}
+#INSERT SOLUTION HERE
+```
+
+##### Solution 7:
+
+```{r}
+tail(pnt)
+```
+
+#### Previewing data, exercise 8: Within the `tail` and `head` functions, you may also specifiy how many rows you want to output by adding a `n = #` where \# is the desired number of output rows. Make sure to add a comma after the dataframe name. 
+
+#### Print the first 10 rows of PNT for all variables.
+
+##### Response 8a
+
+```{r}
+#INSERT SOLUTION HERE
+```
+
+##### Solution 8a
+
+```{r}
+head(pnt, n = 10)
+```
+
+#### Print the last 4 rows of PNT for all variables.
+
+##### Response 8b:
+
+```{r}
+#INSERT SOLUTION HERE
+```
+
+##### Solution 8b:
+
+```{r}
+tail(pnt, n = 4)
 ```
 
 There are a couple ways to look at your data structure once it has been loaded. we will use the summary function below. This dataset includes information from 34 people with aphasia and includes 33 different variables. As you will see when you run the summary function, the output is not always easy to parse when there are a large number of variables.
