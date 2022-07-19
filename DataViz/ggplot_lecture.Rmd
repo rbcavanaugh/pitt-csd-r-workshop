@@ -9,21 +9,39 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### Data visualization:
+### Where we were?
 
--   The practice of translating information into a visual context
+-   Installed R and R studio
 
--   Helps make complex data easier to understand
+-   Learned to install packages/load packages
 
-### Goals:
+-   Learned about R environments (super helpful, not regularly taught. Be bold!)
+
+-   Learned how to load data sets
+
+-   Name data sets
+
+### Where are we going?
+
+-   What is an R object?
 
 -   Understand the different types of variables
 
--   To plot or not?
+-   What is a dataframe
 
--   Produce useful and meaningful graphics in R
+-   What's inside a dataframe
 
--   Understand when and when not to use a graphic.
+-   How can we tell the story of the data
+
+### Data visualization:
+
+-   Use knowledge of perception and cognition to plan, create, and evaluate data visualizations.
+
+-   Conduct exploratory data analysis using tabulated and graphical data visualization techniques
+
+-   Choose color pallets for visualization based on principles of perception.
+
+### Goals:
 
 -   Lots of coding
 
@@ -33,18 +51,163 @@ Bonus:
 
 -   Natural language processing in R
 
--   
+### Let's get it started. 
 
-    -   
+### What is an object?
 
-        ```{}
-        ```
+-   Simplest description, an object within the R programming language is a noun describing different types of data structures.
 
-### Libraries
+-   Six types:
+
+    -   Vector:
+
+        -   The most simple type of data structure in R.
+
+        -   "A sequence of data elements"
+
+            ```{r}
+            #numberical vector
+            #create an r object named vec1 that consists of the the numbers 1,2,3,4
+            vec1 = c(1, 2, 3, 4) 
+            #print vec1
+            vec1
+            ```
+
+        -   Create a vector named vec2, containing four numerical elements.
+
+            ```{r}
+            #answer here:
+
+            ```
+
+        -   Example solution:
+
+            ```{r}
+            vec2 = c(-1, -2, -3, -4)
+            ```
+
+        -   Statistical and mathematical operations can be conducted between vectors. Create a new vector, vec3, by adding vec1 and vec2 together. Add vec1 and vec2 together. Print vec3.
+
+            ```{r}
+            #answer here:
+
+            ```
+
+        -   Example solution:
+
+            ```{vec3 = vec1 + vec2}
+            vec3
+            ```
+
+        -   Vectors can also include data structures such as characters such as unique letter, word, or letter/word/number combinations.
+
+            -   Example
+
+                ```{vec4 = c("a", "b", "c")}
+                ```
+
+-   Lists
+
+    -   Objects of R that contain various types of elements including characters, numbers, vectors, and a nested list inside it. It can also consist of matrices or functions as elements. It can be created with the help of the list() function.
+
+    -   We will not focus on lists today, provided below are useful websites that outline methods for working with lists
+
+        -   <https://data-flair.training/blogs/r-list-tutorial/>
+
+        -   <https://www.r-bloggers.com/2015/08/how-to-use-lists-in-r/>
+
+        -   <https://bioconnector.github.io/workshops/r-lists.html>
+
+-   matrix
+
+    -   arrange elements in one to two dimensional space
+
+    -   Columns and rows within matrix **environments do NOT have names**
+
+    -   Example:
+
+    -   $$
+        \begin{bmatrix}1 & 2 & 3\\a & b & c\end{bmatrix}
+        $$
+
+-   array:
+
+    -   Stores data in more than 2 dimensions. Will not be addressed today, but can be created with `array()`
+
+    -   Useful links:
+
+        -   <https://www.tutorialspoint.com/r/r_arrays.htm>
+
+        -   <https://www.educative.io/answers/how-to-work-with-arrays-in-r>
+
+        -   <https://www.geeksforgeeks.org/r-array/>
+
+-   Dataframe:
+
+    -   a 2-dimensional object where each column consists of the value of one variable and each row and each row is the value of each column.
+
+```{r}
+df = starwars[,1:6]
+head(df)
+```
+
+### Variable types:
+
+-   As noted above, elements within a vector, matrix, list, array, and dataframes can come in multiple forms. The following variable types are utilized by R and we will utilize a couple of these today.
+
+    -   Character
+
+        -   "a", "name", "a1", "!a"
+
+    -   Numeric
+
+        -   Real numbers: integers (1, 2, 10, etc) and irrational numbers (0.12, -0.1, 12.45)
+
+    -   Integers:
+
+        -   Forces whole numers
+
+    -   Two additional variable structures are included in R, but will not be covered today.
+
+        -   Logical
+
+        -   Complex
+
+-   Define the variable types in the dataset below.
+
+```{r}
+df = df %>%
+  mutate(mass = mass + rnorm(n = 6, mean= 0, sd = 1))
+head(df)
+```
+
+#### Hold up and recap:
+
+#### Where were we?
+
+-   What is an R object?
+
+-   Understand the different types of variables
+
+-   What is a dataframe
+
+-   What's inside a dataframe
+
+#### Data Visualization:
+
+-   The process of translating information into a visual context to help the human brain understand and make insightful inferences about data.
+
+-   Goal:
+
+    -   Make it easy to identify patters, trends, and outliers in large data sets.
+
+-   Your visualization should allow the individual examining the figure to extract information that is not easy to present in text, or to compliment text to help a reader unpack knowledge.
+
+-   Visualiations that require large amounts of text to explain
 
 The required libraries for this tutorial include `ggplot2` . As learned in previous lectures, please install and load the library below.
 
-Good practice when working in rmarkdowns is to `#comment` out any installation lines of code, because some installs can be lengthy.
+Good pxractice when working in rmarkdowns is to install packages from the console or `#comment` out any installation lines of code, because some installs can be lengthy.
 
 ```{r}
 #install ggplot2 below.
@@ -52,6 +215,8 @@ replace_me_with_code
 #load the library ggplot2 below
 replace_me_with_code
 ```
+
+## Solution
 
 ```{r}
 #install ggplot2 below.
@@ -67,34 +232,11 @@ library(tidyverse)
 df = read.csv("https://raw.githubusercontent.com/rbcavanaugh/pitt-csd-r-workshop/master/DataViz/osf_meir%20and%20Bangash.csv")
 ```
 
-### Variables:       
-
--   Categorical: A characteristic of someone of something that can be called by name (e.g., handedness)
-
-    -   Types of plots for categorical variables:
-
-        Pie plot:
-
-        ```{}
-        ```
-
-```{}
-```
-
-To provide some new code, today we will load data directly from github. Instead of providing a path on your local machine, we will just provide the website and the type of datafile.
-
 #### About the data
 
 The data to be loaded below comes from 34 individuals with aphasia.
 
-```{}
-```
-
-### Take a peak at the data 
-
-There are a couple ways to look at your data structure once it has been loaded. we will use the summary function below. This dataset includes information from 34 people with aphasia and includes 33 different variables. As you will see when you run the summary function, the output is not always easy to parse when there are a large number of variables.
-
-#### Run the summary function by inserting the dataframe name into the the summary function
+### Take a peak at the data
 
 ```{r}
 summary()
@@ -106,19 +248,54 @@ Solution
 summary(df)
 ```
 
-#### Here is a screen grab from [osf](https://osf.io/3eg4x/wiki/home/)
+There are a couple ways to look at your data structure once it has been loaded. we will use the summary function below. This dataset includes information from 34 people with aphasia and includes 33 different variables. As you will see when you run the summary function, the output is not always easy to parse when there are a large number of variables.
 
-#### Now that we have a loaded the dataset let's jump into plotting. Whenever a plot is generated, it should convey a message that is not easily done so by words. 
+#### Run the summary function by inserting the dataframe name into the the summary function
 
-### Visualize 
+### Variables:
 
-```{}
+-   Categorical: A characteristic of someone of something that can be called by name (e.g., handedness)
+
+    -   Types of plots for categorical variables:
+
+        Pie plot:
+
+```{r pie_chart}
+df2 = df %>% #create df2 based on a function to follow the pipe symbol 
+  count(Handedness) #count the number of each unique observation found in the "Handedness" variable
+
+#Use pie to generate pie chart
+pie(df2$n,  #provide dataframe and variable name
+    labels = c("Left", "Right"), #generate labels for variables. Variable names are defined in alphabetic and numerical order.
+    main = "Pie chart of handedness")  #Main function is used to create a title. title must be in quotes and can included spaces.
 ```
 
-### What did you learn? Did we need it?
+-   Bar plot
+
+```{r}
+#create education variable
+df$ed = ifelse(df$Education < 12.1, "High School",
+               ifelse(df$Education > 12 & df$Education < 16, "Some College",
+                      ifelse(df$Education == 16, "Bachelor's", "Graduate")))
+df$ed = factor(df$ed, levels = c("High School", "Some College", "Bachelor's", "Graduate"))
+
+barplot = ggplot(df) + # create ggplot object from data = df+
+  geom_bar(aes(x = ed, fill = ed)) +
+  labs(
+    title = "Barplot of education level",
+    x = "Level of education",
+    y = "Count",
+    fill = "Education Level"
+  )
+barplot
+```
+
+#### Here is a screen grab from [osf](https://osf.io/3eg4x/wiki/home/)
+
+#### Now that we have a loaded the dataset let's jump into plotting. Whenever a plot is generated, it should convey a message that is not easily done so by words.
 
 ### 
 
-#### The first question you should think about when starting the data visualization processing is "why." Why do you want to look at your data. 
+#### The first question you should think about when starting the data visualization processing is "why." Why do you want to look at your data.
 
-### Consider the third variable in the data set, `handedness`. 
+### Consider the third variable in the data set, `handedness`.
