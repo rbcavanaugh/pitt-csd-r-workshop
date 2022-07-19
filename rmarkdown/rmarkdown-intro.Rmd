@@ -13,9 +13,45 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The goal of this exercise is to combine skills in data wrangling (part 1) and visualization (part 2) to put together a fully reproducible document that can be shared with collaborators.
 
+Why are reproducible reports useful? 
+
+- They provide a way to conduct and share your entire analysis - 
+reading in raw data, data wrangling, creating tables, figures, and text - without
+modifying your data. This makes your research pipeline transparent.
+
+- They can be easily read or reproduced by someone else in your lab to check your methods
+or external reviewers or consumers of your research. Sharing an Rmarkdown document or
+report is also a great way to get help in an analysis. 
+
+- Even if you can't share your data, you can share your report with your code,
+which helps reviewers understand what you've done in your methods and statistical analysis. 
+
+- If you identify an error or need to change something (e.g., you find out that a participant
+did not qualify for your study after the fact...perhaps you find out they were diagnosed 
+with an exclusionary condition), you can modify and re-run your script instead of re-doing 
+many manual steps. 
+
+Some examples of reproducible report from our lab: (you can look at the
+Rmarkdown documents or .html files). 
+
+https://osf.io/dxvyj/
+https://osf.io/sfutm/
+
+Even if much of the content of these reports appears complex or foreign - realize
+that these come from 4+ years or learning R and Rmarkdown. You're just getting started. 
+
+## Resources
+
 This exercise will just include the basics, but there is a lot more to Rmarkdown.
 
 See here: <https://bookdown.org/yihui/rmarkdown-cookbook/> and here: <http://rmarkdown.rstudio.com>
+
+A helpful cheatsheet can be found at https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf and in this folder. 
+
+We'll review the basics today, but the best way to learn RMarkdown is just to start
+using it for your own projects. Trying to memorize the formatting is probably not
+a good use of time. So don't worry if you don't retain everything from today - the 
+goal is just to get you started. 
 
 ## About of R Markdown
 
@@ -34,7 +70,7 @@ Each code chunk has a number of options related to how to display the code, resu
 
 ### YAML
 
-The --- section above is called the "YAML" header, and contains information about the document and information that helps to compile the document. This is where you can include the title, author list, and date. It's also where you should specify the type of document you'd like to create: an html_document, word_document, or pdf_document. Note that for PDF documents, you need to have latex installed (<https://yihui.org/tinytex/>).
+The \-\-\- section above is called the "YAML" header, and contains information about the document and information that helps to compile the document. This is where you can include the title, author list, and date. It's also where you should specify the type of document you'd like to create: an html_document, word_document, or pdf_document. Note that for PDF documents, you need to have latex installed (<https://yihui.org/tinytex/>).
 
 ### Markdown basics
 
@@ -53,101 +89,6 @@ The --- section above is called the "YAML" header, and contains information abou
 
 -   Hit knit to run the entire document.
 
--   Rmarkdown has a visual editor that is slightly more like word
-
-## Goals of this exercise
-
--   Create an Rmarkdown document that can be reproducibly shared with collaborators
--   Read in and clean a dataset
--   Recreate a plot (Figure 1, panel A).
--   create a table summarizing your dataset using Kable or paged_table
--   Use inline r code to write an automated summary of the demographics
--   document aspects of your software at the end of the document'
--   annotating data - commenting/describing steps
-
-## Do individual differences in lexical reliance reflect states or traits? Giovannone & Theodore, 2022 (pre-print)
-
--   <https://osf.io/dhybk/>
-
-Research suggests that individuals differ in their reliance on lexical information for speech perception. However, the locus of these differences is not yet known; nor is it known whether these individual differences reflect a context-dependent "state" or a stable listener "trait." Here we test the hypothesis that individual differences in lexical reliance are a stable trait that is linked to individuals' relative weighting of lexical and acoustic-phonetic information for speech perception. Listeners (n = 73) completed three measures of lexical processing at each of two sessions. Robust lexical effects on speech perception were observed for each task in the aggregate. For all three measures, individual differences in lexical reliance were stable across sessions, suggesting that performance in these tasks may reflect stable traits. However, relationships among the three tasks in each session were weak, indicative of low convergent validity across tasks. For two of the three tasks, increased reliance on lexical information was associated with weaker reliance on acoustic-phonetic information. Collectively, these results (1) suggest that individual differences in lexical reliance are stable traits that reflect relative weighting of acoustic-phonetic and lexical cues for speech perception, and (2) highlight the need for a better understanding of the psychometric characteristics of tasks used in the psycholinguistic domain to build theories that can accommodate individual differences in mapping speech to meaning.
-
-## Loading packages
-
-```{r load packages, warning = FALSE, message = FALSE}
-library(tidyverse)
-library(here)
-```
-
-## Loading data
-
-```{r}
-demographics = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Demographics.csv"), stringsAsFactors = TRUE)
-ganong = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Ganong.csv"), stringsAsFactors = TRUE)
-```
-
-```{r}
-# Demographic report.
-demographics %>%
-  filter(N.Sessions == 2) %>% 
-  group_by(Sex) %>% 
-  summarise(Count = length(ID)) # 50 women, 21 men, 2 prefer not to say.
-
-demographics %>%
-  filter(N.Sessions == 2) %>% 
-  summarise(Age.Mean = round(mean(Age), digits=0), # 26 years.
-            Age.SD = round(sd(Age), digits=0), # 5 years.
-            Age.Min = min(Age), # 18 - 35 years.
-            Age.Max = max(Age))
-
-demographics %>% 
-  group_by(N.Sessions) %>% 
-  summarise(Count = length(ID)) # 73 complete both sessions.
-
-demographics %>% 
-  group_by(Headphone) %>% 
-  summarise(Count = length(ID)) # All pass headphone screen.
-
-demographics %>% 
-  filter(N.Sessions == 2) %>% 
-  summarise(Mean = round(mean(Days), digits=0), # 17
-            SD = round(sd(Days), digits=0), # 4
-            Min = min(Days), # 14
-            Max = max(Days)) 
-```
+-   Rmarkdown has a visual editor that is slightly more like word (see source vs. visual in top left)
 
 
-
-```{r}
-ganong$Continuum <- factor(ganong$Continuum, levels=c("giss", "gift"))
-
-# Summary by ID.
-ganong.summary.ID <- ganong %>%
-  filter(N.Sessions == 2) %>% 
-  group_by(ID, Session, Continuum, VOT) %>%
-  summarise(Mean.K = mean(Response)) 
-ganong.summary.ID <- droplevels(ganong.summary.ID) # Confirm n = 73.
-
-# Summary over ID.
-ganong.summary <- ganong.summary.ID %>%
-  group_by(Session, Continuum, VOT) %>%
-  summarise(K.Mean = mean(Mean.K),
-            K.SE = sd(Mean.K)/(sqrt(length(Mean.K))))
-
-# Plot.
-labels.Session <- c(`1` = "Session 1", `2` = "Session 2")
-ganong.plot <- ggplot(ganong.summary, aes(x=VOT, y=K.Mean, group=Continuum, color=Continuum)) +
-  #theme_cowplot(font_size=20) +
-  geom_point() +
-  geom_line(aes(linetype=Continuum), size=0.5, show.legend = FALSE) +
-  geom_errorbar(aes(y = K.Mean, ymin = K.Mean-K.SE, ymax = K.Mean+K.SE), width = 1) +
-  ylim(0, 1) +
-  labs(x="VOT (ms)", y = "p(k)") +
-  scale_color_manual(values=c("#00846b", "#6a0084"),
-                     labels = c(expression(italic("giss - kiss")),
-                                expression(italic("gift - kift")))) +
-  theme(legend.text.align = 0) +
-  theme(panel.grid.major.y = element_line(colour="grey")) +
-  facet_wrap(. ~ Session, labeller=labeller(Session = labels.Session))
-ganong.plot
-
-```

@@ -1,5 +1,5 @@
 ---
-title: "Recreating Giovannone & Theodore, 2022 (preprint)"
+title: "RMarkdown Exercise #1 - Answer Key"
 author: "Rob Cavanaugh"
 date: "`r Sys.Date()`"
 output: html_document
@@ -11,11 +11,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## About this document
 
-This document demonstrates basic use of rmarkdown by 
+The goal of this exercise is to provide an opportunity to generate a reproducible report, applying skills learned in this workshop to date.
 
-- Using inline code to report basic demographic information
-- Previewing, cleaning, and organizing data 
-- Reproducing Figure 1A from Giovannone & Theodore, 2022 (<https://osf.io/dhybk/>)
+-   Using basic rmarkdown formatting
+-   Using inline code to report basic demographic information
+-   Previewing, Cleaning, and Organizing data
+-   Reproducing Figure 1A from Giovannone & Theodore, 2022 (<https://osf.io/dhybk/>)
 
 
 ## About Giovannone & Theodore 2022
@@ -25,6 +26,8 @@ This document demonstrates basic use of rmarkdown by
 **Abstract:** Research suggests that individuals differ in their reliance on lexical information for speech perception. However, the locus of these differences is not yet known; nor is it known whether these individual differences reflect a context-dependent "state" or a stable listener "trait." Here we test the hypothesis that individual differences in lexical reliance are a stable trait that is linked to individuals' relative weighting of lexical and acoustic-phonetic information for speech perception. Listeners (n = 73) completed three measures of lexical processing at each of two sessions. Robust lexical effects on speech perception were observed for each task in the aggregate. For all three measures, individual differences in lexical reliance were stable across sessions, suggesting that performance in these tasks may reflect stable traits. However, relationships among the three tasks in each session were weak, indicative of low convergent validity across tasks. For two of the three tasks, increased reliance on lexical information was associated with weaker reliance on acoustic-phonetic information. Collectively, these results (1) suggest that individual differences in lexical reliance are stable traits that reflect relative weighting of acoustic-phonetic and lexical cues for speech perception, and (2) highlight the need for a better understanding of the psychometric characteristics of tasks used in the psycholinguistic domain to build theories that can accommodate individual differences in mapping speech to meaning.
 
 Figure 1. Panel A:
+
+**Change the following code chunk so that it only displays the image and not the code**
 
 ```{r, echo = FALSE}
 knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))

@@ -1,0 +1,157 @@
+---
+title: "RMarkdown Exercise #1: Recreating Giovannone & Theodore, 2022"
+author: "Rob Cavanaugh"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About this document
+
+The goal of this exercise is to provide an opportunity to generate a reproducible report, applying skills learned in this workshop to date.
+
+-   Using basic rmarkdown formatting
+-   Using inline code to report basic demographic information
+-   Previewing, Cleaning, and Organizing data
+-   Reproducing Figure 1A from Giovannone & Theodore, 2022 (<https://osf.io/dhybk/>)
+
+## About Giovannone & Theodore 2022
+
+**Title:** Do individual differences in lexical reliance reflect states or traits? Giovannone & Theodore, 2022 (pre-print)
+
+**Abstract:** Research suggests that individuals differ in their reliance on lexical information for speech perception. However, the locus of these differences is not yet known; nor is it known whether these individual differences reflect a context-dependent "state" or a stable listener "trait." Here we test the hypothesis that individual differences in lexical reliance are a stable trait that is linked to individuals' relative weighting of lexical and acoustic-phonetic information for speech perception. Listeners (n = 73) completed three measures of lexical processing at each of two sessions. Robust lexical effects on speech perception were observed for each task in the aggregate. For all three measures, individual differences in lexical reliance were stable across sessions, suggesting that performance in these tasks may reflect stable traits. However, relationships among the three tasks in each session were weak, indicative of low convergent validity across tasks. For two of the three tasks, increased reliance on lexical information was associated with weaker reliance on acoustic-phonetic information. Collectively, these results (1) suggest that individual differences in lexical reliance are stable traits that reflect relative weighting of acoustic-phonetic and lexical cues for speech perception, and (2) highlight the need for a better understanding of the psychometric characteristics of tasks used in the psycholinguistic domain to build theories that can accommodate individual differences in mapping speech to meaning.
+
+Figure 1. Panel A:
+
+**Change the following code chunk so that it only displays the image and not the code**
+
+```{r}
+knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))
+```
+
+## Load packages
+
+-   load the tidyverse and here packages
+-   change warning and message chunk options to false
+
+**< insert code here >**
+
+## Read in data
+
+-   read in the demographics and "ganong" data
+
+**< insert code here >**
+
+
+## Exercise 1: Replicate this paragraph from the manuscript using inline R code:
+
+> Participants (n = 142) were recruited from the Prolific participant pool(<https://www.prolific.co>; Palan & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in theUnited States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included 120 participants at session one and 73 participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n = 73) who completed both sessions.
+
+> With respect to demographic characteristics,the sample included 50 women, 21 men, and 2 individuals who preferred not to report gender. All participants were between 18 --35 years of age (mean = 26 years, SD = 5 years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was 17 days (SD = 4 days; range = 14 -- 35 days)
+
+We need the following:
+
+-   total number of people completing just one session
+-   total number of people completing both session
+-   participant breakdown by reported gender
+-   participant breakdown by age (mean, sd, min, max)
+-   participant breakdown by days between sessions (mean, sd, min, max)
+
+### Preview the demographics dataframe
+
+-   use a function to preview the top 6 rows of the demographics data
+
+**< insert code here >**
+
+### Calculate the 5 summart statistics noted above
+
+**< insert code here - use multiple chunks >**
+
+### Replace the **XXXX** with R code to auto-populate the numbers.
+
+Paragraph 1:
+
+Participants (n= **XXXX**) were recruited from the Prolific participant pool(<https://www.prolific.co;Palan> & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in the United States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included **XXXX** participants at session one and **XXXX** participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n= **XXXX**) who completed both sessions.
+
+Paragraph 2:
+
+With respect to demographic characteristics,the sample included **XXXX** women, **XXXX** men, and **XXXX** individuals who preferred not to report gender. All participants were between **XXXX-XXXX** years of age (mean= **XXXX** years, SD= **XXXX** years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was **XXXX** days (SD = **XXXX** days; range= **XXXX -- XXXX** days)
+
+## Recreating the figure
+
+### Preview the ganong data.
+
+-   This time, lets use a the `paged_table()` function from Rmarkdown. This only works with HTML output, but allows the reader to tab through the table
+
+**< insert code here >**
+
+-   Print a summary of each variable in the dataset
+
+**< insert code here >**
+
+### Data wrangling
+
+What steps do we need to reproduce the plot? These are taken from the authors scripts:
+
+Part 1:
+
+-   Change the levels of the Gontinuum variable (a factor) so that `giss` comes before `gift`
+
+-   Only include rows where N.Sessions == 2
+
+-   Calculate the average reponse accuracy for each unique combination of ID, Session, Continuum, & VOT
+
+-   Make sure there are 73 rows in the final data set (check out work!)
+
+Part 2:
+
+-   for each unique combination of Session, Continuum, & VOT, calculate the mean of our new response accuracy variable
+
+-   for each unique combination of Session, Continuum, & VOT, calculate the standard error of our new response accuracy variable
+
+$$
+\sigma_{M} = \frac{\sigma}{\sqrt(N)}
+$$
+
+**Insert the sigma symbol in the italic paragraph below. Note that above, two dollar signs
+create an equation in the center of the document. How do we create an inline equation?**
+
+*Don't worry too much about the mathematical definition of the standard error. Know that the standard error can be calculated by the following formula, where sigma (**XXXX**) is the standard deviation and N reprsents the total sample size. In R, you can use the `sd()` function to calculate the standard deviation and the `sqrt()` function to calculate the square root of something.*
+
+### Part 1.
+
+Re-factor the Continuum variable
+
+**< insert code here >**
+
+Summarize the ganong data
+
+-   Only include rows where N.Sessions == 2
+
+-   Calculate the average reponse accuracy for each unique combination of ID, Session, Continuum, & VOT
+
+-   Make sure there are 73 rows in the final data set (check out work!)
+
+**< insert code here >**
+
+### Part 2.
+
+-   for each unique combination of Session, Continuum, & VOT, calculate the mean of our new response accuracy variable
+
+**< insert code here >**
+
+-   for each unique combination of Session, Continuum, & VOT, calculate the standard error of our new response accuracy variable
+
+**< insert code here >**
+
+### Create the plot
+
+**< insert code here >**
+
+## Report information about the analysis
+
+**< insert code here >**
+
