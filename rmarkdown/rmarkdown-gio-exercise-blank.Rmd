@@ -66,7 +66,7 @@ We need the following:
 
 **< insert code here >**
 
-### Calculate the 5 summart statistics noted above
+### Calculate the 5 summary statistics noted above
 
 **< insert code here - use multiple chunks >**
 
@@ -150,6 +150,14 @@ Summarize the ganong data
 ### Create the plot
 
 **< insert code here >**
+
+```{r}
+plot <- ggplot(
+  df,
+  aes()
+) +
+  
+```
 
 ## Report information about the analysis
 

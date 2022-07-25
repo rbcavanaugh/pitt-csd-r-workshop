@@ -8,13 +8,17 @@ output:
     toc_depth: 2
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width = 4)
+```
+
 # Learning Objectives:
 
-- Install R, Rstudio, and some R packages
-- Understand basic terminology around R
-- Describe difference between RMarkdown, R scripts, and the console
-- Follow a project-based workflow for working in R
-- Identify 2 ways to get help
+-   [x] Install R, Rstudio, and some R packages (tidyverse)...do before?
+-   Understand basic terminology around R
+-   Describe difference between RMarkdown, R scripts, and the console
+-   Follow a project-based workflow for working in R
+-   Identify 2 ways to get help
 
 # What is R, and why use it?
 
@@ -34,7 +38,11 @@ If you are using **Linux**, choose your specific operating system and follow the
 
 If you have trouble with installation, R can also be used online: [RStudio Cloud](https://rstudio.cloud/) is a free online service that allows access to R and RStudio.
 
-![This is what R looks like (not RStudio)](images/paste-8DC0F4C7.png)
+
+```{r, out.width = "400px", echo = FALSE}
+knitr::include_graphics("images/paste-8DC0F4C7.png")
+```
+
 
 # Installing RStudio
 
@@ -42,11 +50,15 @@ Go to [rstudio.com](https://www.rstudio.com/products/rstudio/download/#download)
 
 If you're unsure about where something is in RStudio, try finding it in the cheatsheet here: <https://raw.githubusercontent.com/rstudio/cheatsheets/main/rstudio-ide.pdf>
 
-### ![This is what Rstudio looks like](images/paste-B4148C41.png)
+```{r, echo = FALSE, out.width = "500px"}
+knitr::include_graphics("images/paste-B4148C41.png")
+```
 
 There are a few settings you should fix immediately after updating RStudio. Go to **`Global Options...`** under the **`Tools`** menu (⌘,), and in the General tab, uncheck the box that says **`Restore .RData into workspace at startup`**. If you keep things around in your workspace, things will get messy, and unexpected things will happen. You should always start with a clear workspace. This also means that you never want to save your workspace when you exit, so set this to **`Never`**. The only thing you want to save are your scripts.
 
-![](images/paste-EA4637C3.png)
+```{r, echo = FALSE, out.width = "500px"}
+knitr::include_graphics("images/paste-EA4637C3.png")
+```
 
 ### Installing LaTeX (optional)
 
@@ -100,72 +112,234 @@ install.packages("package")
 
 This section will be hands on. It will cover
 
-- Basic things you can do in the R console (calculator, strings)
-- Basic definition of a function
-- How to save R code in a script
-- How to comment R code
+-   Basic things you can do in the R console (calculator, strings)
+-   Basic definition of a function
+-   How to save R code in a script
+-   How to comment R code
 
-If you want to review some of the things reviewed in this section, there are some youtube videos posted below:
+\*\*Important! If you haven't noticed yet, R is case-sensitive! upper vs. lower case matters. Generally, white space does not matter.\*\*
 
-Using the R Console: <https://www.youtube.com/watch?v=wbI4c_7y0kE>
+## Calculator
 
-Understanding coding terms and functions: <https://www.youtube.com/watch?v=X5P038N5Q8I&feature=youtu.be>
+R will do math operations using the same symbols as your old TI-83 (`+`, `-`, `*`, `/`, `^`, `()`)
 
-If you would like to see this section in writing, you can find it here: <https://psyteachr.github.io/reprores-v2/intro.html#console>
+```{r}
+2+2
+```
 
-# RMarkdown Documents (.Rmd) vs. R Scripts (.R)
+```{r}
+2*2
+```
 
-When you're saving an R code in a document, you have two main options. 
+```{r}
+2^2
+```
 
-(1) You can save your code in an R Script (.R), which is a text file with R code, and comments, which
-can be marked using the `#` symbol in front of any text. Comments are notes to 
-yourself or others that aren't run as code. 
+## Boolean phrases
 
-(2) You can save your code in an RMarkdown document (.Rmd), which combines the features
-of a markdown document and an R script. This allows you to write text easily, with
-most formatting features (e.g., bold, italics, headers, links, images etc.) you're 
-used to in Microsoft Word/ Google docs, but also include R code in "chunks." This 
-document is an Rmarkdown document. You can still comment your code using `#` inside
-each code chunk, but you can also easily write nicely formatted text. For the rest of
-this workshop, we're going to demonstrate and encourage you to use RMarkdown documents
-instead of scripts (though sometimes scripts can be helpful to quickly test out code!).
+R will return TRUE or FALSE to any boolean statement using a boolean operator (`==`, `!=`, `>`, `>=`, `|`, `&` )
+
+```{r}
+2==2
+```
+
+```{r}
+2!=2
+```
+
+## Assignment
+
+We can save anything to an R object using the assignment operator `<-`.
+
+For example, the result of a calculation:
+
+```{r}
+the_answer <- ((5+10-11)*20+4)/2
+```
+
+```{r}
+the_answer
+```
+
+*Note: PEMDAS applies in R too!*
+
+For the most part, it doesn't matter what you call something. The object just has a name that can be almsot anything. It has no predetermined relationship to the information in the object.
+
+```{r}
+forty_three = the_answer
+```
+
+```{r}
+forty_three
+```
+
+That said, its usually good to name things intuitively.
+
+Exception 1: avoid using names that are already the name of functions.
+
+Good name:
+
+```{r}
+mean_accuracy = 0.95
+```
+
+Bad name:
+
+```{r}
+mean = 0.95
+```
+
+Why is this a bad name? Because there's already a function called `mean()`. This mostly still works, but its confusing, and won't always work.
+
+```{r}
+mean(mean)
+```
+
+Exception 2: The only punctuation you should generally use is an underscore. Avoid periods, commas, tildas, etc.
+
+
+### CHECK #1
+
+**Convert today's high temperature from Fahrenheit to Celsius, save it to an object in R**
+
+```{r}
+# YOUR CODE HERE
+```
+
+
+
+## Vectors
+
+The technical term for the objects above (`the_answer`, `forty_three`) is a **Scalar**. It has only a single value.
+
+But we can combine "scalars" into vectors of more than one value. Vectors are objects in R that hold more than one value (in one dimension). You can do all kinds of crazy things with vectors. For now, we just want you to know what they are.
+
+One way of creating a vector is using the `c()` function. c stands for "concatenate".
+
+```{r}
+multiple_numbers <- c(5, 10, 15, 20, 25)
+multiple_numbers
+```
+
+We can access the n^th^ element in a vector using square brackets
+
+```{r}
+multiple_numbers[4]
+```
+
+## Data types
+
+In the above sections, we used the numeric and logical data types.
+
+There are a few other data types in R: \* character (chr) \* factor (fctr) \* numeric (dbl) \* integer (int) \* logical (lgl) \* complex
+
+Our object `the_answer` above was numeric
+
+```{r}
+class(the_answer)
+```
+
+The same value can be represented as a character
+
+```{r}
+the_answer_character <- as.character(the_answer)
+class(the_answer_character)
+```
+
+And converted back to numeric
+
+```{r}
+the_answer_character_number = as.numeric(the_answer_character)
+class(the_answer_character_number)
+```
+
+We can create character data using quotations
+
+```{r}
+favorite_color = "blue, no green"
+favorite_color
+```
+
+```{r}
+class(favorite_color)
+```
+
+Booleans return logical data types
+
+```{r}
+class(2==2)
+```
+
+Another important data type that we often deal with are factors. Think of factors as categorical
+
+```{r}
+responses <- c("unlikely", "somewhat unlikely", "neutral", "somewhat likely", "likely")
+
+responses = as.factor(responses)
+
+responses
+```
+
+# Functions
+
+You might have noticed that we started using a few built-in R functions in the last section (e.g., `mean()`, `class()`, `c()`, `as.numeric()`), Functions perform specific operations. They are structured like this:
+
+`name_of_function(argument_1, argument_2, etc...)`
+
+You can see what arguments a function has by typing `?name_of_function()` in the console. 
+
+### CHECK #2 
+
+**Calculate the mean of the following vector with missing values (`NA`). Look up 
+the arguments to the `mean()` function to help you figure out how to answer the question.** 
+
+```{r}
+multiple_numbers_with_NA <- c("15", "20", "25", "20", "10", "15", NA, NA, "30",
+                              "30", "50", "10", "10", "10", "15", "40", "50", 
+                              "25", NA, "40", "35", NA, NA, NA, NA, "45", "40",
+                              NA, NA, NA, "50", "40", "10", "10", "10", "10", 
+                              NA, "40", "20", "25", "30", NA, NA, "35", "20", 
+                              NA, NA, NA, "30", "25", "25", "50", NA, NA, NA)
+```
+
+```{r}
+# YOUR CODE HERE
+```
+
+### CHECK #3
+
+**Pair the `sum()` function is the `is.na()` function to count up how many missing 
+values there are in the `multiple_numbers_with_NA` object. use `?is.na()` and `?sum()` or 
+do some googling to see if you can find the answer.**
+
+```{r}
+# YOUR CODE HERE
+```
+
 
 # A project workflow from start to end
 
-Everything we do in this workshop will be contained in an "R Project". Projects
-are a way to group all of the files you need for one project. Most projects include
-scripts, data files, and output files like the PDF report created by the script or images.
+Install the here package
 
-We're going to make a project for this workshop. 
+```{r, eval = FALSE}
+install.packages("here")
+```
 
-Go to File --> choose New Project --> choose new Directory and save the project
-in a location that makes sense for you on your computer (perhaps Documents/r-projects/pitt-csd-r-workshop).
-Rstudio will now open the project. Any files in your project (there should only be a blue project file
-right now) will be in the files pane on the botton right of Rstudio. 
+Everything we do in this workshop will be contained in an "R Project". Projects are a way to group all of the files you need for one project. Most projects include scripts, data files, and output files like the PDF report created by the script or images.
 
-Where should you put all of your files? You usually want to have all of your scripts
-and data files for a single project inside one folder on your computer, the
-working directory for that project (a working directory is the filepath where R
-is currently reading and writing files). You can organize files in sub-directories
-inside this main project directory, such as putting all raw data files in a
-directory called data and saving any image files to a directory called images.
+We're going to make a project for this workshop.
 
-You can verify the working directory using the `getwd()` command in the console. 
-If you've opened your Rproject, it will default to the root folder *for the r project*.
-If you forgot to open the Rproject, `getwd()` will refer to some other folder, 
-and your scripts will have a hard time finding your files. 
+Go to File --\> choose New Project --\> choose new Directory and save the project in a location that makes sense for you on your computer (perhaps Documents/r-projects/pitt-csd-r-workshop). Rstudio will now open the project. Any files in your project (there should only be a blue project file right now) will be in the files pane on the botton right of Rstudio.
 
-*Though its not always followed, best practice is to use R-projects for any analyses
-instead of setting the working directory manually in each script*.
+Where should you put all of your files? You usually want to have all of your scripts and data files for a single project inside one folder on your computer, the working directory for that project (a working directory is the filepath where R is currently reading and writing files). You can organize files in sub-directories inside this main project directory, such as putting all raw data files in a directory called data and saving any image files to a directory called images.
 
-Lets make a few folders in this directory:
-- data
-- images
-- R
+You can verify the working directory using the `getwd()` command in the console. If you've opened your Rproject, it will default to the root folder *for the r project*. If you forgot to open the Rproject, `getwd()` will refer to some other folder, and your scripts will have a hard time finding your files.
 
-How would we access data in these folders? We can use the {here} package
-we installed earlier. The `here()` function will tell you where the
-current working directory is as well. 
+*Though its not always followed, best practice is to use R-projects for any analyses instead of setting the working directory manually in each script*.
+
+Lets make a few folders in this directory: - data - images - R
+
+How would we access data in these folders? We can use the {here} package we installed earlier. The `here()` function will tell you where the current working directory is as well.
 
 ```{r}
 library(here)
@@ -175,51 +349,194 @@ here()
 If you wanted to access a folder, we can add the folder name to `here()`:
 
 ```{r}
-here("data")
+here("R-not-scary")
 ```
 
-And we can access a (currently non-existent) file in the data folder:
+And we can access a file in the data folder:
 
 ```{r}
-here("data", "awesome-data.csv")
+here("R-not-scary", "compound_words.csv")
 ```
 
 Finally, lets save a dataset in your project /data folder and read it into R
 
-```{r, eval = FALSE}
-df = read.csv(here("data", "awesome-data.csv"))
+```{r}
+# df is a common abbreviation used for dataframe
+df = read.csv(here("R-not-scary", "compound_words.csv"))
 ```
 
-### Suggestions on naming things: 
+# Object types and data in R
+
+Recap:
+
+-   R can do math
+-   R can solve boolean phrases
+-   R can save information in objects
+-   1 value is a "scalar" object
+-   1 data type in a single dimension is a vector
+
+There are other object types in R. Most data we read into R (e.g., in .csv format) will be read into R as a data frame object. A dataframe is composed of rows and columns, and columns can be different data types (character, numeric, logical etc.).
+
+If the data is clean or "tidy", columns represent variables and rows represent observations.o
+
+```{r, out.width = "500px", echo = FALSE}
+ knitr::include_graphics("images/paste-D866E2B9.png")
+```
+
+
+We can preview our dataframe, `df` by clicking on it in the upper right of RStudio, or typing `View(df)` in the console. Notice it has 3 columns, each with a different name
+
+We can also preview the data by using the `head()` function, which returns the first 6 rows of the dataframe
+
+```{r}
+head(df)
+```
+
+We can also get a summary of each column (variable) in the dataframe
+
+```{r}
+summary(df)
+```
+
+Notice that both `df$ID` and `df$Word` are character data types and Accuracy is numeric. 
+
+We can access a column in a dataframe using the `$` operator as implied in the last paragraph (e.g., `df$Word` ). Essentially this extracts the column from the data frame as if it was a vector.
+
+```{r}
+df$Word
+```
+
+Note: Because `df$Word` is interpreted as a vector, we can use square brackets to select a specific element in it
+
+```{r}
+df$Word[2]
+```
+
+### CHECK #4
+
+How many rows are in the dataframe?
+
+(hint: try googling, or look below at the Appendix for a list of potential functions)
+
+```{r}
+# YOUR CODE HERE
+```
+
+How many correct responses are in the response column?
+
+(hint: pair a function we've used with an operator we've used so far)
+
+```{r}
+# YOUR CODE HERE
+```
+
+Convert the word column to a factor data type. WE already got you started below. replace `REPLACE_ME_WITH_A_FUNCTION` with the function that is needed.
+
+```{r, eval = FALSE}
+# HINT: df$Word <- REPLACE_ME_WITH_A_FUNCTION(df$Word)
+
+# YOUR CODE HERE
+```
+
+Do the same for the ID column
+
+```{r}
+# YOUR CODE HERE
+```
+
+Preview the data again, in a way that shows that `df$Word` and `df$ID` are now 
+factor variables. 
+
+
+
+# RMarkdown Documents (.Rmd) vs. R Scripts (.R)
+
+When you're saving an R code in a document, you have two main options.
+
+(1) You can save your code in an R Script (.R), which is a text file with R code, and comments, which can be marked using the `#` symbol in front of any text. Comments are notes to yourself or others that aren't run as code.
+
+(2) You can save your code in an RMarkdown document (.Rmd), which combines the features of a markdown document and an R script. This allows you to write text easily, with most formatting features (e.g., bold, italics, headers, links, images etc.) you're used to in Microsoft Word/ Google docs, but also include R code in "chunks." This document is an Rmarkdown document. You can still comment your code using `#` inside each code chunk, but you can also easily write nicely formatted text. For the rest of this workshop, we're going to demonstrate and encourage you to use RMarkdown documents instead of scripts (though sometimes scripts can be helpful to quickly test out code!).
+
+# Appendix
+
+## List of operators and other helpful functions
+
+There are several base R operators that may come in handy to list here, and one in particular that is essential when transforming, tidying, and wrangling data. We will use several of the following operators in our practice exercises and in the hands on lab work. The following are for reference as you go throughout the course. We won't go through everything right away.
+
+-   `<-` : assign to if you want to take some vector, string, plot, or other item and save it for future use.
+
+*you can also use `=` interchangeable. There are some very very minor historical differences that are largely ignorable.*
+
+-   `<` and `>` : less than and greater than.
+-   `<=` and `>=` : less than or equal to and greater than or equal to
+-   `==` : is exactly equal to
+-   `!=` : is not equal to (! means "not")
+-   `&` : and
+-   `|` : or
+-   `!` : not
+-   `c()` : combine/concatenate - when we want to use multiple numbers
+-   `:` : through - for example 1:10 means 1,2,3,4,5,6,7,8,9,10.
+-   `[ ]` : used for indexing into vector, matrix, array, list, or data frame.
+-   `#` : comment out; you can write code and keep it without having it run by adding a hash tag before the line.
+
+## Helpful base R functions in general
+
+-   `head()` previews the top 6 rows of a dataframe
+-   `summary()` provides descriptive statistics for a dataframe or variable
+-   `unique()` returns all the unique values in a vector
+-   `length()` returns the length of an object
+-   `nrow()` returns the number of rows in a dataframe
+-   `seq()` returns a sequence of numbers
+-   `rep()` returns a repeated sequence
+-   `paste()` paste's together or collapses a character vector
+
+## Helpful base R functions for statistics
+
+-   `mean()`
+-   `median()`
+-   `sum()`
+-   `range()`
+-   `min()`
+-   `max()`
+
+If you want to review some of the things reviewed in this section, there are some youtube videos posted below:
+
+Using the R Console: <https://www.youtube.com/watch?v=wbI4c_7y0kE>
+
+Understanding coding terms and functions: <https://www.youtube.com/watch?v=X5P038N5Q8I&feature=youtu.be>
+
+Operators, and such: <https://psyteachr.github.io/reprores-v2/intro.html#console>
+
+### Suggestions on naming things:
 
 Name files so that both people and computers can easily find things. Here are some important principles:
 
-- file and directory names should only contain letters, numbers, dashes, and underscores, with a period (.) between the file name and extension
-- NO SPACES!
-- be consistent with capitalisation (set a rule to make it easy to remember, like always use lowercase)
-- use underscores (_) to separate parts of the file name, and dashes (-) to separate words in a section
-- name files with a pattern that alphabetises in a sensible order and makes it easy for you to find the file you're looking for
-- prefix a filename with an underscore to move it to the top of the list, or prefix all files with numbers to control their order
+-   file and directory names should only contain letters, numbers, dashes, and underscores, with a period (.) between the file name and extension
+-   NO SPACES!
+-   be consistent with capitalisation (set a rule to make it easy to remember, like always use lowercase)
+-   use underscores (\_) to separate parts of the file name, and dashes (-) to separate words in a section
+-   name files with a pattern that alphabetises in a sensible order and makes it easy for you to find the file you're looking for
+-   prefix a filename with an underscore to move it to the top of the list, or prefix all files with numbers to control their order
 
 For example, these file names are a mess:
 
-- report.doc
-- report final.doc
-- Data (Customers) 11-15.xls
-- Customers Data Nov 12.xls
-- final report2.doc
-- project notes.txt
-- Vendor Data November 15.xls
+-   report.doc
+-   report final.doc
+-   Data (Customers) 11-15.xls
+-   Customers Data Nov 12.xls
+-   final report2.doc
+-   project notes.txt
+-   Vendor Data November 15.xls
 
 These are better:
 
-- _project-notes.txt
-- report_v1.doc
-- report_v2.doc
-- report_v3.doc
-- data_customer_2021-11-12.xls
-- data_customer_2021-11-15.xls
-- 2019-11-15_vendor-data.xls
+-   \_project-notes.txt
+-   report_v1.doc
+-   report_v2.doc
+-   report_v3.doc
+-   data_customer_2021-11-12.xls
+-   data_customer_2021-11-15.xls
+-   2019-11-15_vendor-data.xls
 
 # Getting help
 
