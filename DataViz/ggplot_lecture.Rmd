@@ -226,10 +226,10 @@ library(dplyr)
 library(readr)
 ```
 
-### Let's load some data. Briefly these data describe variables from 
+### Let's load some data. Briefly these data describe variables from
 
 ```{r}
-df = read.csv("pnt.csv")
+pnt = read.csv("pnt.csv")
 ```
 
 -   About the data
@@ -256,7 +256,7 @@ df = read.csv("pnt.csv")
 
 ![](variable%20names.png)
 
-### Take a peak at the data. 
+### Take a peak at the data.
 
 There are multiple functions that can help you quickly learn about your data. Each command requires you to input the dataframe name into the parentheses following the function name.
 
@@ -264,7 +264,7 @@ There are multiple functions that can help you quickly learn about your data. Ea
 
 -   `str()` prints the name of each column, followed by the type of data within each variable.
 
--   `head()` prints the first 6 rows of your data.
+-   `head()` prints the first 6 rows of your data. \### Excercise 1-8: Previewing data
 
 #### Previewing data, exercise 1: Print a summary of the six variables from the dataset `pnt`
 
@@ -280,7 +280,7 @@ There are multiple functions that can help you quickly learn about your data. Ea
 summary(pnt)
 ```
 
-#### Previewing data, exercise 2: Print a summary of the `length` variable only from the  `pnt`  dataset 
+#### Previewing data, exercise 2: Print a summary of the `length` variable only from the `pnt` dataset
 
 ##### Response 2:
 
@@ -367,7 +367,7 @@ head(pnt$word)
 tail(pnt)
 ```
 
-#### Previewing data, exercise 8: Within the `tail` and `head` functions, you may also specifiy how many rows you want to output by adding a `n = #` where \# is the desired number of output rows. Make sure to add a comma after the dataframe name. 
+#### Previewing data, exercise 8: Within the `tail` and `head` functions, you may also specifiy how many rows you want to output by adding a `n = #` where \# is the desired number of output rows. Make sure to add a comma after the dataframe name.
 
 #### Print the first 10 rows of PNT for all variables.
 
@@ -397,8 +397,6 @@ head(pnt, n = 10)
 tail(pnt, n = 4)
 ```
 
-There are a couple ways to look at your data structure once it has been loaded. we will use the summary function below. This dataset includes information from 34 people with aphasia and includes 33 different variables. As you will see when you run the summary function, the output is not always easy to parse when there are a large number of variables.
-
 #### Run the summary function by inserting the dataframe name into the the summary function
 
 ### Variables:
@@ -410,7 +408,10 @@ There are a couple ways to look at your data structure once it has been loaded. 
         Pie plot:
 
 ```{r pie_chart}
-df2 = df %>% #create df2 based on a function to follow the pipe symbol 
+df2 = read.csv("osf_meir and Bangash.csv")
+df2 = df2 %>%
+  mutate(Handedness == "Right", 1, 0)
+df2 = df2 %>% #create df2 based on a function to follow the pipe symbol 
   count(Handedness) #count the number of each unique observation found in the "Handedness" variable
 
 #Use pie to generate pie chart
@@ -423,6 +424,8 @@ pie(df2$n,  #provide dataframe and variable name
 
 ```{r}
 #create education variable
+library(ggplot2)
+df = read.csv("osf_meir and Bangash.csv")
 df$ed = ifelse(df$Education < 12.1, "High School",
                ifelse(df$Education > 12 & df$Education < 16, "Some College",
                       ifelse(df$Education == 16, "Bachelor's", "Graduate")))
