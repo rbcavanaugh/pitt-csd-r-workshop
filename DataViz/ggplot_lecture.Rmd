@@ -1,5 +1,5 @@
 ---
-title: "Plot Superstar"
+title: "Exploratory data analysis"
 author: "AMS"
 date: '2022-07-01'
 output: html_document
@@ -21,23 +21,23 @@ library(dplyr)
 
 -   Name data sets
 
-### Where are we going?
+### To the future, exploratory data analysis:
+> Exploratory data analysis is the first step in most research projects. Generally, exploratory data analysis, or EDA,  is a task that statisticians, data scientists, and researchers complete to visualize their data graphically or tabula to help:
+1. Gain a basic understanding of the central tendencies of your variables
+2. Explore the relationships between variable
+3. Generate and answer questions about your data
 
--   What is an R object?
+> The ultimate goal of EDA is to use what you have learned to refine research questions, or even generate new ones. 
 
--   Understand the different types of variables
+### The easisest way to develop an EDA pipeline is to utilize a series of questions to use as tools to guide your investigation. These questions should help focus your attention on certain aspects of your data, and ultimately help you decide what types of tables, graphs, and statistical models to make. 
 
--   What is a dataframe
+#### Generating summaries of your data
 
--   What's inside a dataframe
+#### Data visualization:
 
--   How can we tell the story of the data
+  -   Use knowledge of perception and cognition to plan, create, and evaluate data visualizations.
 
-### Data visualization:
-
--   Use knowledge of perception and cognition to plan, create, and evaluate data visualizations.
-
--   Conduct exploratory data analysis using tabulated and graphical data visualization techniques
+  -   Conduct exploratory data analysis using tabulated and graphical data visualization techniques
 
 -   Choose color pallets for visualization based on principles of perception.
 
