@@ -151,14 +151,6 @@ Summarize the ganong data
 
 **< insert code here >**
 
-```{r}
-plot <- ggplot(
-  df,
-  aes()
-) +
-  
-```
-
 ## Report information about the analysis
 
 **< insert code here >**
