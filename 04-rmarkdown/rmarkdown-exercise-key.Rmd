@@ -1,0 +1,295 @@
+---
+title: "RMarkdown Exercise #1 - Answer Key"
+author: "Rob Cavanaugh"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## About this document
+
+The goal of this exercise is to provide an opportunity to generate a reproducible report, applying skills learned in this workshop to date.
+
+-   Using basic rmarkdown formatting
+-   Using inline code to report basic demographic information
+-   Previewing, Cleaning, and Organizing data
+-   Reproducing Figure 1A from Giovannone & Theodore, 2022 (<https://osf.io/dhybk/>)
+
+
+## About Giovannone & Theodore 2022
+
+**Title:** Do individual differences in lexical reliance reflect states or traits? Giovannone & Theodore, 2022 (pre-print)
+
+**Abstract:** Research suggests that individuals differ in their reliance on lexical information for speech perception. However, the locus of these differences is not yet known; nor is it known whether these individual differences reflect a context-dependent "state" or a stable listener "trait." Here we test the hypothesis that individual differences in lexical reliance are a stable trait that is linked to individuals' relative weighting of lexical and acoustic-phonetic information for speech perception. Listeners (n = 73) completed three measures of lexical processing at each of two sessions. Robust lexical effects on speech perception were observed for each task in the aggregate. For all three measures, individual differences in lexical reliance were stable across sessions, suggesting that performance in these tasks may reflect stable traits. However, relationships among the three tasks in each session were weak, indicative of low convergent validity across tasks. For two of the three tasks, increased reliance on lexical information was associated with weaker reliance on acoustic-phonetic information. Collectively, these results (1) suggest that individual differences in lexical reliance are stable traits that reflect relative weighting of acoustic-phonetic and lexical cues for speech perception, and (2) highlight the need for a better understanding of the psychometric characteristics of tasks used in the psycholinguistic domain to build theories that can accommodate individual differences in mapping speech to meaning.
+
+Figure 1. Panel A:
+
+**Change the following code chunk so that it only displays the image and not the code**
+
+```{r, echo = FALSE}
+knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))
+```
+
+
+## Load packages
+
+```{r load packages, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(here)
+```
+
+## Read in data
+
+```{r}
+demographics = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Demographics.csv"), stringsAsFactors = TRUE)
+ganong = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Ganong.csv"), stringsAsFactors = TRUE)
+```
+
+## Demographics paragraph
+
+Our first task is to replicate this paragraph from the manuscript using inline R code: 
+
+> Participants (n = 142) were recruited from the Prolific participant pool(https://www.prolific.co;Palan & Schitter, 2018). All participants were monolingual English  speakers born in and currently residing in theUnited States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included 120 participants at session one and 73 participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n = 73) who completed both sessions.
+
+> With respect to demographic characteristics,the sample included 50 women, 21 men, and 2 individuals who preferred not to report gender. All participants were between 18 –35 years of age (mean = 26 years, SD = 5 years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was 17 days (SD = 4 days; range = 14 – 35 days)
+
+So we need the following:
+
+- total number of people
+- number of people completing both sessions
+- gender
+- sex
+- age (mean, sd, min, max)
+- days between sessions (mean, sd, min, max)
+
+### Preview the demographics dataframe
+
+```{r}
+head(demographics)
+```
+```{r}
+# how many people completed each sessions
+both_sessions = demographics %>% 
+  # for each possible value of N.Sessions, how many are there?
+  count(N.Sessions)
+
+both_sessions
+```
+
+```{r}
+# How many people reported as male, female, or prefer not to say
+gender = demographics %>%
+  # only individuals who completed both sessions
+  filter(N.Sessions == 2) %>% 
+  # get distinct rows for ID and sex
+  distinct(ID, Sex) %>%
+  # how many of each are in the column Sex
+  count(Sex)
+
+gender
+```
+
+```{r}
+
+age = demographics %>%
+  # only individuals who completed both sessions
+  filter(N.Sessions == 2) %>% 
+  # calculate summary statistics for age
+  # note the rounding of mean and sd
+  summarise(Mean = round(mean(Age), digits=0), # 26 years.
+            SD = round(sd(Age), digits=0), # 5 years.
+            Min = min(Age), # 18 - 35 years.
+            Max = max(Age))
+
+age
+
+```
+
+```{r}
+time_between_sessions = demographics %>% 
+  # only individuals who completed both sessions
+  filter(N.Sessions == 2) %>% 
+  # How many days inbetween - mean, sd, min, max
+  summarise(Mean = round(mean(Days), digits=0), 
+            SD = round(sd(Days), digits=0), 
+            Min = min(Days), 
+            Max = max(Days)) 
+
+time_between_sessions
+```
+
+Paragraph 1: 
+
+Participants (n= **XXXX**) were recruited from the Prolific participant pool(https://www.prolific.co;Palan & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in the United States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included **XXXX** participants at session one and **XXXX** participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n= **XXXX**) who completed both sessions.
+
+Participants (n= `r sum(both_sessions$n)`) were recruited from the Prolific participant pool(https://www.prolific.co;Palan & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in the United States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included `r sum(both_sessions$n[1])` participants at session one and `r sum(both_sessions$n[2])` participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n= `r sum(both_sessions$n[2])`) who completed both sessions.
+
+Paragraph 2:
+
+With respect to demographic characteristics,the sample included **XXXX** women, **XXXX** men, and **XXXX** individuals who preferred not to report gender. All participants were between **XXXX-XXXX** years of age (mean= **XXXX** years, SD= **XXXX** years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was **XXXX** days (SD = **XXXX** days; range= **XXXX – XXXX** days)
+
+With respect to demographic characteristics,the sample included `r gender$n[1]` women, `r gender$n[2]` men, and `r gender$n[3]` individuals who preferred not to report gender. All participants were between `r age$Min`-`r age$Max` years of age (mean= `r age$Mean` years, SD= `r age$SD` years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was `r time_between_sessions$Mean` days (SD = `r time_between_sessions$SD` days; range= `r time_between_sessions$Min` – `r time_between_sessions$Max` days)
+
+## Recreating the figure 
+
+Preview the ganong data. This time, lets use a the `paged_table()` function from
+Rmarkdown. This only works with HTML output, but allows the reader to tab
+through the table
+
+```{r}
+rmarkdown::paged_table(ganong)
+```
+
+Calculate summary statistics for each variable
+
+```{r}
+summary(ganong)
+```
+
+
+## Data wrangling
+
+What steps do we need to reproduce the plot? These are taken from the authors scripts:
+
+Part 1: 
+
+- Change the levels of the Gontinuum variable (a factor) so that `giss` comes before `gift`
+
+- Only include rows where N.Sessions == 2
+
+- Calculate the average reponse accuracy for each unique combination of 
+ID, Session, Continuum, & VOT
+
+- Make sure there are 73 rows in the final data set (check out work!)
+
+Part 2: 
+
+- for each unique combination of Session, Continuum, & VOT, calculate the mean
+of our new response accuracy variable
+
+- for each unique combination of Session, Continuum, & VOT, calculate the standard
+error of our new response accuracy variable
+
+> Don't worry too much about the mathematical definition of the standard error. 
+Know that the standard error can be calculated by the following formula, where
+sigma ($\sigma$) is the standard deviation and N reprsents the total sample size.
+In R, you can use the `sd()` function to calculate the standard deviation and
+the `sqrt()` function to calculate the square root of something. 
+
+$\sigma_{M} = \frac{\sigma}{\sqrt(N)}$
+
+### Part 1. 
+
+**Re-factor the Continuum variable**
+
+```{r}
+# See the current levels of the Continuum variable
+# R always defaults to alphabetical order
+# we want them in the opposite order. 
+levels(ganong$Continuum)
+
+# we overwrite the existing variable
+# now, its still a factor, but the levels of the factor
+# are giss then gift.
+ganong$Continuum <- factor(ganong$Continuum, levels=c("giss", "gift"))
+
+# We could do the same thing in the tidyverse/pipe style
+# ganong <- ganong %>%
+#  mutate(Continuum = factor(Continuum, levels = c("giss", "gift")))
+```
+
+**Summarize the ganong data**
+
+- Only include rows where N.Sessions == 2
+
+- Calculate the average reponse accuracy for each unique combination of 
+ID, Session, Continuum, & VOT
+
+- Make sure there are 73 rows in the final data set (check out work!)
+
+```{r}
+# start with our dataframe "ganong"
+# save it as a new object called "ganong.summary.ID"
+
+ganong.summary.ID <- ganong %>%
+  # only keep rows where N.Sessions == 2
+  dplyr::filter(N.Sessions == 2) %>% 
+  # For each unique combination of ID, Session, Continuum, & VOT...
+  dplyr::group_by(ID, Session, Continuum, VOT) %>%
+  # calculate the mean response accuracy (a mean of 0s and 1s)
+  dplyr::summarise(Mean.K = mean(Response)) 
+
+# What are the unique values of ID in the new dataset?
+check_ID = unique(ganong.summary.ID$ID)
+# how many unique values are there? 
+# According to the authors, there should be 73
+num_participants = length(check_ID)
+num_participants
+
+```
+
+### Part 2. 
+
+- for each unique combination of Session, Continuum, & VOT, calculate the mean
+of our new response accuracy variable
+
+- for each unique combination of Session, Continuum, & VOT, calculate the standard
+error of our new response accuracy variable
+
+
+```{r}
+# This time we start with our previous summary data
+# ganong.summari.ID and were going to save it as summary
+# This time the summary will not be for each participant
+
+ganong.summary <- ganong.summary.ID %>%
+  # for each uinque combination of Session, Continuum, and VOT
+  dplyr::group_by(Session, Continuum, VOT) %>%
+  # calculate two statistics - the mean of the response accuracy
+  # and the standard error of the response accuracy
+  # in the numerator, we calculate the sd() of the mean
+  # in the denominator we take the square root of the 
+  dplyr::summarise(K.Mean = mean(Mean.K),
+            K.SE = sd(Mean.K)/(sqrt(num_participants)))
+
+# Preview our final data
+head(ganong.summary)
+```
+
+## Create the plot
+
+```{r}
+# Plot.
+labels.Session <- c(`1` = "Session 1", `2` = "Session 2")
+
+ganong.plot <- ggplot2::ggplot(ganong.summary,
+                               ggplot2::aes(x=VOT, y=K.Mean, group=Continuum, color=Continuum)) +
+  #theme_cowplot(font_size=20) +
+  ggplot2::geom_point() +
+  facet_wrap(. ~ Session, labeller=ggplot2::labeller(Session = labels.Session)) +
+  ggplot2::geom_line(aes(linetype=Continuum), size=0.5, show.legend = FALSE) +
+  ggplot2::geom_errorbar(aes(y = K.Mean, ymin = K.Mean-K.SE, ymax = K.Mean+K.SE), width = 1) +
+  ggplot2::ylim(0, 1) +
+  ggplot2::labs(x="VOT (ms)", y = "p(k)") +
+  ggplot2::scale_color_manual(values=c("#00846b", "#6a0084"),
+                     labels = c("giss - kiss",
+                                "gift - kift")) +
+ # theme(legend.text.align = 0) +
+  theme(panel.grid.major.y = ggplot2::element_line(colour="grey"))
+
+ganong.plot
+
+```
+
+## Report information about the analysis
+
+```{r}
+sessionInfo()
+```
+

@@ -1,0 +1,178 @@
+---
+title: "RMarkdown Exercise: Recreating Giovannone & Theodore, 2022"
+author: "Rob Cavanaugh"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# About this document
+
+The goal of this exercise is to provide an opportunity to generate a reproducible report, applying skills learned in this workshop to date.
+
+- Using basic rmarkdown formatting
+- Using inline code to report basic demographic information
+- Previewing, Cleaning, and Organizing data
+- Reproducing Figure 1A from Giovannone & Theodore, 2022 (<https://osf.io/dhybk/>)
+- Find ways to get help when you get stuck!
+
+The goal is to accomplish this in an entirely new Rmarkdown document, following the instructions 
+outlined below. 
+
+# Getting started
+
+1. Setup
+
+Start by creating a new folder in your project folder. Save a new Rmarkdown
+file in that folder by going to file --> File --> New File --> R Markdown.
+
+Give the document a title, add your name as the author. Indicate
+that the date should use the current date when rendering the document. Select
+HTML as the preferred output. 
+
+2. As soon as the document is open, save the document with a good filename in your new folder.
+
+3. Choose whether you want to write the document using the 'source' or 'visual' editor (top left of document).
+
+4. Delete all of the pre-set content after line 11 (keep the first code chunk).
+
+# Adding background content
+
+1. Create a first level header titled "Background: Giovannone & Theodore 2022" and copy and paste
+the content below under it. Bold the words "Title:" and "Abstract:"
+
+> Title: Do individual differences in lexical reliance reflect states or traits? Giovannone & Theodore, 2022 (pre-print)
+
+> Abstract: Research suggests that individuals differ in their reliance on lexical information for speech perception. However, the locus of these differences is not yet known; nor is it known whether these individual differences reflect a context-dependent "state" or a stable listener "trait." Here we test the hypothesis that individual differences in lexical reliance are a stable trait that is linked to individuals' relative weighting of lexical and acoustic-phonetic information for speech perception. Listeners (n = 73) completed three measures of lexical processing at each of two sessions. Robust lexical effects on speech perception were observed for each task in the aggregate. For all three measures, individual differences in lexical reliance were stable across sessions, suggesting that performance in these tasks may reflect stable traits. However, relationships among the three tasks in each session were weak, indicative of low convergent validity across tasks. For two of the three tasks, increased reliance on lexical information was associated with weaker reliance on acoustic-phonetic information. Collectively, these results (1) suggest that individual differences in lexical reliance are stable traits that reflect relative weighting of acoustic-phonetic and lexical cues for speech perception, and (2) highlight the need for a better understanding of the psychometric characteristics of tasks used in the psycholinguistic domain to build theories that can accommodate individual differences in mapping speech to meaning.
+
+2. Create another first level header called "Goals" and add the following goals as bullet points:
+
+- Use basic R Markdown formatting
+- Read and wrangle data from Giovannone & Theodore 2022
+- Use inline reporting to write a results section
+- Recreate Figure 1. 
+
+3. Add a new code chunk that prints out the figure we're going to recreate. 
+
+- Insert a new chunk
+- use the function `knitr::include_graphics()` in the new chunk to insert the image. 
+  - copy the image into your folder
+  - use the `here::here()` function to set the filepath. 
+  - set the `echo` option to `FALSE` in the chunk header to hide the code from the document
+  
+```{r, eval = FALSE}
+knitr::include_graphics(here::here("path", "to", "image.png"))
+```
+
+# Beginning of coding
+
+1. Add a new header indicating that this is where your coding starts. As we continue with
+this exercise, add headers and explanatory text as we go so you can keep track of what 
+you're doing. 
+
+2. Load the here and tidyverse packages in a new chunk
+
+- change `warning` and `message` chunk options to `FALSE`
+
+3. Read in data
+
+- copy the two files over to your data folder
+- read in the demographics and "ganong" data using the `here::here()` function
+to locate and read the files with `read.csv()`. 
+
+# Inline reporting
+
+**In the next task, your goal is to replicate the following paragraph from
+the manuscript using inline R code**
+
+> Participants (n = 142) were recruited from the Prolific participant pool(<https://www.prolific.co>; Palan & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in theUnited States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included 120 participants at session one and 73 participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n = 73) who completed both sessions.
+
+> With respect to demographic characteristics,the sample included 50 women, 21 men, and 2 individuals who preferred not to report gender. All participants were between 18 --35 years of age (mean = 26 years, SD = 5 years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was 17 days (SD = 4 days; range = 14 -- 35 days)
+
+To do this, we need the following information saved in R-objects
+
+-   total number of people completing just one session
+-   total number of people completing both session
+-   participant breakdown by reported gender
+-   participant breakdown by age (mean, sd, min, max)
+-   participant breakdown by days between sessions (mean, sd, min, max)
+
+1. Create a new chunk and use a function to preview the top 6 rows of the demographics data
+
+2. Use as many new chunks, calculate the 5 summary statistics noted above
+
+3. Fill in the *XXXX* in the paragraphs below with inline r code. (You can copy the text
+into your rmarkdown document)
+
+Paragraph 1:
+
+Participants (n= *XXXX*) were recruited from the Prolific participant pool(<https://www.prolific.co;Palan> & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in the United States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included *XXXX* participants at session one and *XXXX* participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n= *XXXX*) who completed both sessions.
+
+Paragraph 2:
+
+With respect to demographic characteristics,the sample included *XXXX* women, *XXXX* men, and *XXXX* individuals who preferred not to report gender. All participants were between *XXXX - XXXX* years of age (mean= *XXXX* years, SD= *XXXX* years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was *XXXX* days (SD = *XXXX* days; range= *XXXX - XXXX* days)
+
+# Recreating the figure
+
+## Previewing the data
+
+1. In a new chunk, preview the ganong data
+
+- This time, lets use a the `paged_table()` function from Rmarkdown. This only works with HTML output, but allows the reader to tab through the table. If works the same way as `head()` but you can also look up the function to see how to use it. 
+
+2. In a new chunk, print a summary of each variable in the dataset
+
+## Data wrangling
+
+What steps do we need to reproduce the plot? These are taken from the authors scripts:
+
+Part 1:
+
+- Change the levels of the Gontinuum variable (a factor) so that `giss` comes before `gift`
+
+- Only include rows where N.Sessions == 2
+
+- Calculate the average reponse accuracy for each unique combination of ID, Session, Continuum, & VOT
+
+- Make sure there are 73 rows in the final data set (check out work!)
+
+Part 2:
+
+- for each unique combination of Session, Continuum, & VOT, calculate the mean of our new response accuracy variable
+- for each unique combination of Session, Continuum, & VOT, calculate the standard error of our new response accuracy variable
+
+Here's the formula for standard error, where $\sigma$ is the standard deviation and $N$ is the sample size (perhaps, equivalent to the number of rows in the data?)
+
+$$
+\sigma_{M} = \frac{\sigma}{\sqrt(N)}
+$$
+(We won't cover equations specifically, but just note that they are easy to implement
+in R Markdown. Here's a nice resource if you're interested: https://rmd4sci.njtierney.com/math.html)
+
+## Create the plot
+
+We've left this blank for you to have an opportunity to apply what you
+learned in the last few days. There's a template below (hidden) to get you 
+started if you would like. 
+
+```{r, eval = FALSE, class.source = "fold-hide"}
+plot <- ggplot(
+  df,
+  aes()
+) +
+  
+plot
+```
+
+# Reporting session info
+
+In an new chunk, report your "session info" (info about the R software) for reproducibility. See if
+you can successfully google how to do this. 
+

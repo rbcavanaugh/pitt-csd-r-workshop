@@ -1,0 +1,1317 @@
+---
+title: "Data Transformation, Tidying, and Wrangling_ANSWERKEY"
+author: "Emily Goldberg"
+date: '2022-07-19'
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
+    code_folding: show
+---
+
+# Data Transformation, Tidying, and Wrangling - ANSWER KEY!
+
+## Why do we care?
+
+Before analyzing a data set to address your research question(s), it is more likely than not that you will need to dedicate time to "cleaning up" your data. Data often comes to us in raw and messy forms, and knowing how to use R to wrangle the data will be a useful skill as you become familiar with R and analyses as a whole. It may be tempting to transform, tidy, and wrangle your data manually; for example, you may think to use Microsoft Excel to create new columns, replace values, and modify spelling errors "by hand." However, we don't advise using this manual approach for a few reasons. First, manual work always introduces more risk for human error, and identifying when and where errors occur during redundant manual cleansing is a challenge that can set you back in your progress; second, keeping a record of what you have done to your data and why is an important part of documentation for the purpose of replicability, as well as to monitor your progress on a project. Anecdotally, the cleansing process sometimes takes more time and lines of code than the analyses themselves; but the payoff is worth the effort.
+
+There are several "base R" functions that are useful to learn when manipulating, tyding, and reshaping data; additionally, there is a package called `tidyverse`, which includes `ggplot2`, `tidyr`, and `dplyr` (among others), that will be most useful. In this tutorial, you will have multiple opportunities to practice using some commands we think are very useful in data manipulation, tidying, and reshaping; then, we will provide you with a data set and guide you through several tidying steps using a real communication science disorders-based data set.
+
+## Case study
+
+You’re a new Ph.D. student and at your first lab meeting, your PI wants to get you involved in working with data right away. They send you 15 separate excel sheets containing 4 weeks worth of behavioral speech language therapy data, one sheet for each subject. For next week’s lab meeting, they ask if you can come with an aggregated master data set “in long form.” Without seeing the data you think to yourself “I don’t know what exactly they want but this will be no problem. I can use this as an opportunity to learn R, ask my amazing Pitt CSD PhD cohort for help, and Google things when I’m unsure.” 
+
+But then you lay eyes on the data and wonder how it is that you can take such messy data and transform it so that it is easily analyzed. For example...(Emily's slides)
+
+
+## Tutorial Objectives
+
+1.  Attendees will understand the value in pre-processing data using R, instead of manually cleansing and tidying in other applications (e.g. Excel).
+
+2.  Attendees will be able to list examples of errors and architectural flaws that may exist within a given raw data set, reason why those errors/flaws may be detrimental to the analytic process, and generate solutions for addressing them.
+
+3.  Attendees will learn how to use several commands from the tidyverse library.
+
+4.  When given example data, attendees will implement basic R commands learned in previous lessons of this workshop.
+
+5.  When given example raw data set, attendees will follow a set of instructions using `tidyverse` based commands to transform the data into a ready-to-analyze set.
+
+6.  When given example raw data set, attendees will independently generate solutions to specific problems focused on data tidying, cleansing, and transformation.
+
+
+## Reviewing Prior Content
+
+Before diving in to the wonderful world of data tidying, let's practice some of the skills that you have learned thus far. Work through the following exercises, and then we will review the solutions together: 
+
+**Exercise 1:** What is 66 raised to the 3rd equal to?
+
+```{r}
+66^3
+```
+
+Answer: 287496
+
+
+**Exercise 2:** Using Boolean phrases to generate a `TRUE` or `FALSE` statement, is 350,867 divided by 4 greater than 900 times 3?
+
+```{r}
+(350867/4) > (900*3)
+```
+
+Answer: TRUE
+
+**Exercise 3:** According to www.purina.co.uk, the first year of a cat's life is actually equivalent to 15 human years. The second year of a cat's life adds 9 more human years. After this, each additional  year adds 4 human years. The famous Grumpy Cat lived until he was 7 human years old. Using R, calculate how old Grumpy Cat was in cat years at time of death and assign this as a scalar value; how old was he in cat years?
+
+```{r}
+GrumpyCat_age <- 15 + 9 + (5*4)
+GrumpyCat_age
+```
+
+Answer: 44 
+
+**Excercise 4:** Create a vector containing a string of the numbers 1 through 7 and name it `day_order`. Then, create a separate list containing the names of the 7 days of the week in order, beginning with sunday; name this `day`.  
+
+```{r}
+day_order <- c(1:7)
+day <- c("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+```
+
+What data type is `day_order`? What data type is `day`?
+```{r}
+class(day_order)
+class(day)
+```
+
+Answer: integer; character
+
+**Excercise 5:** Change `day` to be a factor and print the levels: 
+
+```{r}
+day <- as.factor(day)
+day
+```
+
+Run the code below, which represents the temperature (F) of each day of the past week in Pittsburgh measured using Rob's unreliable and faulty thermometer (given NA values): 
+
+```{r}
+temperature <- c(91, 81, 84, 84, NA, 87, NA)
+```
+
+We can create a data frame containing all 3 of these vectors/lists that we created: 
+
+```{r}
+pgh_temp <- data.frame(day_order, day, temperature)
+```
+
+**Excercise 5:** What was the mean temperature for this given week in Pittsburgh?
+
+```{r}
+mean(pgh_temp$temperature, na.rm = TRUE)
+```
+
+Answer: 85.4
+
+
+## Tidyverse
+
+"The `tidyverse` is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures" (tidyverse.org). The set of packages included in `tidyverse` work in harmony, because they share common data representations and application programming interface design. Overall, the tidyverse package is designed to make it easy to install and load multiple 'tidyverse' packages in a single step. In your practice you may just load the tidyverse library and proceed from there; in this tutorial, we are going to be explicitly clear about which functions originate from the specific libraries that comprise `tidyverse`. 
+
+Here is the list of packages that make up the core `tidyverse`: 
+* `ggplot2`: system for creating graphics. 
+* `dplyr`: grammar of data manipulation
+* `tidyr`: includes a set of functions that help you tidy data
+* `readr`: fast and friendly way to read rectangular data (e.g. CSV); parse many types of data
+* `purrr`: enhances R's functional programming toolkit by providing complete and consistent set of tools for working with functions and vectors
+* `tibble`: re-imagining of the data frame
+* `stringr`: cohesive set of functions designed to make working with strings easy
+* `forcats`: solve common problems with factors
+
+To read more: <https://www.tidyverse.org/packages/>
+
+To keep track of which library specific functions come from within this tutorial, I am going to insert notations at the top of each chunk indicating the library being used. We will need to install and load libraries as we go. For the future, let's install `tidyverse`: 
+
+```{r}
+# install.packages("tidyverse")
+```
+
+
+## Pipe Operator
+
+In the "R is Not Scary" module, you learned about many different operators that can be used in R (e.g. the greater than sign, the assignment operator, the double equals, etc.). There is another operator not yet discussed that plays a really important role in data tidying, and can be used for plotting and other data-focused aims. This operator is called the **pipe**, which looks like `%>%`.
+
+The pipe symbol comes from the `magrittr` package; when you load the mega-library `tidyverse`, it includes `magrittr` and the pipe symbol. 
+
+Use your library loading knowledge from the "R is Not Scary" module to install and load `magrittr`:
+
+```{r}
+# install.packages("magrittr")
+library(magrittr)
+```
+
+The pipe symbol is used to emphasize a sequence of multiple actions to manipulate a single object (e.g. a vector, table, data frame). There is an additive nature here - after the pipe symbol you will write code for a first action; then the 2nd action will operate AFTER the first is implemented meaning that a previous operation is used for input within the same command. There should be a space before the pipe, and a new line should come afterwards. A new line isn't required, but helps add new steps, rearrange existing steps, and identify all of the steps being implemented. As we move forward in this module, you will see many examples of the pipe symbol and will use it yourself!
+
+## Changing Variable Types
+
+In the first module of this course, we showed you how to change variables using the `as.[insert variable type]()` set of functions. Let's take a string of numbers and convert them from characters (sometimes this can happen by accident) to numeric:
+
+```{r}
+string <- c("-0.1", " 2.7 ", "3")
+```
+
+You'll see in your R environment that "string" is a list of 3 characters. But now you'd like them to be numbers! You will use the function `as.numeric()`:
+
+```{r}
+## base R - no additional library needed
+string_numeric <- as.numeric(string)
+```
+
+You'll see your new list called "string_numeric" in Values that is made of 3 numbers. You can use `as.numeric()`, `as.factor`, `as.character`, and `as.integer` to change the way a variable is classified. Let's practice! Run the following line of code, and change it to be a factor!
+
+```{r}
+## RUN THIS
+responses <- c("A", "B", "C", "D", "E")
+```
+
+Look in your Values in the R environment, what do these levels default to? Change "responses" to be a factor:
+
+```{r}
+## base R - no additional library needed
+
+responses <- as.factor(responses)
+```
+
+Answer: they default to characters. 
+
+Once you have changed something to be a factor, you can check the levels to be sure they look as expected: 
+
+```{r}
+## base R - no additional library needed
+levels(responses)
+```
+
+
+Remove string, string_numeric, and responses: 
+```{r}
+rm(string, string_numeric, responses)
+```
+
+
+## Data Transformation
+
+```{r}
+## THIS CHUNK IS RESERVED FOR LOADING LIBRARIES: 
+library(here)
+```
+
+
+Rarely do you receive a set of data in a ready-to-analyze state. For example you might need to create new variables, rename or reorder variables to make it easier to work with. Many of the functions important for data transformation are a part of the `dplyr()` package, which loads when you load the `tidyverse()` package.
+
+We will practice specific functions from the mega library `tidyverse` as it pertains to data transformation using several existing data sets. R has many freely accessible data sets that can be used to practice your R coding skills! For practice we will use these, and then you will apply all of your skills gained in this session to a CSD-focused data set. The first data set we will work with is called the NYC flight data. To load the NYC flight data, first install the `nycflights13` package (recall how to do this from the R is Not Scary module), and then call the library: 
+
+```{r}
+# install.packages("nycflights13")
+library(nycflights13)
+```
+
+To become familiar with the data, run this code: 
+```{r}
+?flights
+```
+
+In the lower right portion of your R Studio under the "help" 
+
+
+You can view this data frame by running this code: 
+
+```{r}
+flights
+```
+We are going to want to save the data frame in our environment. To do this, we will use the assignment operator. Run the following line of code: 
+
+```{r}
+## library(nycflights13)
+
+flights_df <- flights
+```
+
+
+There are five key `dplyr` functions that we are going to learn in our Data Transformation section: 
+
+* `filter()` - allows you to pick observations by their values
+* `arrange()` - allows you to reorder the rows
+* `select()` - allows you to choose variables by names
+* `mutate()` - allows you to create a new variable with functions of existing variables
+* `summarise()` - allows you to collapse values down to a summary
+
+Another important function to know is the `group_by()` function, which can be embedded within any of the above commands. By using `group_by()`, you can execute the commands based on a grouping that exists within your data instead of at the full-data level. We will review examples of when this might be helfpul! 
+
+Each of these commands have their own documentation to help you with syntax and troubleshooting. For example: 
+
+* `filter()` - https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/filter
+* `arrange()` - https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/arrange
+* `select()` - https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/select
+* `mutate()` - https://www.rdocumentation.org/packages/dplyr/versions/0.5.0/topics/mutate
+* `summarise()` - https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/summarise
+
+You can also use the `?` to generate this information. It will appear in the lower right hand corner of your R console under "Help." 
+
+```{r}
+?mutate
+```
+
+Let's install the `dplyr` package and load the library: 
+
+```{r}
+# install.packages("dplyr")
+library(dplyr)
+```
+
+
+### Filter
+
+This function will allow you to subset observations based on their values. For example, you can create a new data frame from the `flights` data frame that contains all flights on January 1st only. To do this you must know what kind of variables can help you get this information. Month is listed as an integer, and day is listed as an integer. 
+
+```{r}
+## library(dplyr) ## filter
+## library(magrittr) ## %>%
+
+flights_df %>%
+  filter(month == 1, day == 1) -> flights_jan1
+```
+
+To remove this new data frame, use `rm()`:
+```{r}
+## base R - no additional library needed
+
+rm(flights_jan1)
+```
+
+Filter is a great example of when you may want to use `>`, `<`, `==`, `>=`, `<=`, `!=` operators. Create a new data frame that filters flights_df so that you only include flights from July to December that departed after 7am: 
+```{r}
+## library(dplyr)
+
+## Solution 1: 
+flights_df %>%
+  filter(month >= 7 , dep_time > 700) -> practice_filter
+
+## Solution 2: 
+flights_df %>%
+  filter(month >= 7 & dep_time > 700) -> practice_filter
+```
+
+To check and make sure that, for example, the departure time is no less than 700, you can check by doing something like this: (enter your filtered data frame name, then remove the ## and run)
+
+```{r}
+## min([INSERT THE DATA FRAME YOU CREATED HERE]$dep_time)
+```
+
+But what if you'd like to analyse multiple specific months, like January, March, and July? Remember your operators! 
+
+```{r}
+## library(dplyr)
+
+flights_df %>%
+  filter(month == 1 | month == 3 | month == 7) -> flights_specMon
+```
+
+Next you decide you want to analyze flights that were NOT delayed (arrival OR departure) by more than 2 hours. 
+
+```{r}
+## library(dplyr)
+
+## Solution 1: EXCLUDE flights with greater than 120 minute delays
+flights_df %>%
+  filter(!(arr_delay>120 | dep_delay>120)) -> flights_ontime
+
+## Solution 2: INCLDUE flights with less than 120 minute delays
+flights_df %>%
+  filter(arr_delay <= 120, dep_delay <= 120) -> flights_ontime
+```
+
+One final exercise before we move on; look at the code below (it is commented out) and tell me why it would not run:
+
+```{r}
+## filter(day == 5 | origin == "LGA") -> LGA_5
+```
+
+Answer: We aren't telling R where to look for these variables; we need to use the pipe operator to let R know to look in the data frame we are operating out of. 
+
+
+Let's move on to a new function; clean up your R environment by removing data frames except for `flights_df`. 
+
+```{r}
+## base R - no additional library needed
+
+## rm()
+```
+
+### Missing Values
+
+Sometimes a cell will contain no value, or a value will be missing. A CSD-focused example is such that a specific participant is completing a language evaluation, however part way through the evaluation they indicate not feeling well and wanting to go home. This means that for 50% of the rows for that specific test, there are no values associated with that observation. You may have left those cells blank or have entered NA. For the purpose of using R, those are your two best options; if you instead enter a word such as "DISCONTINUED," you will need to change those (you can do it in R! I will show you how) to say NA. 
+
+If the cell is blank R will auto-populate it with NA; when you are ready to analyze, it will drop rows that contain NA values. As a part of the data transformation process, you can do R a favor and tidy up your data frame by quickly dropping rows with NA values. For example, in the flights_df, you can run the following code to count how many times NA values appear within the entire data frame you are working with (in this example, the master flights data frame)
+
+```{r}
+## base R - no additional library needed
+
+table(is.na(flights_df))
+```
+
+Here, if `is.na=TRUE`, that means there IS an NA value. You could reverse this logic by using the exclamation point: 
+
+```{r}
+## base R - no additional library needed
+
+table(!is.na(flights_df))
+```
+
+Using the exclamation point reverses the logic - NOT  is.na means that True indicates that 6352149 values are not NAs. Remember, NAs can occur within the same row across different variables. If you wish to remove rows that contain NA values, you can use this code: 
+
+```{r}
+library(tidyr) ## drop_na
+# library(magrittr) ## %>%
+
+flights_df %>% 
+  drop_na -> flights_df_noNA
+```
+
+Here you can see that the number of observations (rows) went from 336,776 to 327,346.
+
+You can also be specific about removing rows that contain NA values for specific variables! Using the tools we've learned so far, see if you can successfully generate a new data frame that removes observations where the departure time (`dep_time`) contains NA values: 
+
+```{r}
+## library(tidyr) ## drop_na
+# library(magrittr) ## %>%
+
+flights_df %>%
+  filter(!is.na(dep_time)) -> test
+```
+
+(hint: use your new friend, `filter()`)
+
+
+### Arrange
+
+The `arrange()` function is similar to filter; it changes the order of rows based on variables. For example, perhaps you want to arrange the flights data frame by year, month, and day: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## arrange
+
+flights_df %>%
+  arrange(year, month, day) -> arrange_practice
+```
+
+In the `arrange_practice` data frame, you can see now that the rows ascend by month and day, beginning with January 1st. If you so wish, you can also use the `desc()` argument to re-order rows by columns in descending order. To do this, you will still use the `arrange()` function but will specificy `desc()` within your command, like this: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## arrange
+
+flights_df %>%
+  arrange(desc(distance)) 
+
+```
+If your data frame still contains missing values, you can find them at the end/bottom. 
+
+For the sake of practice, arrange the `flights_df` so that scheduled arriving time is in ascending order.
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## arrange
+
+flights_df %>%
+  arrange(sched_arr_time) -> arrange_practice
+```
+
+You can remove the arrange_practice data frame: 
+
+```{r}
+## rm(arrange_practice)
+```
+
+### Select
+
+Sometimes you may be working with a data set that contains hundreds or thousands of columns/variables (yikes), when you only really need a subset of them. In this situation you can use the `select()` function to focus on the variables that you are actually interested in using. For example, let's say you'd like to only include the year, month, day, airline, destination, and departure time: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## select
+
+flights_df %>%
+  select(year, month, carrier, dest, dep_time) -> flights_df_prune
+```
+
+To get some practice, go ahead and select 6 variables of your choosing to overwrite the `flights_df_prune` data frame we just created: 
+
+```{r}
+## This will vary depending on what you chose but would look something like: 
+
+flights_df %>%
+  select(month, day, dep_time, dep_delay, dep_time, sched_arr_time) -> flights_df_prune
+```
+
+Remove `flights_df_prune`. 
+```{r}
+rm(flights_df_prune)
+```
+
+
+### Rename
+
+Sometimes columns of our data frames are given names that are lengthy/cumbersome to deal with when coding, or perhaps don't portray the information contained adequately. You can use the `rename()` function in R to overwrite column names. For example in the `flights_df` data frame, I can change "tailnum" to be "tail_num":
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## rename
+
+flights_df %>%
+  rename(tail_num = tailnum) -> flights_df
+```
+
+The syntax is such that the new column name goes on the left of the equals sign, and the existing column name on the right. Here I overwrote the original fights_df data frame. Often times I will create new data frames when going through the transformation and wrangling process so that if a change I make is erroneous, I don't need to completely start over. Here, this change is benign enough that I feel comfortable overwriting the original data frame. 
+
+To practice, rename "minute" to "min" and save it as a new data frame titled "rename_practice". Then remove the newly created data frame: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## rename
+
+flights_df %>%
+  rename(min = minute) -> rename_practice
+
+rm(rename_practice)
+```
+
+
+### Mutate
+
+While taking a large data frame and narrowing it down to just the few columns you really need is useful in remaining organized and preparing for analyses, adding a new column that is a function of existing columns is a really important and useful tool; this is accomplished using the `mutate()` function. 
+
+When you use `mutate()`, a column will be added at the very end of the dataset. Let's first select a few columns to practice using `mutate()` with. Create a new data frame called "mutate_practice" containing only year, month, day, distance, dep_time, air_time, and air carrier: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## select
+
+flights_df %>%
+  dplyr::select(year, month, day, distance, dep_time, air_time, carrier) -> mutate_practice
+```
+
+Next, let's rename the air_time variable to signify that this air time is being represented in minutes (overwrite the mutate_practice data frame) : 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## rename
+
+mutate_practice %>%
+  rename(air_time_min = air_time) -> mutate_practice
+```
+
+Now, perhaps in your analyses you need to have the air time represented in hours, not minutes. We will use `mutate()` to add a column titled "air_time_hour", which takes the air time in minutes and divides by 60: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## mutate
+
+mutate_practice %>%
+  mutate(air_time_hour = air_time_min/60) -> mutate_practice
+
+head(mutate_practice)
+```
+
+Next, let's create a new variable called "speed", which represents distance traveled in miles per hour: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## mutate
+
+mutate_practice %>%
+  mutate(speed = distance/air_time_hour) -> mutate_practice
+```
+
+Many functions can be used when you are creating new variables with mutate, and those functions need to be vectorized (must take a vector of values as input and return a vector with same number of values as the output). 
+
+There are two specific functions that can be used **within** mutate that are really handy when you are attempting to create new variables that are conditional on other existing variables. In the example above, we created a new variable that generated new values based on a calculation. Sometimes we may need to create a new variable if a value is above, below, or equal to something specific across multiple existing columns. The two functions that come in handy are `case_when()` and `if_else()`. Although both of these functions lead to the same outcome (creating a new variable that is generated conditionally using existing columns), the syntax is different. 
+
+
+Here, I am going to use the `if_else()` function WITHIN `mutate()` to create a new dichotomous classification for speed. First, let me see what the speed values look like: 
+
+```{r}
+range(mutate_practice$speed) ## this generated NA because there are NA values in this data frame. 
+range(mutate_practice$speed, na.rm=TRUE) ## using na.rm=TRUE tells R to remove NA values for the purpose of the thing being asked of it. It won't remove those observations permanently. If you want to remove them, you know how to!
+
+median(mutate_practice$speed, na.rm=TRUE)
+mean(mutate_practice$speed, na.rm=TRUE)
+```
+
+Looks like the mean and median are both decently close to 400. In creating my new column, I am going to enforce and arbitrary cutoff such that values above 400 are considered "fast" and values below 400 are considered "slow". 
+
+The if_else syntax is such that you first state the condition that needs to be met, then indicate what should happen if that is true, and finally what should happen if it is not true. Here, if the speed is greater than or equal to 400, then the word "fast" should be entered in our new column; otherwise, the rating "slow" will be assigned. If you don't specify an "otherwise," R will default to NA. 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## mutate & if_else
+
+mutate_practice %>%
+  mutate(speed_rating = 
+           if_else(
+    speed >= 400, "fast", "slow"
+  )) -> mutate_practice2
+
+head(mutate_practice2)
+```
+
+If you have multiple conditional arguments, you can embed them within the if_else() syntax. For example, the most simple syntax for if_else is: if VARIABLE is equal to VALUE then assign NEW VALUE, otherwise assign OTHER NEW VALUE. If appropriate, we can nest a new if_else argument to create a chain of conditional statements. This can get a little messy and often times if you need to nest `if_else`, it is easier to use `case_when()`. 
+
+The `case_when()` function is similar to `if_else()` but can manage multiple levels with ease. It allows you to vectorise multiple "if and "else if" statements. 
+
+For example, if our `speed_rating` column actually had 4 levels (very slow, slow, fast, very fast), we could generate these ratings using `case_when`. Compared to `if_else`, the syntax changes. 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## mutate & case_when
+
+mutate_practice %>%
+  mutate(
+    speed_rating = case_when(
+      speed >= 525 ~ "very fast",
+      speed >= 350 ~ "fast",
+      speed >= 175 ~ "slow",
+      speed < 175 ~ "very slow"
+    )
+  ) -> mutate_practice3
+
+```
+
+
+Let's try a challenging practice example, which will intentionally require you to use a search engine to solve. Knowing what to search, how to word it, and experimenting with solutions that people have posted is a part of the R experience! 
+
+Add a new variable "redeye_class", starting with the `mutate_practice`data frame, which places a 1 for any red eye flight and a 0 for all other flights. If a red eye flight is defined by (1) departure time between 10pm and 12am (2) duration of the flight being greater than 3 hours, you are going to need to reference 2 different columns to create this variable. 
+ 
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## mutate, if_else, case_when
+
+
+mutate_practice %>%
+  mutate(redeye_class = case_when(
+    (dep_time >= 2200 & air_time_hour >=3) ~ 1,
+    TRUE ~ 0
+  )) -> mutate_practice4
+
+```
+
+What did you search for in your search engine? Did it help? 
+
+"R multiple conditions if else"
+https://stackoverflow.com/questions/36362573/ifelse-statement-in-r-with-multiple-conditions
+Not helpful
+
+"R multiple conditions case when"
+https://stackoverflow.com/questions/58137828/create-new-variable-by-multiple-conditions-via-mutate-case-when
+HELPFUL
+
+### Summarize
+
+Summarize will collapse a data frame into a single row to get you some descriptive information. `summarise()` is often used in conjunction with `group_by()`. 
+
+For example, using `flights_df_noNA` we can generate an overall summary of the air time by doing: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise
+
+flights_df_noNA %>%
+  summarise(mean = mean(air_time),
+            sd = sd(air_time), 
+            median = median(air_time), 
+            min = min(air_time), 
+            max = max(air_time))
+```
+
+Perhaps we want to group by airline!
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df_noNA %>% 
+  group_by(carrier) %>%
+  summarise(mean = mean(air_time),
+            sd = sd(air_time), 
+            median = median(air_time), 
+            min = min(air_time), 
+            max = max(air_time))
+```
+
+You can assign these summary tables as an object for future reference if you need them. 
+
+For practice, tell me which of the 3 New York airports that all of the flights included in this 2013 data set contained the largest departure delay: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df_noNA %>% 
+  group_by(origin) %>%
+  summarise(mean = mean(dep_delay),
+            sd = sd(dep_delay), 
+            median = median(dep_delay), 
+            min = min(dep_delay), 
+            max = max(dep_delay))
+```
+
+As mentioned above, if you are working with a data frame that contains missing values, generating summary statistics the way we did above won't work. For example, when you run this code: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df %>% 
+  group_by(carrier) %>%
+  summarise(mean = mean(air_time),
+            sd = sd(air_time), 
+            median = median(air_time), 
+            min = min(air_time), 
+            max = max(air_time))
+```
+Many of the rows will come back as NA, because they contain cells that have NA values. This doesn't mean you have to jump ship; you can use the argument `na.rm=TRUE` to generate information using a data frame that contains NA values! Try this: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df %>% 
+  group_by(carrier) %>%
+  summarise(mean = mean(air_time, na.rm = TRUE),
+            sd = sd(air_time, na.rm = TRUE), 
+            median = median(air_time, na.rm = TRUE), 
+            min = min(air_time, na.rm = TRUE), 
+            max = max(air_time, na.rm = TRUE))
+```
+BOOM!
+
+Another summary-based command that comes in handy are `sum()` and/or `count()`. When you are tidying your data, counting specific things along the way can actually be really informative and serve as a check to make sure that a command you ran did not completely destroy the integrity of your data set. For example, you can count how many NA values there are in a data frame: 
+
+```{r}
+(sum(is.na(flights_df)))
+```
+
+
+You can specify a column when counting NAs:  
+
+```{r}
+(sum(is.na(flights_df$dep_delay)))
+```
+
+You can use the `!` if you want a sum of how many observations are NOT NA: 
+
+```{r}
+(sum(!is.na(flights_df$dep_delay)))
+```
+
+You can use the `group_by()` function when summing. For example if you'd like to know how many flights departed from JFK, LGA, and EWR, you can run: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df %>%
+  group_by(origin) %>%
+  summarise(n = n())
+```
+
+You can embed the sum function in when generating other statistics; for example you can generate the mean of a specific variable AND the number of observations grouped by a categorical variable: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df %>%
+  group_by(origin) %>%
+  summarise(delay = mean(arr_delay, na.rm=TRUE),
+            n=n())
+```
+
+When summarizing you can also group by multiple variables, for example: 
+
+```{r}
+## library(magrittr) ## %>%
+## library(dplyr) ## summarise & group_by
+
+flights_df %>%
+  group_by(month, day, hour) %>%
+  summarise((n = n()), 
+            (mean = mean(distance, na.rm=TRUE)))
+```
+
+
+Additionally, instead of using just `n()`, you can youse `n_distinct()` to count the number of unique values. For example if I wanted to count the number of red eye flights (using our classification from earlier) grouped by airline, I would do: 
+
+```{r}
+mutate_practice4 %>%
+  group_by(carrier) %>%
+  summarise(red_eye = n_distinct(redeye_class))
+```
+
+
+
+Using this information, answer the following questions: 
+
+*Which destinations have the most carriers?*
+
+```{r}
+
+flights_df %>%
+  group_by(dest) %>%
+  summarise(carrier_count = n_distinct(carrier)) %>%
+  arrange(desc(carrier_count))
+
+```
+Answer: Atlanta, Boston, Charlotte, Orlando, and Tampa all have 7.
+
+
+
+*Which air line has the largest median distance traveled?*
+
+```{r}
+flights_df %>%
+  group_by(carrier) %>%
+  summarise(med_dist = median(distance)) %>%
+  arrange(desc(med_dist))
+```
+Answer: Hawaiin airlines
+
+### Correcting Spelling Errors / Erroneous Characters
+
+Sometimes human error infiltrates our data and we need to take care of this BEFORE analyses. For example, perhaps you are analyzing processing of compound words in children with language delay and sometimes words are entered into a column by a research clinician as one word, such as "baseball", while other times they are entered with a space, such as "base ball". We need to make sure that these minor differences are eliminated before analyzing; if we don't, R is going to treat these words as 2 different items which can result in faulty findings! There are multiple ways that you can correct for spelling or character errors.
+
+The `compound_words` data frame is fabricated but represents naming accuracy data of 10 subjects with language deficits across 10 compound nouns. Read in the "compound_words.csv" file provided to you: 
+
+```{r}
+compound_words <- read.csv(here("M3_DataWrangling", "data", "compound_words.csv"))
+```
+
+To see how many subjects there are and be sure that the number of subjects listed in R aligns with our knowledge of the data set, let's first change ID to be a factor: 
+
+```{r}
+compound_words$ID <- as.factor(compound_words$ID)
+```
+
+Once a variable is a factor, you can count the levels by clicking the arrow button in the environment and view a list of the levels by running this: 
+
+```{r}
+levels(compound_words$ID)
+```
+
+There are 10 subjects - this looks good. Let's do the same with word (change to factor, and check levels)
+
+```{r}
+compound_words$Word <- as.factor(compound_words$Word)
+levels(compound_words$Word)
+```
+
+How many levels for Word are there? When you look at the list of levels, what do you notice is wrong or inconsistent? 
+
+Answer: there are 14 total levels; it appears as though some of the words are duplicated with minor differences in spelling/characters included.
+
+To fix spelling errors, I will show you two methods you can use: 
+
+```{r}
+## METHOD 1: Overwriting in Base R
+compound_words$Word[compound_words$Word == 'blue berry'] <- 'blueberry'
+
+```
+
+```{r}
+## METHOD 2: Use gsub argument in Mutate
+compound_words %>%
+  mutate(Word = gsub("school bus", "schoolbus", Word)) -> compound_words
+```
+
+Making these changes has converted the Word variable back to character, not factor. Let's set to factor again and check to see if those two changes worked by (1) looking to see how many levels there are in the Environment and (2) listing the levels: 
+
+```{r}
+compound_words$Word <- as.factor(compound_words$Word)
+levels(compound_words$Word)
+```
+
+Hopefully you noticed that we cut down the number of levels from 14 to 12, and that in the list of levels the errors that we targeted are fixed. Using whichever method you prefer, fix the remaining two spelling/character errors so that there are 10 levels for Word: 
+
+```{r}
+## METHOD 1: 
+compound_words$Word[compound_words$Word == 'key-chain'] <- 'keychain'
+compound_words$Word[compound_words$Word == 'water bottle'] <- 'waterbottle'
+
+## METHOD 2: 
+compound_words %>%
+  mutate(Word = gsub("key-chain", "keychain", Word)) %>%
+  mutate(Word = gsub("water bottle", "waterbottle", Word)) -> compound_words
+
+## Check your work
+compound_words$Word <- as.factor(compound_words$Word)
+levels(compound_words$Word)
+
+```
+
+This may seem in the weeds, but can make a big difference in the data wrangling process. Knowing your data very well will allow you to interrogate it for errors like this; if you are given a data set to analyze but are unsure, for example, how many words are presented to each subject or how many total subjects there are, you may be more likely to miss small errors like these! 
+
+With this, our transformation section is complete! Nice job. Now, on to data tidying!
+
+
+## Data Tidying
+
+Tidy data assumes that your data is organized such that: 
+
+* columns are variables (1 column per 1 variable)
+* rows are individual observations
+* observations/values for each variable is stored in the corresponding cell
+
+
+On my slide is this image of a table; this data is considered "dirty." Using the rules outlined above about tidy data, what is not ideal here?
+
+There are multiple values within one column. Score and reaction time are spread across columns, instead of being aggregated (this may not be problematic, depending on your analyses and goals).
+
+
+Now on the slide there is an image of the tidy version of this table: 
+
+You can see that a new column has been introduced, "trial," allowing for score and reaction time to aggregate to just one column. This means that instead of having 1 row for ID 1, there are 3 rows. That's great! Now you have the option to use trial number in your analyses if you please, whereas you could not do so before. Another large improvement is that the mean_rt column and total score column have been separated out so that they each have their own column. 
+
+This is a perfect transition to talk about **wide** versus **long** data formats. A wide data table is when all of the observations about 1 subject are in the same row. Long data are where each individual observation exists in a separate row. It's common in the data tidying process that you need to convert between the two formats. 
+
+Let's say you are working with data from a study where each subject completes a questionnaire that contains 3 questions/items. On the slide is a visualization of how this data might be represented in wide format: 
+
+
+To transform this into long format, a new column "item" is added that informs you which item each observation is associated with. On the slide is the long format of these data: 
+
+Do you think we will be making these transformations from wide to long or long to wide format manually in Microsoft Excel? HECK NO. That would take a long time, would introduce major risk for human error, and couldn't be replicated over and over again like an R script can. R can do it all! How you might ask?....enter `pivot()`. 
+
+### Pivot
+
+The `pivot()` function allows you to transform a data frame/table from wide to long format, or from long to wide format, in one step! We are going to use an existing data set to practice pivoting with. The data set is called `personality`, and includes 5-factor personality questionnaire information. The 5 domains are openness (Op), conscientiousness (Co), extroversion (Ex), agreeableness (Ag), and neuroticism (Ne). We have provided you with this csv file - read in the csv and assign it to a data frame in R. 
+
+
+```{r}
+personality <- read.csv(here("M3_DataWrangling", "data", "personality.csv"))
+```
+
+View the first few rows of the personality data frame: 
+
+```{r}
+head(personality)
+```
+
+What do you notice about the columns? What format is this data in? 
+
+Let's pivot the data - if your data is in wide format you will use `pivot_longer()` to convert column headers into values of new columns, and aggregating values of those columns into a condensed column. If the data is in long format you will use `pivot_wider()`. 
+
+There are several arguments that can be used, such as: 
+
+* `cols` - required argument; allows you to specify which columns you wish to make long.
+* `names_to` - required argument; allows you to provide a new column name that the gathered column will go to (e.g. "score")
+* `names_sep` - optional argument; if you have more than one value for names_to, you can specify the characters or position to split the values of the cols header
+* `values_to` - optional argument; cwhat you want to call the values in the columns (e.g. "trial")
+
+Let's walk through what exactly we'd like to do with the personality data frame. In an ideal world, for the analyses we plan to run, we'd like to have one column that specifies the domain (Op, Ne, Ex, Co, Ag). Then we are going to need to separate out the trial numbers (e.g. there is Op1, Op2, Op3). Finally, all of the ratings will aggregate into one master column. Once tidied in this system you can use functions we have already reviewed as needed - for example maybe you only want to analyze trial number 1 observations. If so, you can use filter! The code below will accomplish what we have outlined above - let's unpack each argument. 
+
+```{r}
+## library(magritrr) ## %>%
+## library(tidyr) ## pivot_longer
+
+personality %>%
+  pivot_longer(
+    cols = Op1:Ex9, ## specifying which columns we want to be pivoted; I chose this by viewing the                        data frame. I could have also written 3:43
+    names_to = c("domain", "trial_num"), ## specifiying that I am going to want the first part of                                               the exist columns (e.g. Op, Ex, Ne, Co, Ag) to wind up                                             in a "domain" column and the 2nd part of the existing                                              columns (e.g. 1, 2, 3) to go to a "trial_num" column. 
+    names_sep = 2, ## telling R how to make the names_to split
+    values_to = "score" ## telling R that the aggregated column with the values should be placed in                             a new column named "score
+    
+  ) -> personality_long
+```
+
+Now let's see how we did:
+
+```{r}
+head(personality_long)
+```
+A new column "domain" has been created, and a new column "trial_num" as well. Score now only contains the participants' score values. This means each user_id will have many more rows than they did before, and that's GREAT! One of the great benefits of R is that you can analyze at the item level with ease when your data is formatted long. Long form data is ideal when running mixed effects models and other statistical approaches.
+
+There may be some circumstances where you need to  pivot from long to wide format, for example when creating plots or tables, or for specific analyses. In this scenario you will use `pivot_wider()`. The arguments are going to be similar, with slight variation: 
+
+* `names_from` - required argument; the columns that contain new column headers
+* `values_from` - required argument; the column that contains the values for your new columns
+* `names_sep` - optional argument; character string used to join names if names_from contains more than 1 column. 
+
+We can practice `pivot_wider()` using the long data frame we just created to undo what we accomplished. 
+
+```{r}
+## library(magritrr) ## %>%
+## library(tidyr) ## pivot_wider
+
+personality_long %>%
+  pivot_wider(
+    names_from = c(domain, trial_num), ## telling which columns to draw from to spread into wide                                             format and create new headers
+    values_from = score, ## telling which values should go into those columns
+    names_sep = "", ## saying that there should be no separation between domain and trial num in                          the header
+  ) -> personality_wide ## assign to new data frame
+```
+
+```{r}
+head(personality_wide)
+```
+
+
+### Separate
+
+Separate can be used to split columns. Again, there are multiple important-to-know arguments: 
+
+* `col` - the column that you wish to separate
+* `into` - is a vector of new column names
+* `sep` - is the character(s) that separate your new columns. Defaults to anything that isn't alphanumeric (e.g. . , _ - / :) and is like the `names_sep` argument for `pivot_longer`. 
+
+To read more, run
+
+```{r}
+# ?separate
+```
+
+For example, we can split the "question" column that we created in the `pivot_wider()` into two columns: domain and trial_num (like we did with pivot_longer).
+
+You can separate a column after a specific number of characters by setting `sep` to an integer. For example, if you want to split "abcde" after the 3rd character you can use sep = 3, which would give you "abc", "de". 
+
+You can also use negative number to split BEFORE the nth final character from the right. For example, to split a column that has words of various lengths and 2-digit suffixes (like "lisa03", "amanda38"), you can use sep = -2. to get "lisa" "03" and "amanda" "38".
+
+To set up a problem to solve, run the following chunk: 
+
+```{r}
+## RUN THIS
+personality_gathered <- personality %>%
+  gather(key = "question", 
+         value = "score", 
+         Op1:Ex9)
+
+```
+
+Here you can see that in the "question" column, the domain and trial are presented together. To separate these, we can do this: 
+
+```{r}
+## library(magritrr) ## %>%
+## library(tidyr) ## separate
+
+personality_gathered %>%
+  separate(
+  col = question, ## the column to separate
+  into = c("domain", "trial_num"), ## new column names
+  sep = 2 ## where to separate
+  ) -> personality_sep ## new data frame
+
+head(personality_sep)
+```
+
+
+### Unite
+
+Unite will accomplish the opposite of separate. Arguments of note: 
+
+* `col` - your NEW united column
+* `...` - columns you want to unite
+* `sep` - characters that will separate your united columns
+
+Using syntax that we have learned so far, try to independently put the subject and trial_num columns back together into a new column named subject_trial Make it in a format like "Op_Q1". 
+
+```{r}
+## library(magritrr) ## %>%
+## library(tidyr) ## unite
+
+personality_sep %>% ## pull from data frame we just separated and pipe to function
+  unite(
+  col = "domain_n", ## new column name
+  domain, trial_num, ## columns to unite
+  sep = "_Q"
+  ) -> personality_unite
+```
+
+```{r}
+head(personality_unite)
+```
+
+
+## More Practice with Complex Examples
+
+Let's do some hands on practice with the functions that we just learned. First, read in the InfMort.csv file that we provided you with: 
+
+```{r}
+InfMort <- read.csv(here("M3_DataWrangling", "data", "InfMort.csv"))
+```
+
+We also need to read in a CSV file, MatMort.csv: 
+
+```{r}
+MatMort <- read.csv(here("M3_DataWrangling", "data", "MatMort.csv"))
+```
+
+View the data frame - yikes! Messy! This data frame is in wide format, and there are multiple values represented in one cell. Let's change this to long format with 4 columns: 1 column for Country, one for year, one for the "measure type" (mortality ratio vs number of maternal deaths), and the statistics (yes, multiple stats per cell for now...we can separate out in a moment). 
+
+```{r}
+MatMort %>%
+  pivot_longer(
+    cols = 2:37,
+    names_to = c("measure", "year"),
+    names_sep = -4,
+    values_to = c("stats")
+  ) -> matmort_long
+```
+
+The labels for measure type are really long and won't be fun to deal with when analyzing. Let's change "Maternal mortality ratio (per 100 000 live births) to "Mat_mort_ratio" and "number of maternal deaths" to "mat_death_num". 
+
+```{r}
+
+matmort_long$measure[matmort_long$measure == 
+                       'Maternal mortality ratio (per 100 000 live births)_'] <- 'mat_mort_ratio'
+
+matmort_long$measure[matmort_long$measure ==
+                       'Number of maternal deaths_'] <- 'mat_death_num'
+
+```
+
+To see if we were successful, let's change measure to be a factor and check the levels: 
+
+```{r}
+matmort_long$measure <- as.factor(matmort_long$measure)
+levels(matmort_long$measure)
+```
+
+Next, we are going to want to separate data such that one piece of information is represented per column. Also, there are a bunch of spaces mixed in there that are not necessary. To remove the spaces we can use `mutatate()` like this: 
+
+```{r}
+## library(magritrr) ## %>%
+## library(dplyr) ## mutate
+
+matmort_long %>%
+  mutate(stats = gsub(" ", "", stats)) -> matmort_long ## gsub will replace matches with whatever                                                            you want! Here we are substituting a                                                               space (shown in quotes first) with no                                                              space (shown in quotes second). 
+
+```
+
+We could have used this to shorten our level names too, however we just want to showcase a few ways you can accomplish similar goals. 
+
+What might you do to perform a really cursory check to see if this was successful? 
+
+```{r}
+head(matmort_long)
+```
+
+
+Next, use the `separate()` function to separate the values in the "stats" column. Let's operate under the assumption that the value outside of the bracket is the rate (whether that be the ratio or death rate), the number within the bracket to the left is the minimum value, and the number to the right is the maximum value: 
+
+```{r}
+matmort_long %>%
+  separate(
+    col = stats,
+    into = c("rate", "lower_CI", "upper_CI")
+  ) -> matmort_sep
+```
+
+Hint: are you struggling because when using the `sep` argument is not able to be applied to the data in a uniform fashion? Try removing that argument and see what happens. R is smarter than it looks! Receiving a bright red warning sign can be scary - they are important to read and understand but sometimes you can proceed with it in mind. Other times they require action. Here, we received an error message because `separate` splits the column at the brackets and dashes, so 100[90-110] would naturally be separated into 4 values "100", "90", "110", and "". But we only asked for 3 columns. The 4th value is always empty because it is the part after the last bracket, so dropping it is not a problem. But R isn't smart enough to know this so it warns you. 
+
+```{r}
+head(matmort_sep)
+```
+
+
+The `InfMort` data is already in long form, but has a similar issue with multiple values existing within one cell. First, let's rename the "Infant mortality rate (probability of dying between birth and age 1 per 1000)" to "Inf_mort_rate".
+
+```{r}
+
+InfMort %>%
+  rename(Inf_mort_rate = "Infant.mortality.rate..probability.of.dying.between.birth.and.age.1.per.1000.live.births.") -> InfMort
+
+head(InfMort)
+
+```
+
+
+Next replicate the spreading process for this data frame such that the rate, lower CI bound, and upper CI bound have their own columns; save this as a new data frame: 
+
+```{r}
+InfMort %>%
+  separate(
+    col = Inf_mort_rate,
+    into = c("rate", "lower_CI", "upper_CI")
+  ) -> InfMort_sep
+```
+
+Look through the data by viewing it and comparing it to the original InfMort set....see anything wrong? 
+
+Just to the blind eye you can see that the separate function did not split the data how we wanted it to...it split the column on spaces, brackets and full stops when we actually just wanted it to split on spaces, brackets, and dashes only. We need to manually set `sep` to the specific delimiters. 
+
+To do this we can use **regular expressions** or regex to separate complex columns. Here we want to separate on dashes and brackets. We can separate using a list of delimeters by putting them in parentheses, separated by the "|" character. This example is a little complicated because brackets have a meaning in regex, so we'll need to "escape" the left one with two back slashes. See the `sep = ` argument below!:
+
+```{r}
+## library(magritrr) ## %>%
+## library(tidyr) ## separate
+
+InfMort %>%
+  separate(
+    col = Inf_mort_rate,
+    into = c("rate", "lower_CI", "upper_CI"), 
+    extra = "drop", ## drops any extra values without warning
+    sep = "(\\[|-|])"
+  ) -> InfMort_sep
+```
+
+Now take a cursory look and see if this was more successful. 
+
+As we prepare to pretend to analyze these data, look at the variable types - notice that they are all listed as characters. There's an argument (`convert`) that is a part of the `separate()` function that can help. Let's re-run the code above with this new argument added on: 
+
+```{r}
+## library(magritrr) ## %>%
+## library(tidyr) ## separate
+
+InfMort %>%
+  separate(
+    col = Inf_mort_rate,
+    into = c("rate", "lower_CI", "upper_CI"), 
+    extra = "drop", ## drops any extra values without warning
+    sep = "(\\[|-|])", 
+    convert = TRUE
+  ) -> InfMort_sep
+```
+
+
+Change Country to factor: 
+
+```{r}
+InfMort_sep$Country <- as.factor(InfMort_sep$Country)
+```
+
+Matmort has the same issue where currently all of the variables are characters. Apply what we just learned to the MatMort data: 
+
+```{r}
+matmort_long %>%
+  separate(
+    col = stats,
+    into = c("rate", "lower_CI", "upper_CI"),
+    extra = "drop", 
+    convert = TRUE
+  ) -> matmort_sep
+```
+
+For some reason, year is not being converted into a numeric or integer factor. Try converting it here to as.numeric():
+
+```{r}
+matmort_sep$year <- as.numeric(matmort_sep$year)
+```
+
+### Combining Data Frames
+
+Often you will find yourself needing to combine two data frames together; for example perhaps you stored audiogram data for subjects in one data frame and performance on a battery of cognitive evaluations for the same list of subjects in a separate data frame. In this example, as you prepare to analyze these data, you will want them to be all within the same data frame. There are a few options that you can choose from. 
+
+1. `cbind()`: this function offers a simple way to join multiple datasets in R where the rows are in the same order and the number of observations are the same. For example if you have a data frame for just 1 subject with 3 variables "ID", "Score", and "Age" that has 25 rows and you have another data frame for another subject with those same 3 headers that also has 25 rows, you can use this function. The syntax would look like: 
+
+```{r}
+## new_df <- cbind(df_1, df_2)
+```
+
+2. `rbind()`: using this function you can combine data frames with equal number of columns. The columns must be of the same data type. This essentially allows you to stack data sets on top of each other. If the columns have different names, R will use column names of the first vector or list specified in the command. The syntax would look like: 
+
+```{r}
+## new_df <- rbind(df_1, df_2)
+```
+
+3. `merge()`: This function allows you to join data frames by common columns or row names. For example if data frame 1 contains columns ID and Age, and data frame 2 contains ID, Age, and City, you can merge these data frames where you will wind up with just 3 columns and the merge function will use ID and Age columns as the common columns to merge by. You can read about this function, its syntax, and the arguments in the R documentation: https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/merge
+
+At a basic level, the syntax would look like: 
+
+```{r}
+## new_df <- merge(df_1, df_2)
+```
+
+4. `join`: Part of the `dplyr` package. There are several functions under dplyr's join. Follow this link for us to discuss: https://statisticsglobe.com/r-dplyr-join-inner-left-right-full-semi-anti
+
+
+The `matmort_sep` and `infmort_sep` data frames share a lot of similar data across countries. In this next practice opportunity, add a new column to `Infmort_sep` called `measure`, and fill every row of this new variable with "Infant_mort_ratio." 
+
+```{r}
+InfMort_sep %>%
+  mutate(measure = "Infant_mort_ratio") -> InfMort_sep
+
+head(InfMort_sep)
+```
+
+
+Next, rename the `Year` variable of the `InfMort_sep` data frame to have a lowercase y. 
+
+```{r}
+InfMort_sep %>%
+  rename(year = Year) ->InfMort_sep
+
+head(InfMort_sep)
+```
+
+Now, these two data frames share similar (though not identical) years and countries. Let's use the `rbind` function to stack them!
+
+```{r}
+rbind(matmort_sep, InfMort_sep) -> MatInf_mort_master
+```
+
+
+### Writing a CSV File
+
+After the effort that is made to create a tidied data frame, it would be SAD to close R studio and lose the object in your environment. Sure you'd have the code to replicate the process, but wouldn't it be easier to just save a new CSV of the wrangled data? To do this, follow this syntax: 
+
+```{r}
+## write.csv(data_frame, file = '[INSERT PATH]/car-speeds-cleaned.csv')
+```
+
+Practice writing a CSV file for the stacked mortality data that we generated above: 
+
+```{r}
+MatInf_mort_master %>%
+  write.csv(here("M3_DataWrangling", "data", "master", "MatInf_mort_master.csv"))
+
+```
+
+### References & Resources:
+
+
+R Cheat Sheets: 
+<https://www.rstudio.com/resources/cheatsheets/> /
+<https://raw.githubusercontent.com/rstudio/cheatsheets/main/tidyr.pdf> /
+<https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf>
+
+
+Data Transformation: 
+<https://r4ds.had.co.nz/transform.html> /
+<https://www.rdocumentation.org/packages/dplyr/versions/0.7.8/topics/case_when> /
+<https://stackoverflow.com/questions/24459752/can-dplyr-package-be-used-for-conditional-mutating>
+
+Data Tidying: 
+<https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html> /
+<https://r4ds.had.co.nz/tidy-data.html> /
+<https://psyteachr.github.io/reprores-v2/tidyr.html>
+
+Data Wrangling: 
+<https://psyteachr.github.io/reprores-v2/dplyr.html>
+
+Operators: 
+<https://www.statmethods.net/management/operators.html> / <https://www.tutorialspoint.com/r/r_operators.htm> <https://style.tidyverse.org/pipes.html> / <https://towardsdatascience.com/3-lesser-known-pipe-operators-in-tidyverse-111d3411803a>
+
+Variable Types: 
+<https://swcarpentry.github.io/r-novice-inflammation/13-supp-data-structures/>
+
+Join/Merge: 
+<https://www.datasciencemadesimple.com/join-in-r-merge-in-r/> /
+<https://r-coder.com/merge-r/> /
+<https://statisticsglobe.com/r-dplyr-join-inner-left-right-full-semi-anti>
+
+
+Wrangling: 
+<https://psyteachr.github.io/reprores-v2/dplyr.html>
+
+Courses: 
+
+*Fraundorf, Scott. “Data Processing.” Class lecture, Mixed Effects Models, University of Pittsburgh, Pittsburgh, PA, September, 2020.
+
+* Verstynen, Tim. "Tidy Data." Class tutorial, Data Science for Psych and Neuro, Carnegie Mellon University, Pittsburgh, PA, January, 2022. 
+
+* Verstynen, Tim. "Data Cleansing." Class tutorial, Data Science for Psych and Neuro, Carnegie Mellon University, Pittsburgh, PA, January, 2022. 
