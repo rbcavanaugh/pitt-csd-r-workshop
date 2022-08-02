@@ -2,7 +2,10 @@
 title: "RMarkdown Exercise #1 - Answer Key"
 author: "Rob Cavanaugh"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}

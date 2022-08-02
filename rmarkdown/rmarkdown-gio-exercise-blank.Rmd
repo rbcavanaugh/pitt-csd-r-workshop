@@ -2,7 +2,10 @@
 title: "RMarkdown Exercise #1: Recreating Giovannone & Theodore, 2022"
 author: "Rob Cavanaugh"
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -26,7 +29,7 @@ The goal of this exercise is to provide an opportunity to generate a reproducibl
 
 Figure 1. Panel A:
 
-**Change the following code chunk so that it only displays the image and not the code**
+**Task 1: Change the following code chunk so that it only displays the image and not the code**
 
 ```{r}
 knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))
@@ -34,25 +37,27 @@ knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))
 
 ## Load packages
 
--   load the tidyverse and here packages
--   change warning and message chunk options to false
+**Task 2a: load the tidyverse and here packages**
 
-**< insert code here >**
+**Task 2b: change warning and message chunk options to false**
+
+*< insert code here >*
 
 ## Read in data
 
--   read in the demographics and "ganong" data
+**Task 3: read in the demographics and "ganong" data**
 
-**< insert code here >**
+*< insert code here >*
 
+## Inline reporting
 
-## Exercise 1: Replicate this paragraph from the manuscript using inline R code:
+**Task 4: Replicate this paragraph from the manuscript using inline R code**
 
 > Participants (n = 142) were recruited from the Prolific participant pool(<https://www.prolific.co>; Palan & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in theUnited States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included 120 participants at session one and 73 participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n = 73) who completed both sessions.
 
 > With respect to demographic characteristics,the sample included 50 women, 21 men, and 2 individuals who preferred not to report gender. All participants were between 18 --35 years of age (mean = 26 years, SD = 5 years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was 17 days (SD = 4 days; range = 14 -- 35 days)
 
-We need the following:
+To do this, we need the following information saved in R-objects
 
 -   total number of people completing just one session
 -   total number of people completing both session
@@ -60,39 +65,37 @@ We need the following:
 -   participant breakdown by age (mean, sd, min, max)
 -   participant breakdown by days between sessions (mean, sd, min, max)
 
-### Preview the demographics dataframe
+**Task 4a: use a function to preview the top 6 rows of the demographics data**
 
--   use a function to preview the top 6 rows of the demographics data
+*< insert code here >*
 
-**< insert code here >**
+**Task 4b: Calculate the 5 summary statistics noted above**
 
-### Calculate the 5 summary statistics noted above
+*< insert code here - use multiple chunks >*
 
-**< insert code here - use multiple chunks >**
-
-### Replace the **XXXX** with R code to auto-populate the numbers.
+**Task 4c: Replace the \*XXXX\* with R code to auto-populate the numbers.**
 
 Paragraph 1:
 
-Participants (n= **XXXX**) were recruited from the Prolific participant pool(<https://www.prolific.co;Palan> & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in the United States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included **XXXX** participants at session one and **XXXX** participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n= **XXXX**) who completed both sessions.
+Participants (n= *XXXX*) were recruited from the Prolific participant pool(<https://www.prolific.co;Palan> & Schitter, 2018). All participants were monolingual English speakers born in and currently residing in the United States with no previous history of language-related disorders. Twenty-two participants were excluded due to failure to comply with task instructions as described in the procedure section below. The final sample included *XXXX* participants at session one and *XXXX* participants who also completed session two. Given that testing the primary hypotheses requires examining performance across the two sessions, the analyses presented here consider the participants (n= *XXXX*) who completed both sessions.
 
 Paragraph 2:
 
-With respect to demographic characteristics,the sample included **XXXX** women, **XXXX** men, and **XXXX** individuals who preferred not to report gender. All participants were between **XXXX-XXXX** years of age (mean= **XXXX** years, SD= **XXXX** years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was **XXXX** days (SD = **XXXX** days; range= **XXXX -- XXXX** days)
+With respect to demographic characteristics,the sample included *XXXX* women, *XXXX* men, and *XXXX* individuals who preferred not to report gender. All participants were between *XXXX - XXXX* years of age (mean= *XXXX* years, SD= *XXXX* years).Invitations to complete session twowere issued two weeks after the completion of session one. The mean time between sessions was *XXXX* days (SD = *XXXX* days; range= *XXXX - XXXX* days)
 
-## Recreating the figure
+**Task 5: Recreating the figure**
 
-### Preview the ganong data.
+**Task 5a: Preview the ganong data.**
 
--   This time, lets use a the `paged_table()` function from Rmarkdown. This only works with HTML output, but allows the reader to tab through the table
+-   This time, lets use a the `paged_table()` function from Rmarkdown. This only works with HTML output, but allows the reader to tab through the table. Look up the function to see how to use it. 
 
-**< insert code here >**
+*< insert code here >*
 
--   Print a summary of each variable in the dataset
+**Task 5b: Print a summary of each variable in the dataset**
 
-**< insert code here >**
+*< insert code here >*
 
-### Data wrangling
+**Task 6: Data wrangling**
 
 What steps do we need to reproduce the plot? These are taken from the authors scripts:
 
@@ -116,18 +119,18 @@ $$
 \sigma_{M} = \frac{\sigma}{\sqrt(N)}
 $$
 
-**Insert the sigma symbol in the italic paragraph below. Note that above, two dollar signs
+**Task 6a: Insert the sigma symbol in the italic paragraph below. Note that above, two dollar signs
 create an equation in the center of the document. How do we create an inline equation?**
 
 *Don't worry too much about the mathematical definition of the standard error. Know that the standard error can be calculated by the following formula, where sigma (**XXXX**) is the standard deviation and N reprsents the total sample size. In R, you can use the `sd()` function to calculate the standard deviation and the `sqrt()` function to calculate the square root of something.*
 
-### Part 1.
+#### Part 1
 
-Re-factor the Continuum variable
+**Task 6b: Re-factor the Continuum variable**
 
-**< insert code here >**
+*< insert code here >*
 
-Summarize the ganong data
+**Task 6c:Summarize the ganong data**
 
 -   Only include rows where N.Sessions == 2
 
@@ -135,23 +138,23 @@ Summarize the ganong data
 
 -   Make sure there are 73 rows in the final data set (check out work!)
 
-**< insert code here >**
+*< insert code here >*
 
-### Part 2.
+#### Part 2
 
--   for each unique combination of Session, Continuum, & VOT, calculate the mean of our new response accuracy variable
+**Task 6d:for each unique combination of Session, Continuum, & VOT, calculate the mean of our new response accuracy variable**
 
-**< insert code here >**
+*< insert code here >*
 
--   for each unique combination of Session, Continuum, & VOT, calculate the standard error of our new response accuracy variable
+**Task 6e: for each unique combination of Session, Continuum, & VOT, calculate the standard error of our new response accuracy variable**
 
-**< insert code here >**
+*< insert code here >*
 
-### Create the plot
+**Task 7:Create the plot**
 
-**< insert code here >**
+*< insert code here >*
 
-```{r}
+```{r, eval = FALSE}
 plot <- ggplot(
   df,
   aes()
@@ -159,7 +162,7 @@ plot <- ggplot(
   
 ```
 
-## Report information about the analysis
+**Task 8: Report your session info (info about the R software) for reproducibility**
 
-**< insert code here >**
+*< insert code here >*
 
