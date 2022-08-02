@@ -37,7 +37,7 @@ head(data)
 summary(data)
 ```
 
-#### Summary statitic for category was not helpful, print out how many categories there are and what are the unique categories.
+#### Summary statistics for category was not helpful, print out how many categories there are and what are the unique categories.
 
 ```{r}
 unique(data$cat)

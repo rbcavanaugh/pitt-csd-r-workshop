@@ -582,6 +582,7 @@ ggplot(data = df, aes(x = pta, y = age)) +
 ##### Excercise 16: 
 > Following the examples above, change the fill color of the plot points to represent the sex of the participant. 
 ###### Response 16:
+
 ```{r}
 
 ```
@@ -599,11 +600,13 @@ ggplot(data = df, aes(x = pta, y = age, color = sex)) +
 > To avoid problems of creating plots in color, change the `color` command to `shape` 
 
 ###### Response 16:
+
 ```{r}
 
 ```
 
 ###### Solution 16
+
 ```{r}
 ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
   geom_point() +
@@ -618,6 +621,7 @@ ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
 ##### Excercise 17: Create a faceted version the above plot with the "HearingAidUse" variable. 
 
 ###### Response 17:
+
 ```{r}
 
 ```
@@ -632,3 +636,122 @@ ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
        y= "Age in years") +
   facet_grid(~HearingAidUse)
 ```
+
+
+##### Excercise 18: The Legend of the plot is not very informative given that sex is coded binary 0,1. I also note the plot is capturing some missing data. You will learn how to deal with this is in a later lecture.  To change the legend title and labels add the following command, that is not very intuitive to remember.  
+ -  scale_shape_discrete(name = "TITLE", labels = c("LABEL 1", "LABEL 2", "LABEL 3"))
+ -  note particiapnts with 0 identified as male, 1 identified as female
+ 
+###### Modify the following code to create an informative legend. 
+  - Hint: What has been added to the solution for exercise 17?
+  - Hint: Run the code and see what the newly added line of code has added.  
+
+```{r}
+ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
+  geom_point() +
+  labs(title = "Scatterplot: L/R puretone average and age",
+       x = "Pure tone average",
+       y= "Age in years") +
+  facet_grid(~HearingAidUse) +
+  scale_shape_discrete(name = "TITLE", labels = c("A", "B", "C"))
+```
+
+#### Renaming legend labels for different types of categorical identifiers (color, shape, and etc) requires a unique function. Primarily, the middle term is replaced. See below for a list of the available legend modification methods:
+
+See the following link for helpful functions for working with legend labels:
+  - https://www.datanovia.com/en/blog/ggplot-legend-title-position-and-labels/
+
+##### Color of lines and points
+`scale_color_discrete(name, labels, limits, breaks)`
+#####  For linetypes
+`scale_linetype_discrete(name, labels, limits, breaks)`
+#####  For point shapes
+`scale_shape_discrete(name, labels, limits, breaks)`
+#####  For point size
+`scale_size_discrete(name, labels, limits, breaks)`
+#####  Opacity/transparency
+`scale_alpha_discrete(name, labels, limits, breaks)`
+
+
+#### Adding trend lines to a ggplot.
+> Trend lines can be useful for showing the direction of the relationshp between two variables. A linear trend line will be a straight line that best representions the covariation of two variables. To add such a line you can utilize geom_smooth()
+  - `geom_smooth()` has multiple options that can be included within it.
+  - the method command provides the type of line you want to use, the default is linear. 
+  
+##### Excercise 19: Create a scatter plot comparing pure tone average (`pta`) and average words in noise (`win`). Then, add a linear trend line over the scaterplot. You will have to use google or `?geom_smooth` in the command line to figure out how to create the straight linear line
+
+##### Response 19
+```{r}
+
+```
+
+##### Solution 19
+```{r}
+ggplot(data = df, aes(x = pta, y = win)) +
+  geom_point() +
+  geom_smooth(method = lm)
+```
+
+##### Excercise 20: Expand upon the previos code to instead add two linear lines  that show the differences between the relationwship between pta and win when also accounting for sex.
+
+##### Reesponse 20:
+```{r}
+
+```
+
+##### Solution 20:
+```{r}
+ggplot(data = df, aes(x = pta, y = win)) +
+  geom_point() +
+  geom_smooth(aes(color=HearingAidUse ), method = lm)
+```
+
+##### Excercise 21: Adding another dimension. You can also change the size of the plot points to reflect a continuous variable. Let's try with age.  This is called a bubble plot. Task:
+  - Modify the size of the points by including `size = ` to account for differences in age
+  - Color plot points to reflect the age group
+
+##### Response 21:
+```{r}
+
+
+```
+
+##### Solution 21:
+```{r}
+ggplot(data = df, aes(x = pta, y = win)) +
+  geom_point(aes(color=HearingAidUse, size=age)) +
+  geom_smooth(aes(color=HearingAidUse ), method = lm)
+```
+
+##### Excercise 22: Add another dimension to the plot by faceting by the sex variable. 
+ - In addition:
+  - Modify axis labels
+  - Add a title
+
+##### Response 21
+```{r}
+
+```
+
+##### Solution 21:
+```{r}
+ggplot(data = df, aes(x = pta, y = win)) +
+  geom_point(aes(color=HearingAidUse, size=age)) +
+  geom_smooth(aes(color=HearingAidUse ), method = lm) +
+  facet_wrap(~sex) +
+  labs(x = "Pure tone average",
+       y = "Words in noise average",
+       title = "Scatterplot of pure tone average and words in noise average")
+  
+```
+
+##### Bonus 1: Box plots: Box plots are a nice way to compare the mean and variance of multiple variables. They are great to compliment t-tests.  The following plot is created with df_long.
+
+##### Bonus 1 example:
+```{r}
+ggplot(df_long, aes(x = ear, y = pta)) + 
+  geom_boxplot(aes(fill = ear))
+```
+
+##### Bonus excercise 1: Create a box plot cmoparing pta across Hearing aid users.  You will need to use the df dataset for this comparison. 
+
