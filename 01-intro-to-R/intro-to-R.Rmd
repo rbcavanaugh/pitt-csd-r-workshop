@@ -1,5 +1,4 @@
 ---
-git ---
 title: "Getting started with R"
 author: "Rob Cavanaugh"
 date: "`r Sys.Date()`"
@@ -325,7 +324,7 @@ The palmer penguins data comes pre-packaged for use in R. But our data is usuall
 
 ```{r}
 # df is a common abbreviation used for dataframe
-df = read.csv(here("R-not-scary", "compound_words.csv"))
+df = read.csv(here("01-intro-to-R", "compound_words.csv"))
 ```
 
 # RMarkdown (.Rmd) vs. R Scripts (.R)
