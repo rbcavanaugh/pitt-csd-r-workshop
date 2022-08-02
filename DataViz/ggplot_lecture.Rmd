@@ -2,7 +2,9 @@
 title: "Exploratory data analysis"
 author: "AMS"
 date: '2022-07-01'
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -35,419 +37,598 @@ library(dplyr)
 
 #### Data visualization:
 
-  -   Use knowledge of perception and cognition to plan, create, and evaluate data visualizations.
+  -   Summarize tabular data
+  -   Visualize variation of single variables
+  -   Visualize covariation of multiple variables
+  -   Lots of coding
 
-  -   Conduct exploratory data analysis using tabulated and graphical data visualization techniques
 
--   Choose color pallets for visualization based on principles of perception.
+#### 1:  install the following packages
+  - dplyr
+  - tidyr
+  - ggplot2
+  - gridExtra
+  - GGally
 
-### Goals:
-
--   Lots of coding
-
-### Let's get it started.
-
-### What is an object?
-
--   Simplest description, an object within the R programming language is a noun describing different types of data structures.
-
--   Six types:
-
-    -   Vector:
-
-        -   The most simple type of data structure in R.
-
--   "A sequence of data elements"
-
-    ```{r}
-    #numberical vector
-    #create an r object named vec1 that consists of the the numbers 1,2,3,4
-    vec1 = c(1, 2, 3, 4) 
-    #print vec1
-    vec1
-    ```
-
-Create a vector named vec2, containing four numerical elements.
-
+##### Following the example below, install the remaining packages
 ```{r}
-#answer here:
+#example
+#install.packages('dplyr')
 
 ```
 
-Example solution:
 
+##### Solution 1:
 ```{r}
-vec2 = c(-1, -2, -3, -4)
+# install.packages(dplyr) # data manipulation
+# install.packages(tidyr) # data manipulation
+# install.packages(ggplot2) #plotting
+# install.packages(gridExtra) #plotting
+# install.packages(GGally)
 ```
 
-Statistical and mathematical operations can be conducted between vectors. Create a new vector, vec3, by adding vec1 and vec2 together. Add vec1 and vec2 together. Print vec3.
+#### 2. Load the packages with the ```library()``` function. Please also load the library ```readr```. Note, unlike the ```install.packages()``` command, you do not have to put package names in quotes or apostrophes when using ```library()```.
 
+##### Response 2:
 ```{r}
-#answer here:
-
-```
-
-Example solution:
-
-```{vec3 = vec1 + vec2}
-vec3
-```
-
--   Vectors can also include data structures such as characters such as unique letter, word, or letter/word/number combinations.
-
-Example
-
-```{vec4 = c("a", "b", "c")}
-```
-
--   Lists
-
-    -   Objects of R that contain various types of elements including characters, numbers, vectors, and a nested list inside it. It can also consist of matrices or functions as elements. It can be created with the help of the list() function.
-
-    -   We will not focus on lists today, provided below are useful websites that outline methods for working with lists
-
-        -   <https://data-flair.training/blogs/r-list-tutorial/>
-
-        -   <https://www.r-bloggers.com/2015/08/how-to-use-lists-in-r/>
-
-        -   <https://bioconnector.github.io/workshops/r-lists.html>
-
--   matrix
-
-    -   arrange elements in one to two dimensional space
-
-    -   Columns and rows within matrix **environments do NOT have names**
-
-    -   Example:
-
-    -   $$
-        \begin{bmatrix}1 & 2 & 3\\a & b & c\end{bmatrix}
-        $$
-
--   array:
-
-    -   Stores data in more than 2 dimensions. Will not be addressed today, but can be created with `array()`
-
-    -   Useful links:
-
-        -   <https://www.tutorialspoint.com/r/r_arrays.htm>
-
-        -   <https://www.educative.io/answers/how-to-work-with-arrays-in-r>
-
-        -   <https://www.geeksforgeeks.org/r-array/>
-
--   Dataframe:
-
-    -   a 2-dimensional object where each column consists of the value of one variable and each row and each row is the value of each column.
-
-```{r}
-starwars = dplyr::starwars
-df = starwars[,1:6]
-head(df)
-```
-
-### Variable types:
-
--   As noted above, elements within a vector, matrix, list, array, and dataframes can come in multiple forms. The following variable types are utilized by R and we will utilize a couple of these today.
-
-    -   Character
-
-        -   "a", "name", "a1", "!a"
-
-    -   Numeric
-
-        -   Real numbers: integers (1, 2, 10, etc) and irrational numbers (0.12, -0.1, 12.45)
-
-    -   Integers:
-
-        -   Forces whole numers
-
-    -   Two additional variable structures are included in R, but will not be covered today.
-
-        -   Logical
-
-        -   Complex
-
--   Define the variable types in the dataset below.
-
-```{r}
-df = df %>%
-  mutate(mass = mass + rnorm(n = 6, mean= 0, sd = 1))
-head(df)
-```
-
-#### Hold up and recap:
-
-#### Where were we?
-
--   What is an R object?
-
--   Understand the different types of variables
-
--   What is a dataframe
-
--   What's inside a dataframe
-
-#### Data Visualization:
-
--   The process of translating information into a visual context to help the human brain understand and make insightful inferences about data.
-
--   Goal:
-
-    -   Make it easy to identify patters, trends, and outliers in large data sets.
-
--   Your visualization should allow the individual examining the figure to extract information that is not easy to present in text, or to compliment text to help a reader unpack knowledge.
-
--   Visualiations that require large amounts of text to explain
-
-The required libraries for this tutorial include `ggplot2` . As learned in previous lectures, please install and load the library below.
-
-Good practice when working in rmarkdowns is to install packages from the console or `#comment` out any installation lines of code, because some installs can be lengthy. In the below code, install the following libraries `dplyr` and `ggplot2`. Load both of the packages along with `readr`.
-
-```{r}
-#install ggplot2 below.
-
-#install dplyr below.
-
-#load the library ggplot2, dplyr, and readr
-
-```
-
-## Solution
-
-```{r}
-#install ggplot2 below.
-#install.packages('ggplot2')
-#install dplyr below.
-#install.packages(`dplyr`)
-#load the library ggplot2, dplyr, and readr
-library(ggplot2)
-library(dplyr)
+#example
 library(readr)
 ```
 
-### Let's load some data. Briefly these data describe variables from
-
-```{r}
-pnt = read.csv("pnt.csv")
-```
-
--   About the data
-
-    -   \- These data are from the 175 items from a commonly utilized picture naming test in aphasiology.
-
-    -   Data set includes six variables
-
-        -   word: Target word name
-
-        -   frequency: The frequency the word it utilized in publically available data
-
-        -   aoa: The estimated the age of acquisition of the word
-
-        -   length: The number of phonemes of the word
-
-        -   difficulty: The estimated naming difficulty of the item.
-
-            -   Lower numbers are easier than higher numbers
-
-            -   0 is the mean difficulty of the item
-
-### After loading your data there are a couple ways to take a quick look at the type of variables included in the dataset and some of their descriptive statistics.
-
-![](variable%20names.png)
-
-### Take a peak at the data.
-
-There are multiple functions that can help you quickly learn about your data. Each command requires you to input the dataframe name into the parentheses following the function name.
-
--   `summary()` provides descriptive statistics such as the minimum, maximum, median and mean variables. It will also provide the number of character values in a given variable along with the number of missing values of a given variable.
-
--   `str()` prints the name of each column, followed by the type of data within each variable.
-
--   `head()` prints the first 6 rows of your data. \### Excercise 1-8: Previewing data
-
-#### Previewing data, exercise 1: Print a summary of the six variables from the dataset `pnt`
-
-##### Response 1:
-
-```{r}
-#PROVIDE ANSWER HERE
-```
-
-##### Solution 1:
-
-```{r}
-summary(pnt)
-```
-
-#### Previewing data, exercise 2: Print a summary of the `length` variable only from the `pnt` dataset
-
-##### Response 2:
-
-```{r}
-#Hint: Use the $ operator
-#TYPE SOLUTION HERE
-```
-
 ##### Solution 2:
-
 ```{r}
-#use the $ operator to tell R which variable you would like it to process
-summary(pnt$length)
+library(readr) #used to load csv files
+library(dplyr) # data manipulation
+library(tidyr) # data manipulation
+library(ggplot2) #plotting
+library(tinytex)
+#library(gridExtra) #plotting
+#library(GGally) #plotting
 ```
 
-#### Previewing data, exercise 3: Print the structure of every variable of the `pnt` dataset with a single command.
+#### 3: Load dataset. Use the ```read_csv()``` to load the following dataset: hearingLoss.csv and name the dataset ```df```
 
-##### Response 3:
-
+##### Response 3
 ```{r}
-#INSERT ANSWER HERE
+#Load  data set here. 
+
 ```
 
 ##### Solution 3:
+```{r}
+df = read.csv('hearingLoss.csv')
+```
+
+### the below list contains data manipulation and helper functions to insure all excercises work properly below. Please make sure to run this. You do not need to understand the code at this time.
+```{r}
+df = df %>%
+  mutate(id = as.factor(id),
+         sex = as.factor(sex),
+         HearingAidUse = as.factor(HearingAidUse),
+         hl_mild = as.factor(hl_mild),
+         hl_mod = as.factor(hl_mod),
+         NIH_mod = as.factor(NIH_mod),
+         NIH_severe = as.factor(NIH_severe),
+         sr_hl = as.factor(sr_hl),
+         sr_hl2 = as.factor(sr_hl2)) %>%
+  select(-X)
+
+df_long = df %>%
+  select(id, age, sex,  lpta, rpta) %>%
+  gather(ear, pta, lpta:rpta) %>%
+  mutate(ear = ifelse(ear == "lpta", "Left Ear", "Right Ear"))
+```
+
+#### 4: After loading the dataset we can use a series of commands to examine the structure of the data, the names of the variables within the dataframe, and provide summary statistics of the data.
+
+##### 4.1 Use the ```str()``` command to look at the shape of df, learn the variable names, and variable types. Then, answer the questions below.
+
+##### Response 4.1
+```{r}
+
+```
+##### Solution  4.1
+```{r}
+str(df)
+```
+
+##### 4.1.1: How many variables are in the dataset?
+> Response:
+
+##### 4.1.2: How many observations are there for each variable? 
+>
+
+##### 4.1.1-Solution: How many variables are in the dataset?
+> Response: The first line that is output after running ```str(df)``` can be used to answer this question along with 4.1.2. there are 17 variables.
+
+##### 4.1.2-Solution: How many observations are there for each variable? 
+> 111 observations
+#### Data Visualization:
+
+#### The ```head()``` command is also a useful tool for gaining an understanding of the structure of your data. By default it outputs the first 6 observations from each variable in your dataset.
+
+##### 4.2: Use the ```head()``` to examine the first 6 rows of your data. 
 
 ```{r}
-str(pnt)
+
+
 ```
 
-#### Previewing data, exercise 4: Print the structure of the variable `difficulty` within the `pnt` dataframe.
-
-##### Response 4:
+##### 4.2 solution
 
 ```{r}
-#INSERT ANSWER HERE
+head(df)
 ```
 
-##### Solution 4:
+#### Next we can investigate the variation of each variable. The ```summary()``` function is extremly useful for this. You can run the summary function  on a single variable within a dataset or all variables within the dataset. We will do both.
+
+
+##### 5.1: use ```summary()``` to produce summary statistics for all variables for df. This is done by placing the dataframe name within the function itself.
 
 ```{r}
-str(pnt$difficulty)
+
 ```
 
-#### Previewing data, exercise 5: Print the first six rows of `pnt` for all of the variables
 
-##### Response 5:
+##### 5.1 solution
+```{r}
+summary(df)
+```
+
+##### 5.1.1 Using the output from summary, identify and report the mean age of the participants in the study?
+
+##### 5.1.1 solution:
+the mean age of the participants in this study is 74.15.
+
+
+##### 5.2: Generate a summary of left pure tone average (variable name = lpta).
+```{r}
+summary(df$lpta)
+```
+
+#### 6: Summarizing categorical variables. As can be seen the summary function does not provide very useful information regarding categorical variables such as ```id```. It is worth noting that it is common to have multiple participant ids in the same column if there is an additional variable in the dataframe denoting timepoint. Use the the combination of ```length()``` and ```unique()``` to identify the number of participants in the study.
+
+**Hint, you will need to nest one function inside the other.
 
 ```{r}
-#INSERT ANSWER HERE
 
 ```
 
-##### Solution 5:
+##### Solution 6: 
+```{r}
+length(unique(df$id))
+```
+
+## Onto visualization.
+
+### Univariate visualizations: 
+> There are many ways to visualize data in R. Including the base R functions and ggplot2 (gg = grammer of graphics). In this workshop we will rely heavily on the ggplot2 package because of its ability to generate high resolution images that are publication ready. 
+
+#### Ogres are like onions, they come in layers.  ggplots are like ogres, they also come in layers. 
+
+> When generating plots within the ggplot framework it will be helpful to remember that each time you use the + sign, you are adding a new layer to the figure. 
+
+> The first line of code when creating a figure in ggplot2 is ```ggplot()```. The first argument that must me met within this function is telling ggplot where the data is coming from. 
+
+##### 7: Fill in in the blank of the function below and run the command to generate the ggplot template for most figures. This will look like a white piece of paper, a perfect starting point for our figures.
 
 ```{r}
-head(pnt)
+#ggplot(data = )
 ```
 
-#### Previewing data, exercise 6: Print the first six rows of the variable `word` from the `pnt` dataset.
+##### Solution 7: 
+```{r}
+ggplot(data = df)
+```
 
-##### Response 5:
+#### ```ggplot(data, aes())```
+> The second argument within the ```ggplot()``` command is ```aes()```. aes stands for aesthetics and is a function itself.  Within the aes section you can define you x and y variables.
+  - ```aes()``` follows a ```,``` after the data's name
+  - ```aes()``` is nested within both of the partheses corresponding to the ```ggplot()``` function. 
+  - variable names within aes do not require the dataframes name followed by the dollar sign because you have already told ggplot the name of the dataset.
+  - declare x and y variables within the aesthetic function like this: aes(x = NameOfVariable, y = NameOfVariable)
+  
+##### 8: Use ```aes()``` within the ```ggplot()``` command to declare ```age``` as the x axis variable.  
 
 ```{r}
-#INSERT RESPONSE HERE
+
 ```
 
-##### Solution 6:
+##### Solution 8:
+```{r}
+ggplot(data = df, aes(x = age))
+```
+
+##### 8.1: What do you see? What did the additional layer add to the figure?
+
+> After declaring your data and the variables of interest within ggplot, as done above and provided in solution 8, we can tell ggplot what type of plot we want to produce. Nearly always, if not always, this command will start with ```geom_``` and following the underscore will by the type plot you want to make.
+  - these commands follow the root ggplot command above following a ```+```` sign. It is good practice to hit return after the plus sign.
+
+##### 9: 
+> The histogram. A histogram is a popular and useful figure for identifying the type of distribution your variables are. the command. the command to generate a histogram is      
+```geom_histogram()```. You can also use the function ```geom_bar()```
+
+  - You do not need to write the variable name within geom_point() because you have already told ggplot both the data's name and the variable of interest. 
+  
+##### Add the geom_histogram function to the above code to generate a histogram for age. 
+
+##### Response 9.1
+```{r }
+
+```
+
+##### Solution 9.1
+```{r histogram }
+ggplot(data = df, aes(x = age)) + 
+  geom_histogram()
+```
+##### 9.2: Generate the same plot with the ```geom_bar``` function instead of ```geom_histogram```
+
+##### Response 9.2
+```{r histogram }
+
+```
+
+##### Solution 9.2
+```{r histogram }
+ggplot(data = df, aes(x = age)) + 
+  geom_histogram()
+```
+
+##### 10. Customizing plots. Ggplots are highly customizable. You can change nearly every aspect of any figure. 
+
+##### 10.1: Let's start by changing the color of the border lines of the histogram. To compelte this task, add ```color = ``` within the ```geom_histogram()``` line of your plot.  Following the equal sign of color, type the name of a color of your choice within quotation marks. 
+  -Some colors are not available by namee. If you get an error message here read the message and decide if it is because the color was not recognized.
+  
+##### Response 10:
+```{r}
+
+```
+
+##### Solution 10:
+```{r}
+ggplot(data = df, aes(x = age)) + 
+  geom_histogram(color = "blue")
+```
+
+##### 10.2: Change the fill color your histogram by adding ```fill = ``` after the color command with a color of your chosing. 
+  - Don't forget a comma! 
+  - Don't forget quotes
+  
+##### Response 10:
+```{r}
+
+```
+
+##### Solution 10:
+```{r}
+ggplot(data = df, aes(x = age)) + 
+  geom_histogram(color = "blue", fill = "light blue")
+```
+
+##### Adding labels.
+> The following labels can be added to your ggplot
+  - ```title = ``` - Name of the figure, displayed on top
+  - ```subtitle = ``` - displayed below the title
+  - axis labels - customize x and y axis labels with ```x = ``` and ```y = ```
+  - ```caption = ``` - Text will be displayed in the bottom right of the plot
+  - ```tag = ``` - text will be displayed in the top left of the plot
+  
+> Labels are added with the ```labs()``` command. 
+  - ```labs()``` should follow the ending parenthese of your geom function. In the working example, following ```geom_histogram```
+  - The above commands all go within the labs function.
+  - All text for each label type should be within quotation marks.
+  - Spaces are a-okay in labels! 
+  - Following each label name and the ending quotation mark add a comma and hit return to add your next variable. 
+  
+  
+##### 11.1: Add a title to your plot, be short and descriptive, for example "Histogram of age"
+
+##### Response 11.1
+```{r}
+
+```
+
+##### Solution 11.1
+```{r}
+ggplot(data = df, aes(x = age)) + 
+  geom_histogram(color = "blue", fill = "light blue") +
+  labs(title = "Histogram of age") 
+
+```
+
+##### 11.2: Change the x and y axis labels to ```Age in years``` and ```Count```. Do not remove the title.
+- Why is it important to change the x axis variable name in this case?
+
+##### Response 11.2
+```{r}
+
+```
+
+##### Solution 11.2
+```{r}
+ggplot(data = df, aes(x = age)) + 
+  geom_histogram(color = "blue", fill = "light blue") +
+  labs(title = "Histogram of age",
+       x = "Age in years",
+       y = "Count")
+```
+
+
+##### Bringing it all together.   Independent excercise 1:
+> Use ggplot to create a histogram for left pure tone average. This variable is labeled lpta. 
+  - Modify the color of the fill and color of the bins
+  - Generate a meaningful title
+  - Change x axis to "Left ear pure tone average"
+  - Change y axis to "Number of Observations"
+  - Bonus 1:  within geom_histogram add the ```bins = ``` function to change the number of bins to 50. 
+      - Hint: no quotes here.
+  - Bonus 2: add a density curve over your histogram with geom_dens
+      - hint: You will need to google how to complete this step.
+      - hint 2: remember to include keywords in your search cush as "ggplot" "histogram" and "density curve". 
+
+##### Independent excercise solution 1
+```{r}
+
+```
+  
+##### Independent excercise solution 1:
+```{r}
+ggplot(data = df, aes(x = lpta)) + 
+  geom_histogram(color = "red", fill = "blue", bins = 50, aes(y = ..density..)) +
+  geom_density() +
+  labs(title = "Histogram of left pure tone average",
+       x = "Left ear pure tone average",
+       y = "Number of Observations")
+
+```
+
+
+#### Plotting two variables:
+
+##### Independent excercise 2: What is the code below doing? Use your own words.  What has it achieved and not achieved?
+  -Hint: compare this histogram to the above histogram of lpta.
+```{r}
+ggplot(data = df) +
+geom_histogram(aes(x= lpta)) +
+geom_histogram(aes(x = rpta))
+```
+##### Independent excercise 2.2: Try adding colors to see if that helps.
+
+
+##### Response independent excercise 2.2: 
+```{r}
+
+```
+
+##### Solution independent excercise 2.2: 
+```{r}
+ggplot(data = df) +
+geom_histogram(aes(x= lpta)) +
+geom_histogram(aes(x = rpta), fill = "blue")
+```
+
+##### Independent excercise 2.3: Have any improvements been made as to the interpretability of the plot? How can we further improve the plot?
+
+> Response: 
+
+#####  ```alpha = ``` 
+  - is a method utilized to set the opacity of your plotted variables and requires a numberical value between 0 and 1.
+  - ```alpha = 1``` is completely opaque while ```alpha = 0``` is translucent. 
+  - declare alpha inside your geom_ function, but outside ```aes()```
+  
+##### Independent excercise 2.4: Add alpha equals 0.5 to the rpta geom.
+  - Hint: don't forget the comma
+
+##### Response independent excercise 2.3: 
+```{r}
+
+```
+
+##### Solution independent excercise 2.1: 
+```{r}
+ggplot(data = df) +
+geom_histogram(aes(x= lpta)) +
+geom_histogram(aes(x = rpta), fill = "blue", alpha = 0.5)
+
+```
+##### Interpretation: Any better? What did we learn? What else does the plot need?
+> Response:
+
+
+##### Adding a legend to wide form data, like we are looking at, is not very easy in ggplot2. You'll cover wide vs long form data tomorrow.
+> Your dataframe structure is very important when you plot multiple variables at once. As seen above, we do not want to just stack two histograms together, in this case we lose a lot of information. We need to add both color and changes in opacity. In the following excercise we will use a new dataframe titled df_long. Prior to plotting, check out the dataset. It has less variables than df to help focus your attention on a few key variables. Use your summary commands to report the differences. Pay specific attention to variables ```ear``` and ```pta```. 
+- trying using the ```unique()``` command on ear as well. 
+
+##### 12: Investigate the structure df_long
+> you will learn how to summarize variables in long form in a later lecture. 
+
+##### Response 12
+```{r}
+#structure of df_long
+
+```
 
 ```{r}
-head(pnt$word)
+#head of df_long
+
 ```
-
-#### Previewing data, exercise 7: The `tail` function is the opposite of head. Print the last 6 items of all variables with pnt below.
-
-##### Response 7:
 
 ```{r}
-#INSERT SOLUTION HERE
+#uinique obervations in variable ear
+
 ```
 
-##### Solution 7:
+##### Solution 12
+```{r}
+#structure of df_long
+str(df_long)
+```
 
 ```{r}
-tail(pnt)
+#head of df_long
+head(df_long)
 ```
-
-#### Previewing data, exercise 8: Within the `tail` and `head` functions, you may also specifiy how many rows you want to output by adding a `n = #` where \# is the desired number of output rows. Make sure to add a comma after the dataframe name.
-
-#### Print the first 10 rows of PNT for all variables.
-
-##### Response 8a
 
 ```{r}
-#INSERT SOLUTION HERE
+#uinique obervations in variable ear
+unique(df_long$ear)
 ```
 
-##### Solution 8a
+##### 13: Revisiting indepdent question 2: Plotting two histograms together.
+> With our newly formatted dataset, coding the two histogram figure is not  much different than the single histogram figure. Necessary step:
+ - Tell ggplot the variable that dilineates between left and right ear for the pure tone averages.
+ - To do this, add the command ```color = ``` within the original aes call of your ggplot.
+ - be careful when using this function because the default is to stack the histogram, which results in higher peaks. 
+ 
+ 
+```{r}
+ggplot(data = df_long, aes(x = pta, color = ear)) +
+  geom_histogram() +
+  labs(title = "Stacked histograms resulting in confusingly high peaks")
+```
+##### To navigate this stacking issue, add the following into `geom_histogram(position = "identity")`.
+
+
+##### Response 13.2:
+```{r}
+
+```
+##### Solution 13.2:
+
+
+##### 13.2: Chanage the color function to fill. What's the difference? 
+
+##### Response 13.2:
+```{r}
+
+```
+##### Solution 13.2:
+```{r}
+ggplot(data = df_long, aes(x = pta, color = ear)) +
+  geom_histogram(position = "identity")
+```
+##### Note that the figure is still not very interpretable. As above, we are not left with the two histograms on top of eachother. Two steps to fix this as above, add color and change alpha.  In the excercise below:
+  - Change the fill color of the plot
+  - Change the alpha level to ~ 0.5
+
+
+  
+#### 13.3 Try an alpha level of 0.5 for the above plot utilizing fill, not color.
+
+##### Response 13.3:
+```{r}
+
+```
+
+##### Solution 13.2:
+```{r}
+ggplot(data = df_long, aes(x = pta, fill = ear)) +
+  geom_histogram(position = "identity", alpha = 0.5)
+```
+
+
+##### 14: Overlapping figures with alpha in black and white coloring can create figures that are hard to interpret. 
+
+##### *Thought exercise* Why should we care about whether a figure that looks presentable in color is presentable in black and white?
+
+##### One way to get around these issues is to create a figure with multiple plots imbedded in it. Adding `facet_wrap()` following your ggplot with some slight modifications to your figures syntax is a great way to achieve this task. 
+  - Like `color()` and `fill()` , `facet_wrap()` creates plots based on a categorical variable such as `ear`.  
+  - The syntax is slightly different in this case and requires a `~` followed by the grouping variables name. 
+    - e.g. `facet_wrap(~ear)`
+    
+    
+##### Add facetwrap to the above plot and remove all functions adding color and modifying opacacity in the figure The end result should be two histograms in black and white. In addition use the `labs()` command to add a title and change the axis labels. Minimally, change `pta` on the x axis to "Pure tone average" or, for an extra challenge change "pta" to "pta*" and add a subscript to the x axis plot to write out the long form of the acronym. 
+  -hint: Don't forget we are always adding layers to your original blank canvas generated by `ggplot(data=df_long, aes(x = pta))`. facet_grid is just another layer. 
+
+
+##### Response 15:
+```{r}
+
+```
+
+##### Solution 15:
+```{r}
+ggplot(data = df_long, aes(x = pta)) +
+  geom_histogram() +
+  facet_grid(~ear) +
+      labs(title = "Pure tone averages of study participants",
+       x = "Pure tone average",
+       y = "Count")
+
+```
+### Multivariate plots:
+> There are many ways to plot multivariate comparisons of variables. The next section will focus on scatter plots, using the `geom_point()` function. Instead of just providing an x axis variable in the main ggplot function we will now have to add a y variable ``ggplot(data = df, aes(x = var1, y = var2)).
+
+##### Excercise 15: Generate scatterplot with ggplot
+> Use dataframe `df` to generate a scatterplot comparing age and pure tone average (pta). Don't forget to add axis labels and a title. 
+
+###### Response 15:
+```{r}
+
+```
+
+###### Solution 15
+```{r}
+ggplot(data = df, aes(x = pta, y = age)) +
+  geom_point() +
+  labs(title = "Scatterplot: L/R puretone average and age",
+       x = "Pure tone average",
+       y= "Age in years")
+```
+
+##### We can now add another dimension to the plot by changing the color of the plot points or the shape of the points. 
+
+##### Excercise 16: 
+> Following the examples above, change the fill color of the plot points to represent the sex of the participant. 
+###### Response 16:
+```{r}
+
+```
+
+###### Solution 16
+```{r}
+ggplot(data = df, aes(x = pta, y = age, color = sex)) +
+  geom_point() +
+  labs(title = "Scatterplot: L/R puretone average and age",
+       x = "Pure tone average",
+       y= "Age in years")
+```
+
+##### Excercise 16: 
+> To avoid problems of creating plots in color, change the `color` command to `shape` 
+
+###### Response 16:
+```{r}
+
+```
+
+###### Solution 16
+```{r}
+ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
+  geom_point() +
+  labs(title = "Scatterplot: L/R puretone average and age",
+       x = "Pure tone average",
+       y= "Age in years")
+```
+
+#### We can add another dimension to the plot by faceting the scatterplot based on another categorical variable.  
+> Following examples above, add ```facet()``` wrap
+
+##### Excercise 17: Create a faceted version the above plot with the "HearingAidUse" variable. 
+
+###### Response 17:
+```{r}
+
+```
+
+###### Solution 17
 
 ```{r}
-head(pnt, n = 10)
+ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
+  geom_point() +
+  labs(title = "Scatterplot: L/R puretone average and age",
+       x = "Pure tone average",
+       y= "Age in years") +
+  facet_grid(~HearingAidUse)
 ```
-
-#### Print the last 4 rows of PNT for all variables.
-
-##### Response 8b:
-
-```{r}
-#INSERT SOLUTION HERE
-```
-
-##### Solution 8b:
-
-```{r}
-tail(pnt, n = 4)
-```
-
-#### Run the summary function by inserting the dataframe name into the the summary function
-
-### Variables:
-
--   Categorical: A characteristic of someone of something that can be called by name (e.g., handedness)
-
-    -   Types of plots for categorical variables:
-
-        Pie plot:
-
-```{r pie_chart}
-df2 = read.csv("osf_meir and Bangash.csv")
-df2 = df2 %>%
-  mutate(Handedness == "Right", 1, 0)
-df2 = df2 %>% #create df2 based on a function to follow the pipe symbol 
-  count(Handedness) #count the number of each unique observation found in the "Handedness" variable
-
-#Use pie to generate pie chart
-pie(df2$n,  #provide dataframe and variable name
-    labels = c("Left", "Right"), #generate labels for variables. Variable names are defined in alphabetic and numerical order.
-    main = "Pie chart of handedness")  #Main function is used to create a title. title must be in quotes and can included spaces.
-```
-
--   Bar plot
-
-```{r}
-#create education variable
-library(ggplot2)
-df = read.csv("osf_meir and Bangash.csv")
-df$ed = ifelse(df$Education < 12.1, "High School",
-               ifelse(df$Education > 12 & df$Education < 16, "Some College",
-                      ifelse(df$Education == 16, "Bachelor's", "Graduate")))
-df$ed = factor(df$ed, levels = c("High School", "Some College", "Bachelor's", "Graduate"))
-
-barplot = ggplot(df) + # create ggplot object from data = df+
-  geom_bar(aes(x = ed, fill = ed)) +
-  labs(
-    title = "Barplot of education level",
-    x = "Level of education",
-    y = "Count",
-    fill = "Education Level"
-  )
-barplot
-```
-
-#### Here is a screen grab from [osf](https://osf.io/3eg4x/wiki/home/)
-
-#### Now that we have a loaded the dataset let's jump into plotting. Whenever a plot is generated, it should convey a message that is not easily done so by words.
-
-### 
-
-#### The first question you should think about when starting the data visualization processing is "why." Why do you want to look at your data.
-
-### Consider the third variable in the data set, `handedness`.
