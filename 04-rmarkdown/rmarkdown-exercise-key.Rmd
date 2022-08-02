@@ -33,7 +33,7 @@ Figure 1. Panel A:
 **Change the following code chunk so that it only displays the image and not the code**
 
 ```{r, echo = FALSE}
-knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))
+knitr::include_graphics(here::here("04-rmarkdown", "images", "fig1.png"))
 ```
 
 
@@ -47,8 +47,8 @@ library(here)
 ## Read in data
 
 ```{r}
-demographics = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Demographics.csv"), stringsAsFactors = TRUE)
-ganong = read.csv(here("rmarkdown", "giovannone2022", "TIMETIME-Ganong.csv"), stringsAsFactors = TRUE)
+demographics = read.csv(here("04-rmarkdown", "giovannone2022", "TIMETIME-Demographics.csv"), stringsAsFactors = TRUE)
+ganong = read.csv(here("04-rmarkdown", "giovannone2022", "TIMETIME-Ganong.csv"), stringsAsFactors = TRUE)
 ```
 
 ## Demographics paragraph
@@ -266,22 +266,17 @@ head(ganong.summary)
 
 ```{r}
 # Plot.
-labels.Session <- c(`1` = "Session 1", `2` = "Session 2")
-
-ganong.plot <- ggplot2::ggplot(ganong.summary,
-                               ggplot2::aes(x=VOT, y=K.Mean, group=Continuum, color=Continuum)) +
+ganong.plot <- ggplot(ganong.summary, aes(x=VOT, y=K.Mean, color=Continuum)) +
   #theme_cowplot(font_size=20) +
-  ggplot2::geom_point() +
-  facet_wrap(. ~ Session, labeller=ggplot2::labeller(Session = labels.Session)) +
-  ggplot2::geom_line(aes(linetype=Continuum), size=0.5, show.legend = FALSE) +
-  ggplot2::geom_errorbar(aes(y = K.Mean, ymin = K.Mean-K.SE, ymax = K.Mean+K.SE), width = 1) +
-  ggplot2::ylim(0, 1) +
-  ggplot2::labs(x="VOT (ms)", y = "p(k)") +
-  ggplot2::scale_color_manual(values=c("#00846b", "#6a0084"),
+  geom_point() +
+  facet_wrap(. ~ Session) +
+  geom_line(aes(linetype=Continuum), size=0.5, show.legend = FALSE) +
+  geom_errorbar(aes(ymin = K.Mean-K.SE, ymax = K.Mean+K.SE), width = 1) +
+  ylim(0, 1) +
+  labs(x="VOT (ms)", y = "p(k)") +
+  scale_color_manual(values=c("#00846b", "#6a0084"),
                      labels = c("giss - kiss",
-                                "gift - kift")) +
- # theme(legend.text.align = 0) +
-  theme(panel.grid.major.y = ggplot2::element_line(colour="grey"))
+                                "gift - kift"))
 
 ganong.plot
 

@@ -171,6 +171,35 @@ plot <- ggplot(
 plot
 ```
 
+Hints:
+
+- Think about how to google for the different ggplot2 geoms you might need
+  - example: "how to add manual colors and labels ggplot2"
+- A function that can give you two plots by variable is called `facet_wrap()`
+- The error bars are usually calculated by taking mean +/- SE. 
+
+There are some more hints below, if you're really stuck
+
+```{r, eval = FALSE, class.source = "fold-hide"}
+plot <- ggplot(MYDATA, aes(x=X_AXIS_COLUMN, y=Y_AXIS_COLUMN, color=COLUMN_TO_COLOR_BY)) +
+  #theme_cowplot(font_size=20) +
+  geom_GEOM_FOR_SCATTER_PLOTS() +
+  facet_wrap(. ~ Session) +
+  geom_GEOM_WITH_LINES(aes(linetype=COLUMN_TO_CHANGE_LINETYPE_BY),
+                       size=0.5, show.legend = FALSE) +
+  geom_THAT_GIVES_YOU_ERROR_BARS(
+    aes(ymin = COLUMN_WITH_MEAN_MINUS_COLUM_WITH_STD_ERROR,
+        ymax = COLUMN_WITH_MEAN_PLUS_COLUM_WITH_STD_ERROR),
+    width = 1) +
+  ylim(c(LOWER_Y_AXIS_LIMIT, UPPER_Y_AXIS_LIMIT)) +
+  labs(x="X_AXIS_LABEL", y = "Y_AXIS_LABEL") +
+  scale_color_manual(values=c("COLOR FOR GISS_KISS", "COLOR FOR GIFT_KIFT"),
+                     labels = c("giss - kiss",
+                                "gift - kift"))
+  
+plot
+```
+
 # Reporting session info
 
 In an new chunk, report your "session info" (info about the R software) for reproducibility. See if
