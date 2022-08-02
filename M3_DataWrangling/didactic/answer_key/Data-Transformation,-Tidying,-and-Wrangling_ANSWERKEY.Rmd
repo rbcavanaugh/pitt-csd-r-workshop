@@ -2,7 +2,11 @@
 title: "Data Transformation, Tidying, and Wrangling_ANSWERKEY"
 author: "Emily Goldberg"
 date: '2022-07-19'
-output: html_document
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
+    code_folding: show
 ---
 
 # Data Transformation, Tidying, and Wrangling - ANSWER KEY!
