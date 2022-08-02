@@ -41,13 +41,9 @@ knitr::include_graphics(here::here("rmarkdown", "images", "fig1.png"))
 
 **Task 2b: change warning and message chunk options to false**
 
-*< insert code here >*
-
 ## Read in data
 
 **Task 3: read in the demographics and "ganong" data**
-
-*< insert code here >*
 
 ## Inline reporting
 
@@ -67,11 +63,7 @@ To do this, we need the following information saved in R-objects
 
 **Task 4a: use a function to preview the top 6 rows of the demographics data**
 
-*< insert code here >*
-
 **Task 4b: Calculate the 5 summary statistics noted above**
-
-*< insert code here - use multiple chunks >*
 
 **Task 4c: Replace the \*XXXX\* with R code to auto-populate the numbers.**
 
@@ -89,11 +81,7 @@ With respect to demographic characteristics,the sample included *XXXX* women, *X
 
 -   This time, lets use a the `paged_table()` function from Rmarkdown. This only works with HTML output, but allows the reader to tab through the table. Look up the function to see how to use it. 
 
-*< insert code here >*
-
 **Task 5b: Print a summary of each variable in the dataset**
-
-*< insert code here >*
 
 **Task 6: Data wrangling**
 
@@ -128,8 +116,6 @@ create an equation in the center of the document. How do we create an inline equ
 
 **Task 6b: Re-factor the Continuum variable**
 
-*< insert code here >*
-
 **Task 6c:Summarize the ganong data**
 
 -   Only include rows where N.Sessions == 2
@@ -138,21 +124,13 @@ create an equation in the center of the document. How do we create an inline equ
 
 -   Make sure there are 73 rows in the final data set (check out work!)
 
-*< insert code here >*
-
 #### Part 2
 
 **Task 6d:for each unique combination of Session, Continuum, & VOT, calculate the mean of our new response accuracy variable**
 
-*< insert code here >*
-
 **Task 6e: for each unique combination of Session, Continuum, & VOT, calculate the standard error of our new response accuracy variable**
 
-*< insert code here >*
-
 **Task 7:Create the plot**
-
-*< insert code here >*
 
 ```{r, eval = FALSE}
 plot <- ggplot(
@@ -163,6 +141,4 @@ plot <- ggplot(
 ```
 
 **Task 8: Report your session info (info about the R software) for reproducibility**
-
-*< insert code here >*
 
