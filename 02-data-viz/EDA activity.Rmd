@@ -62,6 +62,61 @@ ggplot(df, aes(x = ability, y = prob_c)) +
 ## Excercise 2: In their 2010 paper, Factors associated with voice therapy outcomes in the treatment of presbyphonia, Mau, Jacobson, and Garrett produce a figure comparing national outcome measures (NOMs) to the number of patients before and after voice therapy. Replicate both Figure 1 using the "mau_age.csv" and Figure 2 with "mau_tx.csv" datasets.
 
 ### Figure 1: Mau et al., 2010
+![Figure 1: Mau et al., 2010](MauFig1.jpg)
+### Load data for figure 1
+```{r}
+mau1 = read_csv("mau_age.csv")
+```
 
+### Generate a summary of the age variable
+```{r}
+summary(mau1)
+```
 
+### Replicate Figure 1:
+ - Add an informative title
+ - Label axes appropriately
+ - Add the number of participants and mean age in a subtitle.
+ - Modify axes tics to match the original Mau et al figure
+ - hints:
+  - try geom_bar() if geom_histom() does not work for you.
+  - look at the various variables in the data set
+  - Changing the y axis label ticks is not incredibly easy to find. navigate to https://ggplot2.tidyverse.org/reference/scale_continuous.html for help.
+ 
+```{r}
+ggplot(mau1, aes(x = age_range)) +
+  geom_bar() +
+  scale_y_continuous(n.breaks = 10) +
+  #scale_x_discrete(c("55-60", "61-65", "66-70", "71-75", "76-80", "81-85", "86-91")) +
+  labs(title = "Figure 1: Distribution of age of study participants",
+       subtitle = "n = 66, mean = 70.61",
+       x = "Age in years",
+       y = "Number of patients")
+```
 
+### Replicate Figure 2: 
+ - Add an informative title
+ - Label axes appropriately
+ - Modify axes tics to match the original Mau et al figure
+ - Insure the the plot points and lines are differentiated by either color, shape, line style or both.
+ - hints:
+  - Think about the number of geoms required to create the plot
+![Figure 1: Mau et al., 2010](MauFig2.jpg)
+
+#### Load data:
+- hint: don't forget to name it!
+
+```{r}
+mau2 = read_csv("mau_tx.csv")
+```
+
+#### Generate the plot
+```{r}
+ggplot(data = mau2, aes(x = noms, y = num_patients)) +
+  geom_point(aes(color = tx, shape = tx)) +
+  geom_line(aes(color = tx, linetype = tx)) + 
+  labs(title = "Figure 2: NOMs change over time Pre and post treatment)",
+       subtitle = "n = 66, mean = 70.61",
+       x = "Number of patients",
+       y = "NOMS level")
+```
