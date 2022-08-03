@@ -11,7 +11,7 @@ output: html_document
 ```{r}  
 #load libraries here:
 library(ggplot2)
-
+library(readr)
 ```
 ## Excercis 1:
 
@@ -59,3 +59,9 @@ ggplot(df, aes(x = ability, y = prob_c)) +
        x = "Ability Level of the Test Taker",
        y = "Probability of Correct Response")
 ```
+## Excercise 2: In their 2010 paper, Factors associated with voice therapy outcomes in the treatment of presbyphonia, Mau, Jacobson, and Garrett produce a figure comparing national outcome measures (NOMs) to the number of patients before and after voice therapy. Replicate both Figure 1 using the "mau_age.csv" and Figure 2 with "mau_tx.csv" datasets.
+
+### Figure 1: Mau et al., 2010
+
+
+
