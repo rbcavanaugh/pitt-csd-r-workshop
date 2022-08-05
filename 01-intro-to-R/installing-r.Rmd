@@ -23,6 +23,8 @@ This document details steps to get started in R as part of the R for researchers
 
 # Installing R
 
+*note, more detailed instructions can be found here: https://rstudio-education.github.io/hopr/starting.html*
+
 [Install base R](https://cran.rstudio.com/). This installs the R programming language and a simple GUI (from here on, we will refer to it as the R GUI). Choose the download link for your operating system (Linux, Mac OS X, or Windows).
 
 ![Download page for R and the R GUI](images/paste-B40FB4F4.png){width="400"}
