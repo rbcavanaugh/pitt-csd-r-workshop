@@ -35,6 +35,19 @@ This section will be hands on. It will cover
 
 You'll notice that there's some code in the following examples that we're not going to explain right away. We just want you to get a sense of what R can do here, you don't need to memorize everything.
 
+# Orienting to RStudio
+
+```{r, echo = FALSE, out.width = "500px", fig.cap = "The RStudio interface"}
+knitr::include_graphics("images/paste-B4148C41.png")
+```
+
+- **Script (top left):** where you write R code and comments that you want to save for later
+- **Console (bottom left):** where you run R code you just need to run once (e.g., testing something out)
+- **Environment (top right):** where your R objects are saved (more on objects later)
+- **Files (bottom right):** where you can view a directory of files on your computer. (you can open there from here too)
+- **Plots (bottom right):** where you can view any figures you create
+- **Help (bottom right):** where you can find information about r packages and functions
+
 # Start with some data
 
 We're going to use the palmer penguins dataset for this vignette. Learn more here: <https://allisonhorst.github.io/palmerpenguins/>
@@ -241,6 +254,13 @@ ratings <- c("unlikely", "somewhat unlikely", "somewhat likely", "likely")
 ratings
 ```
 
+the `penguins` object is the entire dataframe. We can preview the top 6 rows as:
+
+```{r}
+head(penguins)
+```
+
+
 Lists are objects that can hold different types of objects within. A list can hold one or more scalars, vectors, and/or dataframes. We won't touch much on lists this workshop.
 
 # Functions
@@ -263,7 +283,9 @@ Try looking up the `sum()` function to see what it's arguments are.
 ```
 
 ```{r, class.source = 'fold-hide', eval = FALSE}
-sum(is.na(penguins))
+sum(
+  is.na(penguins)
+  )
 ```
 
 ### Question 4
@@ -276,7 +298,9 @@ sum(is.na(penguins))
 ```
 
 ```{r, class.source = 'fold-hide', eval = FALSE}
-sum(is.na(penguins$body_mass_g))
+sum(
+  is.na(penguins$body_mass_g)
+  )
 ```
 
 # A project workflow from start to end
