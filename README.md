@@ -64,7 +64,7 @@ follow the installation instructions.
 
 If you have trouble with installation, R can also be used online:
 [RStudio Cloud](https://rstudio.cloud/) is a free online service that
-allows access to R and RStudio.
+allows access to R and RStudio. If you decide to use the cloud version, you can skip installing RStudio on your computer.
 
 <img src="01-intro-to-R/images/paste-8DC0F4C7.png" title="A view of the R GUI on mac" alt="A view of the R GUI on mac" width="400px" />
 
@@ -80,6 +80,10 @@ Go to
 and download the RStudio Desktop (Open Source License) version for your
 operating system under the list titled **Installers for Supported
 Platforms**.
+
+On mac, when you open the installer package, it will open a window with the applications folder and the
+Rstudio app. Drag the Rstudio logo into the applications folder. After this, you can
+move the installer package to your trash. 
 
 If you’re unsure about where something is in RStudio, try finding it in
 the cheat sheet here:
