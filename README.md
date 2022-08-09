@@ -50,7 +50,7 @@ If you have a **Mac**, install the latest release from the newest
 `R-x.x.x.pkg` link (or a legacy version if you have an older operating
 system). After you install R, you should also install
 [XQuartz](http://xquartz.macosforge.org/) to be able to use some
-visualisation packages.
+visualisation packages. (Note, you may need to right click and open the link in a new tab). 
 
 If you are installing the **Windows** version, choose the
 “[base](https://cran.rstudio.com/bin/windows/base/)” subdirectory and
