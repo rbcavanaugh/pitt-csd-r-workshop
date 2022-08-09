@@ -1,17 +1,34 @@
 ---
-title: "EDA activity"
-author: "AMS"
-date: "8/2/2022"
-output: html_document
+title: "Example exploratory data analysis activity"
+author: "Alex Swiderski"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
+    code_folding: show
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ## Before getting started make sure to load the following libraries:
   -ggplot2
   -readr
+  -here
+
+##### Response:
+```{r}
+
+```
+
+
+##### Solution
 ```{r}  
 #load libraries here:
 library(ggplot2)
 library(readr)
+library(here)
 ```
 ## Excercis 1:
 
@@ -37,10 +54,17 @@ In this excercise you will rely on previously learned tools and two new tools wi
 ![Tucci et al., 2019 Figure 1:](tucciIRT.jpeg)
 ###### To complete this task, first load the following dataset: "tucci.csv"
   - don't forget to name your dataframe someting easy to remember
+  - Remember, here() tells R where you are, and you must tell it where you want to go to find the data from your current location.
+
+###### Response:
+```{r}
+
+```
+
+###### Solution:
 ```{r}
 #load data set here:
-df =read.csv("tucci.csv")
-
+df = read.csv(here("data", "tucci.csv"))
 ```
 
 ##### Next, use ggplot to approximate Figure 1. You will need to investigate how to add the horizontal and vertical bars. 
@@ -50,6 +74,11 @@ df =read.csv("tucci.csv")
   - Do not forget to use keywords in your google search such as R, ggplot, and etc. 
   - For the sake of not trying to get too exact, place your vertical line on x = 0 and your horizontal line on y = 0.5.
 
+##### Response:
+```{r}
+
+```
+##### Solution:
 ```{r}
 ggplot(df, aes(x = ability, y = prob_c)) +
   geom_smooth(size = 1.5, color = "grey") +
@@ -59,16 +88,32 @@ ggplot(df, aes(x = ability, y = prob_c)) +
        x = "Ability Level of the Test Taker",
        y = "Probability of Correct Response")
 ```
+
 ## Excercise 2: In their 2010 paper, Factors associated with voice therapy outcomes in the treatment of presbyphonia, Mau, Jacobson, and Garrett produce a figure comparing national outcome measures (NOMs) to the number of patients before and after voice therapy. Replicate both Figure 1 using the "mau_age.csv" and Figure 2 with "mau_tx.csv" datasets.
 
 ### Figure 1: Mau et al., 2010
 ![Figure 1: Mau et al., 2010](MauFig1.jpg)
 ### Load data for figure 1
+###### Response:
 ```{r}
-mau1 = read_csv("mau_age.csv")
+
 ```
 
+###### Solution:
+```{r}
+#load data set here:
+mau1 = read.csv(here("data", "mau_age.csv"))
+```
+
+
 ### Generate a summary of the age variable
+
+##### Response:
+```{r}
+
+```
+
+##### Solution:
 ```{r}
 summary(mau1)
 ```
@@ -82,7 +127,12 @@ summary(mau1)
   - try geom_bar() if geom_histom() does not work for you.
   - look at the various variables in the data set
   - Changing the y axis label ticks is not incredibly easy to find. navigate to https://ggplot2.tidyverse.org/reference/scale_continuous.html for help.
- 
+
+###### Response:
+```{r}
+
+```
+###### Solution: 
 ```{r}
 ggplot(mau1, aes(x = age_range)) +
   geom_bar() +
@@ -106,8 +156,20 @@ ggplot(mau1, aes(x = age_range)) +
 #### Load data:
 - hint: don't forget to name it!
 
+###### Response:
 ```{r}
-mau2 = read_csv("mau_tx.csv")
+
+```
+
+###### Solution:
+```{r}
+#load data set here:
+mau2 = read.csv(here("data", "mau_tx.csv"))
+```
+
+##### Response:
+```{r}
+
 ```
 
 #### Generate the plot
