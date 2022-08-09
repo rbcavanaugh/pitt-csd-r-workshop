@@ -1,0 +1,176 @@
+,word,freq,aoa,length,cat,difficulty,aoa_wrong
+7,ambulance,2.862,6.16,9,Vehicle,0.772,3
+90,anchor,2.276,5.72,5,Misc.,0.118,3
+142,apple,2.839,4.15,4,"food, fruit",-1.462,3
+74,baby,3.707,3.84,4,Person,-1.72,2
+139,ball,3.316,2.9,3,Toy,-1.433,
+121,balloon,2.418,4.37,5,Toy,-1.23,3
+151,banana,2.513,3.78,6,"food, fruit",-1.148,
+86,basket,2.632,5.67,6,"Object, manipulable",-0.914,
+28,bat,2.75,4.85,3,"Animal, other",-0.54,2
+3,beard,2.602,4.84,4,Body part,0.137,
+67,bed,3.614,2.89,3,Furniture,-1.687,3
+95,bell,3.015,3.89,3,"Object, manipulable",-0.89,1
+173,belt,2.924,4.62,4,Clothing,-0.841,3
+109,bench,2.535,4.21,4,Furniture,0.137,1
+26,binoculars,1.845,6.79,11,"Object, manipulable",1.029,
+82,bone,2.932,5.53,3,Body part,-1.463,3
+131,book,3.511,3.68,3,"Object, manipulable",-1.525,3
+153,boot,2.574,3.89,3,Clothing,-0.325,3
+137,bottle,3.194,3.56,5,"Object, manipulable",-0.201,3
+136,bowl,2.834,4.26,3,"Object, manipulable",0.059,
+147,bread,2.956,3.58,4,"Food, other",-1.068,3
+46,bride,2.806,5.1,4,Person,0.098,
+126,bridge,3.02,5.58,4,"Object, structural",-0.475,3
+58,broom,2.255,5.5,4,"Object, manipulable",-0.283,1
+132,bus,3.189,3.85,3,Vehicle,-0.89,2
+60,butterfly,2.272,3.67,8,"Animal, other",0.157,3
+96,cake,3.078,3.26,3,"Food, other",-0.817,
+148,calendar,2.362,5.89,8,Misc.,-0.1,2
+168,camel,2.143,5.11,5,"Animal, 4 footed",-0.14,1
+66,camera,3.142,6,6,"Object, manipulable",-0.367,3
+149,can,3.922,4.32,3,"Food, other",-0.242,3
+48,candle,2.465,5.37,6,Furniture,-0.388,3
+52,cane,2.212,5.74,3,Misc.,-1.067,2
+2,cannon,2.408,7.9,5,Misc.,0.157,3
+116,carrot,2.093,2.74,5,"food, vegetable",-0.586,3
+81,cat,3.142,3.68,3,"Animal, 4 footed",-2.008,2
+43,celery,1.806,5.78,6,"food, vegetable",0.521,3
+152,chair,3.191,3.43,3,Furniture,-0.991,3
+8,cheerleaders,2.267,6,8,Person,0.772,3
+34,chimney,2.146,6.58,5,"Object, structural",0.426,3
+91,church,3.127,5.15,4,"Object, structural",-0.745,3
+77,clock,3.215,4.42,4,Furniture,-0.965,
+76,closet,2.948,5,6,"Object, structural",0.176,3
+63,clown,2.65,3.72,4,Person,-0.653,3
+53,comb,2.346,5.5,3,"Object, manipulable",-1.148,2
+88,corn,2.606,4.61,4,"food, vegetable",-1.23,
+140,cow,2.863,3.94,2,"Animal, 4 footed",-0.915,3
+55,cowboy,2.684,4.55,4,Person,0.059,3
+94,cross,3.231,4.74,4,Misc.,-0.496,3
+45,crown,2.561,7.8,4,Misc.,0.079,2
+42,crutches,1.732,7.21,4,Misc.,0.714,3
+113,desk,3.148,5.56,4,Furniture,-0.18,3
+130,dice,2.471,6.37,3,Toy,-0.41,3
+16,dinosaur,2.068,4.91,7,"Animal, 4 footed",0.989,3
+127,dog,3.484,2.8,3,"Animal, 4 footed",-1.686,3
+83,door,3.723,3.05,3,"Object, structural",-1.286,3
+32,dragon,2.444,5.58,6,"Animal, 4 footed",0.445,3
+125,drum,2.433,4.63,4,Toy,-0.653,1
+122,duck,2.848,3.5,3,"Animal, other",-0.746,1
+114,ear,3.044,3.63,2,Body part,-1.932,1
+107,elephant,2.498,4.8,7,"Animal, 4 footed",-0.585,3
+19,Eskimo,1.778,7.11,6,Person,0.598,1
+56,eye,3.507,3.75,1,Body part,-1.686,
+1,fan,3.041,5.63,3,Misc.,-1.23,1
+33,fireman,2.025,5.05,6,Person,0.059,2
+123,fireplace,2.279,7.37,7,"Object, structural",0.407,1
+170,fish,3.233,4.05,3,"Animal, other",-1.555,2
+167,flashlight,2.324,5.61,7,"Object, manipulable",0.137,1
+99,flower,2.799,3.11,6,Nature,-0.841,3
+12,foot,3.313,3.44,3,Body part,-0.793,1
+154,football,2.907,4.84,6,Toy,-1.042,3
+157,fork,2.501,3.63,4,"Object, manipulable",-1.016,1
+70,frog,2.435,4.32,4,"Animal, other",-0.242,3
+156,garage,2.912,5.26,5,"Object, structural",0.541,3
+17,ghost,2.884,5.06,4,Misc.,-0.346,2
+158,glass,3.265,4.47,4,"Object, manipulable",-0.41,3
+71,glove,2.528,4.3,4,Clothing,-0.388,3
+169,goat,2.53,5.21,3,"Animal, 4 footed",-0.746,3
+145,grapes,2.14,3.94,4,"food, fruit",-0.865,2
+75,hair,3.56,3.17,3,Body part,-0.915,1
+106,hammer,2.598,5.42,5,"Object, manipulable",-1.314,1
+160,hand,3.745,2.74,4,Body part,-1.687,2
+144,harp,1.914,7.55,4,Misc.,0.522,3
+97,hat,3.238,3.33,3,Clothing,-1.463,2
+61,heart,3.661,5.17,4,Misc.,-1.462,3
+4,helicopter,2.654,5.26,10,Vehicle,0.522,3
+84,horse,3.198,4.15,4,"Animal, 4 footed",-1.286,3
+103,hose,2.471,5.33,3,"Object, manipulable",-0.431,1
+104,house,3.781,3.16,3,"Object, structural",-1.094,3
+141,iron,2.794,7.32,4,"Object, manipulable",-0.453,
+73,key,3.336,3.58,2,"Object, manipulable",-1.825,3
+161,king,3.228,5.42,3,Person,-1.314,1
+80,kitchen,3.259,3.68,5,"Object, structural",-0.474,
+98,kite,1.886,4.58,3,Toy,-0.475,
+117,knife,3.099,4.15,3,"Object, manipulable",-0.745,2
+69,lamp,2.585,4,4,Furniture,-0.676,1
+162,leaf,2.338,4.6,3,Nature,-0.746,3
+35,letter,3.245,4.74,5,Misc.,-0.325,3
+14,lion,2.517,4.42,4,"Animal, 4 footed",-0.388,1
+110,man,3.906,3.11,3,Person,-1.403,1
+133,map,2.906,5.6,3,Misc.,-0.201,
+135,microscope,2.017,9.16,9,Misc.,1.772,1
+54,monkey,2.894,4.21,5,"Animal, 4 footed",-0.89,1
+163,mountain,2.947,6.15,6,Nature,0.04,2
+20,mustache,2.2504,7.63,6,Body part,0.33,2
+105,nail,2.852,5.42,3,"Object, manipulable",-0.915,1
+112,necklace,2.447,5,6,Misc.,0.695,3
+85,nose,3.328,2.95,3,Body part,-1.686,
+57,nurse,3.041,5.84,4,Person,-0.676,
+47,octopus,1.813,6.26,7,"Animal, other",0.772,1
+164,owl,2.14,6.21,2,"Animal, other",-0.841,3
+64,pear,1.653,4,3,"food, fruit",-0.63,
+50,pen,2.912,5.11,3,"Object, manipulable",-0.841,1
+115,pencil,2.593,4.06,6,"Object, manipulable",-0.965,2
+59,piano,2.777,5.5,5,Misc.,-0.63,1
+79,pie,2.898,3.67,2,"Food, other",-1.493,1
+68,pig,3.024,3.84,3,"Animal, 4 footed",-1.202,1
+24,pillow,2.657,3.47,4,Furniture,-0.841,3
+11,pineapple,1.898,6.25,7,"food, fruit",0.157,2
+128,pipe,2.809,8.17,3,"Object, manipulable",-0.746,3
+31,pirate,2.215,6.5,5,Person,0.311,3
+13,plant,2.92,3.95,5,Nature,0.636,2
+36,pumpkin,2.441,4.78,7,"food, vegetable",0.02,3
+39,pyramid,2,7.61,7,"Object, structural",1.049,3
+37,queen,3.075,4.42,4,Person,-0.699,1
+120,rake,1.944,5.32,3,"Object, manipulable",-0.496,1
+150,ring,3.317,4.53,3,Misc.,-1.286,3
+87,rope,2.816,5.44,3,"Object, manipulable",-0.964,2
+23,ruler,2.143,5.94,5,"Object, manipulable",0.483,3
+175,saddle,2.425,6.42,5,Misc.,0.311,3
+6,sailor,2.453,6.44,5,Person,0.157,1
+9,sandwich,2.874,4.79,7,"Food, other",-0.283,3
+65,saw,3.808,5.35,2,"Object, manipulable",-0.722,2
+72,scale,2.593,8.85,4,"Object, manipulable",0.137,3
+138,scarf,2.22,5.68,5,Clothing,-0.12,3
+51,scissors,2.318,4.5,6,"Object, manipulable",-0.865,1
+111,seal,2.675,5.42,3,"Animal, other",-0.02,3
+171,shoe,2.951,2.6,2,Clothing,-1.494,1
+62,skis,2.348,6.68,3,Misc.,-0.41,1
+10,skull,2.702,6.33,4,Body part,0.579,3
+27,slippers,1.716,5.26,6,Clothing,0.637,1
+78,snail,1.74,5.79,4,"Animal, other",0.273,1
+129,snake,2.722,5.1,4,"Animal, other",-1.016,1
+29,sock,2.481,2.94,3,Clothing,-0.965,1
+172,spider,2.365,3.43,6,"Animal, other",-0.242,2
+101,spoon,2.433,2.5,4,"Object, manipulable",-0.889,2
+134,squirrel,2.22,4.44,7,"Animal, 4 footed",-0.16,1
+108,star,3.261,3.89,4,Misc.,-0.89,2
+18,stethoscope,1.633,8.5,9,"Object, manipulable",1.88,3
+146,strawberries,2.223,4.21,8,"food, fruit",-0.02,3
+165,suit,3.288,6.67,3,Clothing,-0.263,1
+102,sun,3.292,3.4,3,Nature,-1.068,1
+155,table,3.461,4.39,5,Furniture,-0.865,
+166,tent,2.649,5.16,4,"Object, structural",-0.699,2
+15,thermometer,1.898,6.63,10,"Object, manipulable",0.637,1
+174,toilet,2.98,3.54,5,"Object, structural",-0.119,3
+21,top,3.557,3.89,3,Toy,0.059,1
+159,towel,2.721,3.22,4,"Object, manipulable",-0.496,3
+93,tractor,2.029,5.5,7,Vehicle,0.368,1
+92,train,3.246,4,4,Vehicle,-1.042,2
+49,tree,3.21,3.57,3,Nature,-1.587,1
+119,turkey,2.758,3.95,5,"Animal, other",-0.817,2
+30,typewriter,1.968,6.74,8,Misc.,-0.06,3
+5,van,2.962,5.19,3,Vehicle,0.579,1
+38,vase,2.086,7.89,3,Furniture,0.176,3
+118,vest,2.31,5.83,4,Clothing,-0.283,1
+40,volcano,2.037,6.74,7,Nature,1.07,1
+41,wagon,2.671,5.22,5,Toy,-0.08,
+22,waterfall,1.833,5.47,8,Nature,-0.02,1
+143,well,3.911,6.15,3,"Object, structural",-0.453,1
+89,whistle,2.676,5.42,5,Toy,-0.965,3
+44,wig,2.393,5.63,3,Misc.,0.388,3
+124,window,3.388,4.74,5,"Object, structural",-1.094,1
+25,zebra,1.771,4.79,5,"Animal, 4 footed",0.54,3
+100,zipper,2.076,5,5,"Object, manipulable",-0.201,3
