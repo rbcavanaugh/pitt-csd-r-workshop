@@ -96,13 +96,14 @@ library(tinytex)
 
 ##### Solution 3:
 ```{r}
-df = read.csv('hearingLoss.csv')
+### load dataset, name data set df for ease of typing
+df = read.csv('hearingLoss.csv') 
 ```
 
-### the below list contains data manipulation and helper functions to insure all excercises work properly below. Please make sure to run this. You do not need to understand the code at this time.
+### the below list contains data manipulation and helper functions to insure all excercises work properly below. Please make sure to run this. You do not need to understand the code at this time; however, you will be able to comprehend it after your lecture on data manipulation tomorrow!
 ```{r}
 df = df %>%
-  mutate(id = as.factor(id),
+  mutate(id = as.factor(id), #change variables to factors 
          sex = as.factor(sex),
          HearingAidUse = as.factor(HearingAidUse),
          hl_mild = as.factor(hl_mild),
@@ -111,12 +112,14 @@ df = df %>%
          NIH_severe = as.factor(NIH_severe),
          sr_hl = as.factor(sr_hl),
          sr_hl2 = as.factor(sr_hl2)) %>%
-  select(-X)
+  filter(age != "NA") %>%
+  select(-X) # remove X variable 
 
 df_long = df %>%
-  select(id, age, sex,  lpta, rpta) %>%
-  gather(ear, pta, lpta:rpta) %>%
-  mutate(ear = ifelse(ear == "lpta", "Left Ear", "Right Ear"))
+  select(id, age, sex,  lpta, rpta) %>% #select only variables of interest
+  gather(ear, pta, lpta:rpta) %>% # Create long form data based on lpta:rpta. 
+  mutate(ear = ifelse(ear == "lpta", "Left Ear", "Right Ear")) %>%
+  filter(age != "NA")
 ```
 
 #### 4: After loading the dataset we can use a series of commands to examine the structure of the data, the names of the variables within the dataframe, and provide summary statistics of the data.
@@ -218,7 +221,7 @@ length(unique(df$id))
 
 ##### Solution 7: 
 ```{r}
-ggplot(data = df)
+ggplot(data = df) # tell R you are using ggplot, tell ggplot what data you are using.
 ```
 
 #### ```ggplot(data, aes())```
@@ -236,7 +239,7 @@ ggplot(data = df)
 
 ##### Solution 8:
 ```{r}
-ggplot(data = df, aes(x = age))
+ggplot(data = df, aes(x = age)) #use aes(thetic)  to tell ggplot your variables to plot
 ```
 
 ##### 8.1: What do you see? What did the additional layer add to the figure?
@@ -259,8 +262,8 @@ ggplot(data = df, aes(x = age))
 
 ##### Solution 9.1
 ```{r histogram }
-ggplot(data = df, aes(x = age)) + 
-  geom_histogram()
+ggplot(data = df, aes(x = age)) + #NOTE THE PLUS SIGN
+  geom_histogram() # add geom_histogram to create a histogram based on the age variable
 ```
 ##### 9.2: Generate the same plot with the ```geom_bar``` function instead of ```geom_histogram```
 
@@ -272,7 +275,7 @@ ggplot(data = df, aes(x = age)) +
 ##### Solution 9.2
 ```{r histogram }
 ggplot(data = df, aes(x = age)) + 
-  geom_histogram()
+  geom_bar()
 ```
 
 ##### 10. Customizing plots. Ggplots are highly customizable. You can change nearly every aspect of any figure. 
@@ -288,7 +291,7 @@ ggplot(data = df, aes(x = age)) +
 ##### Solution 10:
 ```{r}
 ggplot(data = df, aes(x = age)) + 
-  geom_histogram(color = "blue")
+  geom_histogram(color = "blue") #specificy color within the histogram main function (color = border, fill = inside color)
 ```
 
 ##### 10.2: Change the fill color your histogram by adding ```fill = ``` after the color command with a color of your chosing. 
@@ -303,7 +306,7 @@ ggplot(data = df, aes(x = age)) +
 ##### Solution 10:
 ```{r}
 ggplot(data = df, aes(x = age)) + 
-  geom_histogram(color = "blue", fill = "light blue")
+  geom_histogram(color = "blue", fill = "light blue") #color and fill to color histogram. note the assosciations of the colors and their locations. Make sure color names are in quotes
 ```
 
 ##### Adding labels.
@@ -333,7 +336,7 @@ ggplot(data = df, aes(x = age)) +
 ```{r}
 ggplot(data = df, aes(x = age)) + 
   geom_histogram(color = "blue", fill = "light blue") +
-  labs(title = "Histogram of age") 
+  labs(title = "Histogram of age") #Use labs to add labels, make sure the label name are within quotes.
 
 ```
 
@@ -349,9 +352,9 @@ ggplot(data = df, aes(x = age)) +
 ```{r}
 ggplot(data = df, aes(x = age)) + 
   geom_histogram(color = "blue", fill = "light blue") +
-  labs(title = "Histogram of age",
-       x = "Age in years",
-       y = "Count")
+  labs(title = "Histogram of age", #title
+       x = "Age in years", #x-axis
+       y = "Count") #y-axis
 ```
 
 
@@ -375,8 +378,8 @@ ggplot(data = df, aes(x = age)) +
 ##### Independent excercise solution 1:
 ```{r}
 ggplot(data = df, aes(x = lpta)) + 
-  geom_histogram(color = "red", fill = "blue", bins = 50, aes(y = ..density..)) +
-  geom_density() +
+  geom_histogram(color = "red", fill = "blue", bins = 50, aes(y = ..density..)) + #change bin count, use aes to specifiy that you will be adding a density overlay. a step necessary because histograms generally do not require a y label
+  geom_density() + #add density overlay
   labs(title = "Histogram of left pure tone average",
        x = "Left ear pure tone average",
        y = "Number of Observations")
@@ -429,7 +432,7 @@ geom_histogram(aes(x = rpta), fill = "blue")
 ```{r}
 ggplot(data = df) +
 geom_histogram(aes(x= lpta)) +
-geom_histogram(aes(x = rpta), fill = "blue", alpha = 0.5)
+geom_histogram(aes(x = rpta), fill = "blue", alpha = 0.5) #specify alpha to modify translucent
 
 ```
 ##### Interpretation: Any better? What did we learn? What else does the plot need?
@@ -495,7 +498,10 @@ ggplot(data = df_long, aes(x = pta, color = ear)) +
 
 ```
 ##### Solution 13.2:
-
+```{r}
+ggplot(data = df_long, aes(x = pta, color = ear)) +
+  geom_histogram(position = "identity") 
+```
 
 ##### 13.2: Chanage the color function to fill. What's the difference? 
 
@@ -505,7 +511,7 @@ ggplot(data = df_long, aes(x = pta, color = ear)) +
 ```
 ##### Solution 13.2:
 ```{r}
-ggplot(data = df_long, aes(x = pta, color = ear)) +
+ggplot(data = df_long, aes(x = pta, fill = ear)) +
   geom_histogram(position = "identity")
 ```
 ##### Note that the figure is still not very interpretable. As above, we are not left with the two histograms on top of eachother. Two steps to fix this as above, add color and change alpha.  In the excercise below:
@@ -551,8 +557,8 @@ ggplot(data = df_long, aes(x = pta, fill = ear)) +
 ```{r}
 ggplot(data = df_long, aes(x = pta)) +
   geom_histogram() +
-  facet_grid(~ear) +
-      labs(title = "Pure tone averages of study participants",
+  facet_grid(~ear) + #facet_grid creates multple plots based on a grouping variable. The ~ is required prior to the variable name!
+      labs(title = "Pure tone  averages of study participants",
        x = "Pure tone average",
        y = "Count")
 
@@ -571,7 +577,7 @@ ggplot(data = df_long, aes(x = pta)) +
 ###### Solution 15
 ```{r}
 ggplot(data = df, aes(x = pta, y = age)) +
-  geom_point() +
+  geom_point() + #create a dot plot/scatterplot
   labs(title = "Scatterplot: L/R puretone average and age",
        x = "Pure tone average",
        y= "Age in years")
@@ -580,7 +586,7 @@ ggplot(data = df, aes(x = pta, y = age)) +
 ##### We can now add another dimension to the plot by changing the color of the plot points or the shape of the points. 
 
 ##### Excercise 16: 
-> Following the examples above, change the fill color of the plot points to represent the sex of the participant. 
+> Following the examples above, change the fill color of the plot points to represent the sex of the participant. What did you learn from the data?
 ###### Response 16:
 
 ```{r}
@@ -608,7 +614,7 @@ ggplot(data = df, aes(x = pta, y = age, color = sex)) +
 ###### Solution 16
 
 ```{r}
-ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
+ggplot(data = df, aes(x = pta, y = age, shape = sex, color = sex)) +
   geom_point() +
   labs(title = "Scatterplot: L/R puretone average and age",
        x = "Pure tone average",
@@ -629,7 +635,7 @@ ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
 ###### Solution 17
 
 ```{r}
-ggplot(data = df, aes(x = pta, y = age, shape = sex)) +
+ggplot(data = df, aes(x = pta, y = age, shape = sex, color = sex)) +
   geom_point() +
   labs(title = "Scatterplot: L/R puretone average and age",
        x = "Pure tone average",
