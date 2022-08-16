@@ -1,0 +1,244 @@
+---
+title: "Example Exploratory data analysis"
+author: "Alex Swiderski"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::html_clean:
+    toc: true
+    toc_depth: 2
+    code_folding: show
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+#### Load packages
+
+```{r, warning=FALSE, message=FALSE}
+library(readr) #used to load csv files
+library(dplyr) # data manipulation
+library(tidyr) # data manipulation
+library(ggplot2) #plotting
+library(gridExtra) #plotting
+library(GGally)
+library(rmdformats)
+library(here)
+```
+
+### Load the data
+
+```{r}
+data = read_csv(here("data", "pnt.csv"))
+data_bad = data
+data = data[,-c(1, 8)]
+```
+
+#### *Look at the shape of the data*
+
+```{r}
+str(data)
+```
+
+##### *The provided data set has 6 unique variables:*
+
+-   word: Target word name
+
+-   freq: Frequency of use
+
+-   aoa: Age of Acquisition
+
+-   length: Length in phonemes
+
+-   cat: Category
+
+-   difficulty: Estimated naming difficulty
+
+#### Look at the first few rows of the data to learn about variable names and basic structure:
+
+```{r}
+head(data)
+```
+
+#### Print out summary statistics of each variable
+
+```{r}
+summary(data)
+```
+
+#### Summary statistics for category was not helpful, print out how many categories there are and what are the unique categories.
+
+```{r}
+unique(data$cat)
+```
+
+```{r}
+length(unique(data$cat))
+```
+
+There are 15 unique categories, including one miscelaneous category
+
+### Let's take a peak at what the data look like graphically now.
+
+### First, create a histogram for AoA:
+
+```{r}
+hist = data_bad %>%
+  mutate(aoa = as.numeric(aoa_wrong)) %>%
+  ggplot(aes(x = aoa)) +
+  geom_histogram(color = "blue") +
+  geom_vline(aes(xintercept = mean(aoa)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of AoA",
+    x = "AoA",
+    y = "Count")
+hist
+```
+
+#### Wait a second... AoA is definitely not an integer and it certainlly has more than three different values. What the EDA process revealed in this case, is that the wrong estimates of AoA were included in the dataset.
+
+### After identifying this error, I updated the dataset and am now plotting AoA again.
+
+### Creating a histogram with the correct AoA data
+
+```{r}
+hist_aoa = data %>%
+  mutate(aoa = as.numeric(aoa)) %>%
+  ggplot(aes(x = aoa)) +
+  geom_histogram(color = "blue") +
+  geom_vline(aes(xintercept = mean(aoa)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of AoA",
+    x = "AoA",
+    y = "Count")
+
+hist_aoa
+```
+
+### Much better! The distribution of AoA ranges from about .5 years to 9 + years. The red dotted line is the mean, which we estimated above with the summary function.
+
+#### Plot all histograms at once:
+
+-   utilize `grid.arrange()` to put all four histograms together. This
+    was done because `facet_wrap()`, as used below utilizes the same
+    axis range for all variables, creates histograms that are difficulty
+    to interpret should they have differences in the magnitude of the
+    values.
+
+```{r}
+hist_freq = data %>% ggplot(aes(x = freq)) +
+  geom_histogram(color = "blue") +
+  geom_vline(aes(xintercept = mean(freq)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of frequency",
+    x = "Frequency of use (Log transformed)",
+    y = "Count")
+
+hist_length = data %>% ggplot(aes(x = length)) +
+  geom_histogram(color = "blue") +
+  geom_vline(aes(xintercept = mean(length)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of length in phonemes",
+    x = "Length in phonemes",
+    y = "Count")
+
+
+
+hist_difficulty = data %>% ggplot(aes(x = difficulty)) +
+  geom_histogram(color = "blue") +
+  geom_vline(aes(xintercept = mean(difficulty)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of length in AoA",
+    x = "Difficulty", 
+    y = "Count")
+
+###Plot all four histograms together
+grid.arrange(hist_aoa, hist_freq, hist_length, hist_difficulty)
+
+```
+
+#### Recap, variation of variables:
+
+> The above summary statistics and plots create a clear picture of the
+> means, ranges, and distribution of each numerical data. In the process
+> it was identified that one variable had the wrong data as well.
+
+### 2. What type of covariation occurs between my variables?
+
+#### The first question that came to mind while creating the above data visualizations was if the various categories are distributed equally across the variables. I just copied the code from above to create the grid figure of histograms and added in a new option to add color to allow us to visualize the categories inside each histogram.
+
+```{r}
+###Histogram for frequency by category
+data %>% ggplot(aes(x = freq, fill = cat, colour = cat)) +
+  geom_histogram() +
+  geom_vline(aes(xintercept = mean(freq)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of frequency",
+    x = "Frequency of use (Log transformed)",
+    y = "Count") +
+  facet_wrap(~cat, ncol = 4)
+```
+
+#### For the most part it looks like the images and their associated categories are distributed evenly across the range frequencies. Variables that do not fit this pattern include the three different types of food, and to a lesser extend vehicles. It looks like if the three food groups were to be collapsed into a single group they would cover the continuum of frequencies.
+
+#### Same plot for length By specifying the color and fill as cat, we create unique colors for category, as also done above.
+
+```{r}
+ data %>% ggplot(aes(x = length, fill = cat, colour = cat)) +
+  geom_histogram() +
+  geom_vline(aes(xintercept = mean(length)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of length in phonemes",
+    x = "Length in phonemes",
+    y = "Count") +
+  facet_wrap(~cat, ncol = 4)
+```
+
+#### same plot for difficulty, note the number of columns was changed in the final line within the `facet_wrap` command.
+
+```{r}
+data %>% ggplot(aes(x = difficulty,fill = cat, colour = cat)) +
+  geom_histogram() +
+  geom_vline(aes(xintercept = mean(difficulty)), color= "red", linetype = "dashed", size = .5) +
+    labs(
+    title = "Histogram of length in AoA",
+    x = "Difficulty", 
+    y = "Count") +
+  facet_wrap(~cat, ncol = 5)
+```
+
+### What about the relationship between our numerical variables? A scatterplot is a great way to investigate the relationship between two variables.
+
+```{r}
+data %>% ggplot(aes(x = freq, y = difficulty)) +
+  geom_point() +
+    labs(title = "Scatterplot of frequency and estimated naming difficulty",
+    x = "Frequency", 
+    y = "Difficulty")
+```
+
+We can certainly see a clear downward trend such that naming difficulty
+decreases as the frequency of the word used increases.
+
+#### We can also see if this pattern is the same across each category of words as done with the histograms above. Note that I have left out the color commands within the aesthetic function within ggplot and as a result the plot is in black/white.
+
+```{r}
+data %>% ggplot(aes(x = freq, y = difficulty)) +
+  geom_point() +
+    labs(title = "Scatterplot of frequency and estimated naming difficulty",
+    x = "Frequency", 
+    y = "Difficulty") +
+  facet_wrap(~cat, ncol = 5)
+```
+
+For the most part, this is the case! food, other does not demonstrate
+this pattern, but only has 5 data points so its hard to get a clear idea
+of the trend.
+
+#### the below code creates a grid of all scatterplots from the numerical variables. Note that I transformed the dataset prior to creating the plot. Explanation of how data transformation will be covered in the next workshop! We can create the plot quick and easily using the `ggpairs() function` from the library `GGally` An added bonus of ggally is that it will plot the correlations of our variables as well.
+
+```{r}
+data = data %>%
+  relocate(cat)
+ggpairs(data, columns = 3:6,
+         diag = list(continuous = "blankDiag"))
+```
